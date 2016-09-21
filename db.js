@@ -17,6 +17,11 @@ DbInterface.DB_FILE_NAME = 'upay.sqlite';
  */
 DbInterface.prototype.createDatabase = function(dbFileName, callback) {
 
+    if (!dbFileName)
+    {
+        dbFileName = DbInterface.DB_FILE_NAME;
+    }
+
     new Promise((resolve, reject) => {
 
 	    fs.exists(dbFileName, function(exists) {
