@@ -9,6 +9,26 @@ function DbInterface()
 }
 
 DbInterface.DB_FILE_NAME = 'upay.sqlite';
+/* USER TABLE SQL */
+DbInterface.CREATE_USER_SQL = `INSERT INTO user
+                               (user_name, password, first_name, middle_name, last_name, email, street1, street2, city, state, zip_code, phone) 
+                               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+DbInterface.UPDATE_USER_SQL = `UPDATE user 
+                               SET first_name = ?,
+                                   middle_name = ?,
+                                   last_name = ?,
+                                   email = ?,
+                                   street1 = ?,
+                                   street2 = ?,
+                                   city = ?,
+                                   state = ?,
+                                   zip_code = ?,
+                                   phone = ? 
+                               WHERE user_name = ?`;
+DbInterface.SELECT_USER_SQL = `SELECT user_name, first_name, middle_name, last_name, email, street1, street2, city, state, zip_code, phone 
+                               FROM user `;
+DbInterface.AUTHENTICATE_USER_SQL = DbInterface.SELECT_USER_SQL + 
+                                    `WHERE user_name = ? AND password = ?`;
 
 /**
  * Create the database
@@ -70,6 +90,33 @@ DbInterface.prototype.createDatabase = function(dbFileName, callback) {
 
         callback("Unable to create database: " + err);
     });
+};
+
+/**
+ * Create a new user
+ * @param user User object
+ * @param callback (err, userId)
+ */
+DbInterface.prototype.createUser = function(user, callback) {
+
+};
+
+/**
+ * Update a user
+ * @param user User with new values
+ * @param callback (err, numRows (1 or 0))
+ */
+DbInterface.prototype.updateUser = function(user, callback) {
+
+};
+
+/**
+ * Authenticate a user
+ * @param credentials { userName: <value>, password: <value> }
+ * @param callback (err, user)
+ */
+DbInterface.prototype.authenticateUser = function(credentials, callback) {
+
 };
 
 module.exports = new DbInterface();
