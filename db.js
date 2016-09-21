@@ -36,7 +36,7 @@ DbInterface.AUTHENTICATE_USER_SQL = DbInterface.SELECT_USER_SQL +
 /**
  * Open the database
  */
-DbInterface.prototype.open = function(dbFileName) {
+DbInterface.prototype.open = function(dbFileName, update) {
 
     if (this.db)
     {
@@ -49,6 +49,28 @@ DbInterface.prototype.open = function(dbFileName) {
     }
 
     this.db = new sqlite3.Database(dbFileName);
+
+    if (update)
+    {
+        var self = this;
+
+        fs.readFileSync('create_tables.sql', 'utf8', function(err, data) {
+            if (err)
+            {
+                console.log("Unable to update database: unable to read 'create_tables.sql': " + err);
+            }
+            else 
+            {
+                self.db.exec(data, function(err) {
+
+                    if (err)
+                    {
+                        console.log("Unable to update database: " + err);
+                    }
+                });
+            }
+        });
+    }
 };
 
 /**
@@ -69,71 +91,6 @@ DbInterface.prototype.close = function() {
         {
             delete this.db;
         }
-    });
-};
-
-/**
- * Create the database
- * @param dbFileName name of the datbase file to create
- * @param callback (err)
- */
-DbInterface.prototype.createDatabase = function(dbFileName, callback) {
-
-    var self = this;
-
-    if (!dbFileName)
-    {
-        dbFileName = DbInterface.DB_FILE_NAME;
-    }
-
-    new Promise((resolve, reject) => {
-
-	    fs.exists(dbFileName, function(exists) {
-
-            if (exists)
-            {
-                return new Promise((resolve, reject) => {
-                    // Delete file here
-                    fs.unlync(dbFileName, function(err) {
-                        if (err) reject(err);
-                        else resolve();
-                    });
-                });
-            }
-            else
-            {
-                resolve();
-            }
-        });
-    }).then(function() {
-
-        return new Promise((resolve, reject) => {
-            fs.readFile('create_tables.sql', 'utf8', (err, data) => {
-                if (err) reject(err)
-                else resolve(data);
-            });
-        });
-    }).then(function(data) {
-
-        this.open();
-
-        db.exec(data, function(err) {
-
-            if (err)
-            {
-                callback("Unable to create database: " + err);
-            }
-            else
-            {
-                callback(null);
-            }
-
-            this.close();
-        });
-
-    }).catch(function(err) {
-
-        callback("Unable to create database: " + err);
     });
 };
 
