@@ -11,10 +11,65 @@ describe('Testing DbInterface', function() {
     //     });
     // });
 
-    it('can create database when database exists', function(done) {
+    // it('can create database when database exists', function(done) {
 
-        dbi.createDatabase(null, function(err) {
-            done(err);
+    //     dbi.createDatabase(null, function(err) {
+    //         done(err);
+    //     });
+    // });
+
+    before(function() {
+        dbi.open();
+    });
+
+    after(function() {
+        dbi.close();
+    });
+
+    it('can create test user', function(done) {
+
+        dbi.createUser({
+            userName: 'Test' + (new Date()).getTime(),
+            password: 'tiger',
+            firstName: "Test",
+            lastName: 'User',
+            address: {
+                street1: '100 Main St',
+                city: 'Baltimore',
+                state: 'MD',
+                zipCode: '21201'
+            },
+            phone: '(410) 555-1212',
+            email: 'TestUser@ssa.gov'
+        }, function(err, cnt) {
+            if (err)
+            {
+                done(err);
+            }
+            else
+            {
+                if (cnt !== 1)
+                {
+                    done(new Error('Received %s count: expected 1', cnt));
+                }
+                else
+                {
+                    done();
+                }
+            }
+        });
+    });
+
+    it('can authenticate', function(done) {
+
+        dbi.authenticateUser({userName: 'Test1474488306598', password: 'tiger'}, function(err, user) {
+
+            if (err) done(err);
+            else {
+                console.dir(user);
+                done();
+            }
+
         });
     });
 

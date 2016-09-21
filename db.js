@@ -1,4 +1,7 @@
 var fs = require('fs');
+var mappings = require('./db-mapping');
+var objectMapper = require('object-mapper');
+var sqlite3 = require("sqlite3");
 
 /**
  * Database interface class
@@ -31,11 +34,52 @@ DbInterface.AUTHENTICATE_USER_SQL = DbInterface.SELECT_USER_SQL +
                                     `WHERE user_name = ? AND password = ?`;
 
 /**
+ * Open the database
+ */
+DbInterface.prototype.open = function(dbFileName) {
+
+    if (this.db)
+    {
+        throw "Database is already open";
+    }
+
+    if (!dbFileName)
+    {
+        dbFileName = DbInterface.DB_FILE_NAME;
+    }
+
+    this.db = new sqlite3.Database(dbFileName);
+};
+
+/**
+ * Close the database
+ */
+DbInterface.prototype.close = function() {
+    if (!this.db)
+    {
+        throw "No database is open";
+    }
+
+    this.db.close(function(err) {
+        if (err)
+        {
+            console.log("Unable to close database: " + err);
+        }
+        else
+        {
+            delete this.db;
+        }
+    });
+};
+
+/**
  * Create the database
  * @param dbFileName name of the datbase file to create
  * @param callback (err)
  */
 DbInterface.prototype.createDatabase = function(dbFileName, callback) {
+
+    var self = this;
 
     if (!dbFileName)
     {
@@ -71,8 +115,7 @@ DbInterface.prototype.createDatabase = function(dbFileName, callback) {
         });
     }).then(function(data) {
 
-        var sqlite3 = require("sqlite3").verbose();
-        var db = new sqlite3.Database(dbFileName);
+        this.open();
 
         db.exec(data, function(err) {
 
@@ -84,6 +127,8 @@ DbInterface.prototype.createDatabase = function(dbFileName, callback) {
             {
                 callback(null);
             }
+
+            this.close();
         });
 
     }).catch(function(err) {
@@ -95,9 +140,30 @@ DbInterface.prototype.createDatabase = function(dbFileName, callback) {
 /**
  * Create a new user
  * @param user User object
- * @param callback (err, userId)
+ * @param callback (err, count (0 or 1))
  */
 DbInterface.prototype.createUser = function(user, callback) {
+
+    var self = this;
+
+    this.db.serialize(function() {
+        var stmt = self.db.prepare(DbInterface.CREATE_USER_SQL);
+        
+        stmt.run(user.userName, user.password, user.firstName, user.middleName, user.lastName, user.email, user.address.street1, 
+                 user.address.street2, user.address.city, user.address.state, user.address.zipCode, user.phone, function(err) {
+                
+                if (err)
+                {
+                    callback("Unable to create user: " + err);
+                }
+                else
+                {
+                    callback(null, this.changes);
+                }
+        });
+
+        stmt.finalize();
+    });
 
 };
 
@@ -108,6 +174,7 @@ DbInterface.prototype.createUser = function(user, callback) {
  */
 DbInterface.prototype.updateUser = function(user, callback) {
 
+    throw 'Not implemented';
 };
 
 /**
@@ -117,6 +184,24 @@ DbInterface.prototype.updateUser = function(user, callback) {
  */
 DbInterface.prototype.authenticateUser = function(credentials, callback) {
 
+    this.db.get(DbInterface.AUTHENTICATE_USER_SQL, credentials.userName, credentials.password, function(err, row) {
+
+        if (err)
+        {
+            callback('Unable to authenticate User: ' + err, null);
+        }
+        else 
+        {
+            if (row == null)
+            {
+                callback('Invalid user name or password', null);
+            }
+            else
+            {
+                callback(null, objectMapper(row, mappings.userToBusinessMapping));
+            }
+        }
+    });
 };
 
 module.exports = new DbInterface();
