@@ -31,6 +31,15 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
     }).error(function () {
         alert('Unable to load listing: ' + error);
     });
+
+    $scope.search=function(){
+        $http.post('/search',{srchTerm: $scope.srchTerm}).success(function(data) {
+            $scope.listings = data;
+            console.dir(data);
+        }).error(function () {
+            alert('Unable to load listing: ' + error);
+        });
+    };
 });
 
 app.controller('listingDetailCtrl', function ($scope, $routeParams, $http){
