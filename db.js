@@ -54,21 +54,16 @@ DbInterface.prototype.open = function(dbFileName, update) {
     {
         var self = this;
 
-        fs.readFileSync('create_tables.sql', 'utf8', function(err, data) {
-            if (err)
-            {
-                console.log("Unable to update database: unable to read 'create_tables.sql': " + err);
-            }
-            else 
-            {
-                self.db.exec(data, function(err) {
+        var data = fs.readFileSync('create_tables.sql', 'utf8');
+        
+        self.db.serialize(function() {
+            self.db.exec(data, function(err) {
 
-                    if (err)
-                    {
-                        console.log("Unable to update database: " + err);
-                    }
-                });
-            }
+                if (err)
+                {
+                    console.log("Unable to update database: " + err);
+                }
+            });
         });
     }
 };
