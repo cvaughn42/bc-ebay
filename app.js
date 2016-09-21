@@ -34,7 +34,9 @@ var checkAuth = function(req, res, next) {
 
 // ROOT
 app.get('/', checkAuth, function (req, res) {
+    console.log('dir name : ' + path.join(__dirname + '/index.html'));
     res.sendFile(path.join(__dirname + '/index.html'));
+
     
 // Logout
 }).get('/logout', checkAuth, function(req, res) {
@@ -48,9 +50,17 @@ app.get('/', checkAuth, function (req, res) {
 
 // Login
 }).post('/login', function (req, res) {
-
+    
+    var user = {"userName":"fabrizio" , "password": "mangoni"};
+    user.userName = req.body.userName;
+    user.password = req.body.password;
+    req.session.currentUser = user;
+    console.log(user);
+    console.log("username : " + req.body.userName + " password : " + req.body.password);
     // TODO Authenticate user here
     res.redirect('/');
+    
+    //res.sendFile(path.join(__dirname + '/listings.html'));
 
 // Register new user
 }).post('/register', function (req, res) {
