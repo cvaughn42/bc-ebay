@@ -24,31 +24,35 @@ var path = require('path');
 // Port constant
 var port = 8080;
 
-function checkAuth(req, res, next) {
+var checkAuth = function(req, res, next) {
     if (!req.session.currentUser) {
-        readFile('login.html', 'utf8').then(function (html) {
-            res.send(html);
-        });
+        res.sendFile(path.join(__dirname + '/login.html'));
     } else {
         next();
     }
-}
+};
 
+// ROOT
 app.get('/', checkAuth, function (req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
     
+// Logout
 }).get('/logout', checkAuth, function(req, res) {
 
     delete req.session.currentUser;
     res.redirect('/'); 
 
+// Show register page
 }).get('/register', function (req, res) {
     res.sendFile(path.join(__dirname + '/register.html'));
 
+// Login
 }).post('/login', function (req, res) {
 
     // TODO Authenticate user here
     res.redirect('/');
+
+// Register new user
 }).post('/register', function (req, res) {
 
     // TODO Create new user here
