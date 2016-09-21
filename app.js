@@ -52,6 +52,10 @@ app.get('/logout', checkAuth, login.logout);
 app.get('/register', register.display);
 app.post('/register', register.registerUser);
 
+app.get('/currentUser', checkAuth, function(req, res) {
+    res.send(req.session.currentUser);
+});
+
 
 // Listener
 var server = app.listen(port, function () {
