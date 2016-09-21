@@ -1,6 +1,8 @@
-// Import Express library
+// Imports
 var express = require('express');
 var app = express();
+
+var path = require('path');
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({
@@ -18,15 +20,12 @@ app.use(session({
 // Set up resources directory to server static files
 app.use(express.static('resources'));
 
-// Import path library
-var path = require('path');
 
 // Port constant
-var port = 8080;
-
-module.exports = app;
+const port = 8080;
 
 
+// import sub modules
 var login = require('./login');
 var register = require('./register');
 var listing = require('./listing');
@@ -45,7 +44,6 @@ app.get('/', checkAuth, function (req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
 });
 
-
 // Login
 app.post('/login', login.login);
 app.get('/logout', checkAuth, login.logout);
@@ -53,7 +51,6 @@ app.get('/logout', checkAuth, login.logout);
 // Register
 app.get('/register', register.display);
 app.post('/register', register.registerUser);
-
 
 
 // Listener
