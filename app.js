@@ -59,6 +59,7 @@ app.get('/currentUser', checkAuth, function(req, res) {
 // Listings
 app.get('/listings', listing.listings);
 app.post('/search', listing.search);
+app.post('/newListing', listing.newListing);
 
 
 // Listener
