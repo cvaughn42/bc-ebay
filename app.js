@@ -4,6 +4,8 @@ var db = require('./db.js');
 var express = require('express');
 var bodyParser = require('body-parser');
 var session = require('express-session')
+var multer  = require('multer');
+var upload = multer({ dest: 'uploads/' });
 
 // import sub modules
 var login = require('./login');
