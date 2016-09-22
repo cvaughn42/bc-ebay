@@ -1,18 +1,18 @@
 module.exports = {
 
     userToDatabaseMapping: {
-        userName: "user_name",
-        password: "password",
-        firstName: "first_name",
-        middleName: "middle_name",
-        lastName: "last_name",
-        "address.street1": "street1",
-        "address.street2": "street2",
-        "address.city": "city",
-        "address.state": "state",
-        "address.zipCode": "zip_code",
-        phone: "phone",
-        email: "email"
+        userName: "$userName",
+        password: "$password",
+        firstName: "$firstName",
+        middleName: "$middleName",
+        lastName: "$lastName",
+        "address.street1": "$street1",
+        "address.street2": "$street2",
+        "address.city": "$city",
+        "address.state": "$state",
+        "address.zipCode": "$zipCode",
+        phone: "$phone",
+        email: "$email"
     },
 
     userToBusinessMapping: {
@@ -28,6 +28,52 @@ module.exports = {
         zip_code: "address.zipCode",
         phone: "phone",
         email: "email"
+    },
+
+    /* NOTE: Had to add start and end date transforms because 
+     * database defaults were failing when params were undefined 
+     * or null 
+     */
+    listingToDatabaseMapping: {
+        listingId: '$listingId',
+        title: '$title',
+        description: '$description',
+        buyItNowPrice: '$buyItNowPrice',
+        minBid: '$minBid',
+        startDate: {
+            key: '$startDate',
+            transform: function(val) {
+                if (!val)
+                {
+                    return new Date();
+                }
+                else
+                {
+                    return val;
+                }
+            }
+        },
+        endDate: {
+            key: '$endDate',
+            transform: function(val) {
+                if (!val)
+                {
+                    return new Date();
+                }
+                else
+                {
+                    return val;
+                }
+            }
+        },
+        sold: {
+            key: '$sold',
+            transform: function(val) {
+                if (val) return 1;
+                else return 0;
+            }
+        },
+        "user.userName": '$userName'
     },
 
     listingToBusinessMapping: {

@@ -14,8 +14,8 @@ function DbInterface()
 DbInterface.DB_FILE_NAME = 'upay.sqlite';
 /* LISTING TABLE SQL */
 DbInterface.CREATE_LISTING_SQL = `INSERT INTO listing 
-                                  (title, description, user_name, buy_it_now_price, min_bid, start_date, end_date) 
-                                  VALUES (?, ?, ?, ?, ?, ?, ?)`;
+                                  (title, description, user_name, buy_it_now_price, min_bid, start_date, end_date, sold) 
+                                  VALUES ($title, $description, $userName, $buyItNowPrice, $minBid, $startDate, $endDate, $sold)`;
 DbInterface.SELECT_LISTING_SQL = `SELECT listing_id, title, description, buy_it_now_price, min_bid, start_date, 
                                          end_date, sold, u.user_name, u.first_name, u.middle_name, u.last_name, 
                                          (SELECT group_concat(keyword) FROM listing_keyword WHERE listing_id = l.listing_id) AS keywords
@@ -34,24 +34,24 @@ DbInterface.FIND_ACTIVE_LISTINGS_BY_KEYWORD_SQL = DbInterface.SELECT_LISTING_SQL
                                                                         WHERE keyword IN ?)`;
                     
 /* LISTING KEYWORD TABLE SQL */
-DbInterface.CREATE_LISTING_KEYWORD_SQL = `INSERT INTO listing_keyword VALUES (?, ?)`;
+DbInterface.CREATE_LISTING_KEYWORD_SQL = `INSERT INTO listing_keyword (listing_id, keyword) VALUES (?, ?)`;
 
 /* USER TABLE SQL */
 DbInterface.CREATE_USER_SQL = `INSERT INTO user
                                (user_name, password, first_name, middle_name, last_name, email, street1, street2, city, state, zip_code, phone) 
-                               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+                               VALUES ($userName, $password, $firstName, $middleName, $lastName, $email, $street1, $street2, $city, $state, $zipCode, $phone)`;
 DbInterface.UPDATE_USER_SQL = `UPDATE user 
-                               SET first_name = ?,
-                                   middle_name = ?,
-                                   last_name = ?,
-                                   email = ?,
-                                   street1 = ?,
-                                   street2 = ?,
-                                   city = ?,
-                                   state = ?,
-                                   zip_code = ?,
-                                   phone = ? 
-                               WHERE user_name = ?`;
+                               SET first_name = $firstName,
+                                   middle_name = $middleName,
+                                   last_name = $lastName,
+                                   email = $email,
+                                   street1 = $street1,
+                                   street2 = $street2,
+                                   city = $city,
+                                   state = $state,
+                                   zip_code = $zipCode,
+                                   phone = $phone 
+                               WHERE user_name = $userName`;
 DbInterface.SELECT_USER_SQL = `SELECT user_name, first_name, middle_name, last_name, email, street1, street2, city, state, zip_code, phone 
                                FROM user `;
 DbInterface.AUTHENTICATE_USER_SQL = DbInterface.SELECT_USER_SQL + 
@@ -119,8 +119,22 @@ DbInterface.prototype.close = function() {
  * @callback (err, listingId)
  */
 DbInterface.prototype.createListing = function(listing, callback) {
-    // TODO Implement
-    callback('Not implemented');
+
+    var params = objectMapper(listing, mappings.listingToDatabaseMapping);
+
+    console.dir(params);
+
+    this.db.run(DbInterface.CREATE_LISTING_SQL, params, function(err) {
+
+        if (err)
+        {
+            callback("Unable to create listing: " + err);
+        }
+        else
+        {
+            callback(null, this.lastID);
+        }
+    });
 };
 
 /**
@@ -183,8 +197,41 @@ DbInterface.prototype.findActiveListingsByKeyword = function(keywords, callback)
  * @param callback (err, count (# of keywords added))
  */
 DbInterface.prototype.addListingKeywords = function(listingId, keywords, callback) {
-    // TODO Implement
-    callback('Not implemented');
+    
+    if (keywords && keywords.length)
+    {
+        var self = this;
+
+        // TODO Put this into a transaction
+        this.db.serialize(function() {
+
+            var stmt = self.db.prepare(DbInterface.CREATE_LISTING_KEYWORD_SQL);
+            var cnt = 0;
+
+            for (var keyword of keywords)
+            {
+                stmt.run(listingId, keyword, function(err) {
+                    if (err) 
+                    {
+                        callback("There was an error inserting keyword \"" + keyword + "\": " + err, cnt);
+                        return;
+                    }
+                    else
+                    {
+                        cnt++;
+                    }
+                });
+            }
+
+            stmt.finalize();
+
+            callback(null, cnt);
+        });
+    }
+    else
+    {
+        callback(null, 0);
+    }
 };
 
 /**
@@ -199,8 +246,7 @@ DbInterface.prototype.createUser = function(user, callback) {
     this.db.serialize(function() {
         var stmt = self.db.prepare(DbInterface.CREATE_USER_SQL);
         
-        stmt.run(user.userName, user.password, user.firstName, user.middleName, user.lastName, user.email, user.address.street1, 
-                 user.address.street2, user.address.city, user.address.state, user.address.zipCode, user.phone, function(err) {
+        stmt.run(objectMapper(user, mappings.userToDatabaseMapping), function(err) {
                 
                 if (err)
                 {
@@ -223,8 +269,35 @@ DbInterface.prototype.createUser = function(user, callback) {
  * @param callback (err, numRows (1 or 0))
  */
 DbInterface.prototype.updateUser = function(user, callback) {
-    // TODO Implement
-    callback('Not implemented');
+    
+    var self = this;
+
+    this.db.serialize(function() {
+        
+        var stmt = self.db.prepare(DbInterface.UPDATE_USER_SQL);
+
+        stmt.run(objectMapper(user, mappings.userToDatabaseMapping), function(err) {
+
+            if (err)
+            {
+                callback("Unable to update user: " + err, 0);
+            }
+            else
+            {
+                if (this.changes == 1)
+                {
+                    callback(null, 1);
+                }
+                else
+                {
+                    callback("There was an error updating the user: expected 1 modified row, but found " + this.changes, this.changes);
+                }
+            }
+        });
+
+
+    });
+
 };
 
 /**
