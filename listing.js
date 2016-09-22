@@ -14,11 +14,16 @@ exports.search = function(req, res) {
     var srchTerm = req.body.srchTerm;
     var srchResult = [];
     console.log('srchTerm = ' + srchTerm);
-    data.forEach(function(value){
-        if(value.title.toLowerCase().indexOf(srchTerm.toLowerCase()) > -1) {
-            srchResult.push(value);
-        }
-    });
+    if (srchTerm) {
+        data.forEach(function(value){
+            if(value.title.toLowerCase().indexOf(srchTerm.toLowerCase()) > -1) {
+                srchResult.push(value);
+            }
+        });
+    }
+    else {
+        srchResult = data;
+    }
     console.log('search result = ', srchResult);
     res.send(srchResult);
 };
