@@ -1,13 +1,14 @@
-
-  <litr ng-repeat="listing in listings">
-    <a href="#/{{listing.listingId}}">{{listing.title}}</a>
-  </li>
-</ul>
-
-<table>
+<table id="listings" class="table">
+  <tr>
+      <th>Title</th>
+      <th>Buy It Now Price</th>
+      <th></th>
+  </tr>
   <tr ng-repeat="listing in listings">
-      <td><a href="#/{{listing.listingId}}">{{listing.title}}</a></td>
+      <td><a href="#/listing/{{listing.listingId}}">{{listing.title}}</a></td>
       <td>{{listing.buyItNowPrice | currency}}</td>
- 
+      <td>
+          <button class="btn btn-default" type="button" ng-click="buyNow(listing)">Buy Now</button>
+      </td>
   </tr>
 </table>

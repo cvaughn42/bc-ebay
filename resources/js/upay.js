@@ -10,12 +10,15 @@ app.config(function ($routeProvider) {
     .when("/listings", {
         templateUrl: "/templates/listings.html",
         controller: 'listingsCtrl'
-    }).when("/:id", {
+    }).when("/listing/:listingId", {
         templateUrl: "/templates/listingDetail.html",
         controller: 'listingDetailCtrl'
     }).when("/profile/:userName", {
         templateUrl: "/templates/profile.html",
         controller: 'profileCtrl'
+    }).when("/buyNow/:listingId", {
+        templateUrl: "/templates/buyNow.html",
+        controller: 'buyNowCtrl'
     }).otherwise({
         redirectTo: '/'
     });
@@ -35,13 +38,15 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
         alert('Unable to load currentUser: ' + error);
     });
 
+    $scope.search = function() {    
+        $scope.$broadcast('searchEvent', $scope.srchTerm);
+    }
 
 });
 
- app.controller('listingsCtrl', function ($scope, $http){
+ app.controller('listingsCtrl', function ($scope, $http, $location){
      $http.get('/listings').success(function(data) {
         $scope.listings = data;
-        console.log(JSON.stringify(data));
     }).error(function () {
         alert('Unable to load listing: ' + error);
     });
@@ -56,24 +61,16 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
         });
     });
 
-    $scope.buyNow=function(){
-        $http.post('/buyNow', {title: $scope.title}).success(function(data) {
-        console.log(JSON.stringify(data));
-        $scope.listings = data;
-        $location.path('/listings');
-        }).error(function () {
-            alert('Unable to add new listing: ' + error);
-        });
+    $scope.buyNow=function(listing){
+        $location.path('/buyNow/' + listing.listingId);
     };
 });
 
 app.controller('listingDetailCtrl', function ($scope, $routeParams, $http){
-    var id = parseInt($routeParams.id);
-        console.log(id);
-        $http.post('/listingDetail', {id: id}).success(function(data) {
-          $scope.listing = data.filter(function(entry){
-            return entry.id === id;
-          })[0];
+    var listingId = parseInt($routeParams.listingId);
+        console.log(listingId);
+        $http.get('/listing', {listingId: listingId}).success(function(data) {
+          $scope.listing = data;
         }).error(function () {
             alert('Unable to load listingDetail: ' + error);
         });
@@ -108,4 +105,16 @@ app.controller('profileCtrl', function ($scope, $routeParams, $http){
             alert('Unable to update user profile: ' + error);
         });
     };
+});
+
+app.controller('buyNowCtrl', function ($scope, $routeParams, $http){
+    var listingId = $routeParams.listingId;
+    console.log(listingId);
+    $http.get('/listing', {listingId: listingId}).success(function(data) {
+        console.log(JSON.stringify(data));
+        $scope.buyNowItem = data;
+    }).error(function () {
+        alert('Unable to load purchase item: ' + error);
+    });
+
 });
