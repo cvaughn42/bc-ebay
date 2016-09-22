@@ -1,1 +1,10 @@
-This is a purchase
+<h1>Purchase</h1>
+
+<h2>Listing Info</h2>
+{{ listing.title }}
+<br/>
+Posted by: {{ getSellerName(listing.user) }}
+<br />
+Buy Now Price: {{ listing.buyItNowPrice }}
+<br />
+<logo></logo> Finder's Fee: {{ listing.buyItNowPrice * .1 }} <a ng-click="rejectFee()">I don't want to pay this!</a>
