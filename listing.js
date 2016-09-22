@@ -6,7 +6,19 @@ var count = 2;
 
 // app.get('/listings')
 exports.listings = function(req, res) {
-    res.send(data);
+
+    db.findActiveListings(function(err,result) {
+
+        if (err)
+        {
+            res.send("Unable to find active listings: " + err);
+        }
+        else
+        {
+            console.log('listing = ', result);
+            res.send(result);
+        }
+    }); 
 };
 
 // app.post('/search')

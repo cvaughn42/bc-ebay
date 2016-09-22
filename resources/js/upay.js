@@ -21,6 +21,12 @@ app.config(function ($routeProvider) {
     });
 });
 
+app.directive("logo", function() {
+    return {
+        template : "<a class='navbar-brand' href='#/'><i class='fa fa-dollar fa-fw'></i>&nbsp;UPay</a>"
+    };
+});
+
 app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams, $http, $route, $q) {
     $http.get('/currentUser').success(function (data) {
         $scope.currentUser = data;
@@ -29,9 +35,6 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
         alert('Unable to load currentUser: ' + error);
     });
 
-    $scope.search = function() {    
-        $scope.$broadcast('searchEvent', $scope.srchTerm);
-    }
 
 });
 
@@ -43,8 +46,6 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
         alert('Unable to load listing: ' + error);
     });
 
-
-
     $scope.$on('searchEvent', function (event, srchTerm) {
         console.log(srchTerm); 
         $http.post('/search',{srchTerm: srchTerm}).success(function(data) {
@@ -54,6 +55,16 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
             alert('Unable to load listing: ' + error);
         });
     });
+
+    $scope.buyNow=function(){
+        $http.post('/buyNow', {title: $scope.title}).success(function(data) {
+        console.log(JSON.stringify(data));
+        $scope.listings = data;
+        $location.path('/listings');
+        }).error(function () {
+            alert('Unable to add new listing: ' + error);
+        });
+    };
 });
 
 app.controller('listingDetailCtrl', function ($scope, $routeParams, $http){
