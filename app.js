@@ -67,7 +67,7 @@ app.post('/newListing', listing.newListing);
 app.get('/listing', listing.listing);
 
 // Profile
-app.post('/profile', profile.profile);
+app.get('/profile', profile.profile);
 app.post('/updateProfile', profile.updateProfile);
 
 // Listener

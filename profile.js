@@ -4,7 +4,7 @@ var profileUser = {userName:'test', firstName:'Test', middleName:'T', lastName:'
 
 // app.post('/profile')
 exports.profile = function(req, res) {
-    var userName = req.body.userName;
+    var userName = req.query.userName;
     console.log('userName = ',userName);
 
     res.send(profileUser);

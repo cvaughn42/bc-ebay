@@ -91,7 +91,7 @@ app.controller('newListingCtrl', function ($scope, $routeParams, $http, $locatio
 app.controller('profileCtrl', function ($scope, $routeParams, $http){
     var userName = $routeParams.userName;
     console.log(userName);
-    $http.post('/profile', {userName: userName}).success(function(data) {
+    $http.get('/profile', {userName: userName}).success(function(data) {
         console.log(JSON.stringify(data));
         $scope.profileUser = data;
     }).error(function () {
