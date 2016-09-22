@@ -1,4 +1,5 @@
 var path = require('path');
+var db = require('./db.js');
 
 // app.get('/register')
 exports.display = function (req, res) {
