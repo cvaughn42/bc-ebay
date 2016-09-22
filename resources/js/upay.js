@@ -69,7 +69,7 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
 app.controller('listingDetailCtrl', function ($scope, $routeParams, $http){
     var listingId = parseInt($routeParams.listingId);
         console.log(listingId);
-        $http.get('/listing', {listingId: listingId}).success(function(data) {
+        $http.get('/listing/'+listingId).success(function(data) {
           $scope.listing = data;
         }).error(function () {
             alert('Unable to load listingDetail: ' + error);
@@ -91,7 +91,7 @@ app.controller('newListingCtrl', function ($scope, $routeParams, $http, $locatio
 app.controller('profileCtrl', function ($scope, $routeParams, $http){
     var userName = $routeParams.userName;
     console.log(userName);
-    $http.get('/profile', {userName: userName}).success(function(data) {
+    $http.get('/profile/'+userName).success(function(data) {
         console.log(JSON.stringify(data));
         $scope.profileUser = data;
     }).error(function () {

@@ -3,7 +3,7 @@ var path = require('path');
 var db = require('./db.js');
 var express = require('express');
 var bodyParser = require('body-parser');
-var session = require('express-session')
+var session = require('express-session');
 var multer  = require('multer');
 var upload = multer({ dest: 'uploads/' });
 
@@ -66,10 +66,10 @@ app.get('/currentUser', checkAuth, function(req, res) {
 app.get('/listings', listing.listings);
 app.post('/search', listing.search);
 app.post('/newListing', listing.newListing);
-app.get('/listing', listing.listing);
+app.get('/listing/:listingId', listing.listing);
 
 // Profile
-app.get('/profile', profile.profile);
+app.get('/profile/:userName', profile.profile);
 app.post('/updateProfile', profile.updateProfile);
 
 // Listener
