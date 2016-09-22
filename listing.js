@@ -1,4 +1,5 @@
 var path = require('path');
+var db = require('./db.js');
 
 var data = [{id:1, title:'cat'}, {id:2, title:'dog'}];
 var count = 2;

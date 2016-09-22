@@ -1,34 +1,37 @@
 // Imports
+var path = require('path');
+var db = require('./db.js');
 var express = require('express');
+var bodyParser = require('body-parser');
+var session = require('express-session')
+
+// import sub modules
+var login = require('./login');
+var register = require('./register');
+var listing = require('./listing');
+
+// Port constant
+const port = 8080;
+
 var app = express();
 
-var path = require('path');
+// Set up resources directory to server static files
+app.use(express.static('resources'));
 
-var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
 
-var session = require('express-session')
 app.use(session({
     secret: 'currentUser',
     resave: false,
     saveUninitialized: false
 }));
 
-// Set up resources directory to server static files
-app.use(express.static('resources'));
-
-
-// Port constant
-const port = 8080;
-
-
-// import sub modules
-var login = require('./login');
-var register = require('./register');
-var listing = require('./listing');
+// DB configuration
+db.open();
+app.set('db', db);
 
 
 var checkAuth = function(req, res, next) {
@@ -65,4 +68,13 @@ app.post('/newListing', listing.newListing);
 // Listener
 var server = app.listen(port, function () {
     console.log('u*Pay listening on port ' + port + '!');
+});
+
+
+// Fires when node is terminated?
+process.on('SIGTERM', function () {
+    server.close(function () {
+        dao.close();
+        console.log("Closed out remaining connections.");
+    });
 });
