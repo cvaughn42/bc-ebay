@@ -64,6 +64,7 @@ app.get('/currentUser', checkAuth, function(req, res) {
 app.get('/listings', listing.listings);
 app.post('/search', listing.search);
 app.post('/newListing', listing.newListing);
+app.get('/listing/:listingId', listing.listing);
 
 // Profile
 app.post('/profile', profile.profile);

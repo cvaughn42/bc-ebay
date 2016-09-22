@@ -21,6 +21,8 @@ DbInterface.SELECT_LISTING_SQL = `SELECT listing_id, title, description, buy_it_
                                          (SELECT group_concat(keyword) FROM listing_keyword WHERE listing_id = l.listing_id) AS keywords
                                   FROM listing AS l
                                   INNER JOIN user AS u ON l.user_name = u.user_name `;
+DbInterface.FIND_LISTING_BY_LISTING_ID_SQL = DbInterface.SELECT_LISTING_SQL + 
+                                             `WHERE l.listing_id = ?`;
 DbInterface.FIND_ACTIVE_LISTINGS_SQL = DbInterface.SELECT_LISTING_SQL +
                                        `WHERE sold = 0 AND 
                                               start_date <= current_timestamp AND 
@@ -159,6 +161,25 @@ DbInterface.prototype.findActiveListings = function(callback) {
             }
 
             callback(null, listings);
+        }
+    });
+};
+
+/**
+ * Find the specific listing
+ * @param listingId
+ * @param callback (err, listing)
+ */
+DbInterface.prototype.findListingByListingId = function(listingId, callback) {
+
+    this.db.get(DbInterface.FIND_LISTING_BY_LISTING_ID_SQL, listingId, function(err, row) {
+        if (err)
+        {
+            callback("Unable to find listing with ID " + listingId + ": " + err);
+        }
+        else
+        {
+            callback(null, objectMapper(row, mappings.listingToBusinessMapping));
         }
     });
 };

@@ -21,6 +21,21 @@ exports.listings = function(req, res) {
     }); 
 };
 
+// app.get('/listing/:listing')
+exports.listing = function(req, res) {
+
+    db.findListingByListingId(req.params.listingId, function(err, listing) {
+        if (err)
+        {
+            res.status(500).send(err);
+        }
+        else
+        {
+            res.send(listing);
+        }
+    });
+};
+
 // app.post('/search')
 exports.search = function(req, res) {
     var srchTerm = req.body.srchTerm;
