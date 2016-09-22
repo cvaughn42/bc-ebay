@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS listing_keyword
  * LISTING KEYWORD INDEX
  * Should be optimized for quick retrieval of listings by keyword
  */
-CREATE UNIQUE INDEX listing_keyword_idx
+CREATE UNIQUE INDEX IF NOT EXISTS listing_keyword_idx
 ON listing_keyword (keyword, listing_id);
 
 /*

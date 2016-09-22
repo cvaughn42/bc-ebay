@@ -12,6 +12,30 @@ function DbInterface()
 }
 
 DbInterface.DB_FILE_NAME = 'upay.sqlite';
+/* LISTING TABLE SQL */
+DbInterface.CREATE_LISTING_SQL = `INSERT INTO listing 
+                                  (title, description, user_name, buy_it_now_price, min_bid, start_date, end_date) 
+                                  VALUES (?, ?, ?, ?, ?, ?, ?)`;
+DbInterface.SELECT_LISTING_SQL = `SELECT listing_id, title, description, buy_it_now_price, min_bid, start_date, 
+                                         end_date, sold, u.user_name, u.first_name, u.middle_name, u.last_name, 
+                                         (SELECT group_concat(keyword) FROM listing_keyword WHERE listing_id = l.listing_id) AS keywords
+                                  FROM listing AS l
+                                  INNER JOIN user AS u ON l.user_name = u.user_name `;
+DbInterface.FIND_ACTIVE_LISTINGS_SQL = DbInterface.SELECT_LISTING_SQL +
+                                       `WHERE sold = 0 AND 
+                                              start_date <= current_timestamp AND 
+                                              end_date >= current_timestamp`;
+DbInterface.FIND_ACTIVE_LISTINGS_BY_KEYWORD_SQL = DbInterface.SELECT_LISTING_SQL +
+                                                  `WHERE sold = 0 AND 
+                                                         start_date <= current_timestamp AND 
+                                                         end_date >= current_timestamp AND
+                                                         listing_id IN (SELECT listing_id 
+                                                                        FROM listing_keyword 
+                                                                        WHERE keyword IN ?)`;
+                    
+/* LISTING KEYWORD TABLE SQL */
+DbInterface.CREATE_LISTING_KEYWORD_SQL = `INSERT INTO listing_keyword VALUES (?, ?)`;
+
 /* USER TABLE SQL */
 DbInterface.CREATE_USER_SQL = `INSERT INTO user
                                (user_name, password, first_name, middle_name, last_name, email, street1, street2, city, state, zip_code, phone) 
@@ -90,6 +114,80 @@ DbInterface.prototype.close = function() {
 };
 
 /**
+ * Create a new listing
+ * @param listing
+ * @callback (err, listingId)
+ */
+DbInterface.prototype.createListing = function(listing, callback) {
+    // TODO Implement
+    callback('Not implemented');
+};
+
+/**
+ * Find all active listings
+ * @param callback (err, listings)
+ */
+DbInterface.prototype.findActiveListings = function(callback) {
+
+    this.db.all(DbInterface.FIND_ACTIVE_LISTINGS_SQL, function(err, rows) {
+
+        if (err)
+        {
+            callback("Unable to find active listings: " + err);
+        }
+        else
+        {
+            var listings = [];
+
+            for (var row of rows)
+            {
+                listings.push(objectMapper(row, mappings.listingToBusinessMapping));
+            }
+
+            callback(null, listings);
+        }
+    });
+};
+
+/**
+ * Find all active listings with the specified keywords
+ * @param keywords Array
+ * @param callback (err, listings)
+ */
+DbInterface.prototype.findActiveListingsByKeyword = function(keywords, callback) {
+
+    this.db.all(DbInterface.FIND_ACTIVE_LISTINGS_BY_KEYWORD_SQL, keywords, function(err, rows) {
+
+        if (err)
+        {
+            callback("Unable to find active listings for keywords: " + keywords + ": " + err);
+        }
+        else
+        {
+            var listings = [];
+
+            for (var row of rows)
+            {
+                listings.push(objectMapper(row, mappings.listingToBusinessMapping));
+            }
+
+            return listings;
+        }
+    });
+};
+
+/**
+ * Add keywords to the listing
+ * @param listingId 
+ * @param keywords Array
+ * @param callback (err, count (# of keywords added))
+ */
+DbInterface.prototype.addListingKeywords = function(listingId, keywords, callback) {
+    // TODO Implement
+    callback('Not implemented');
+};
+
+/**
  * Create a new user
  * @param user User object
  * @param callback (err, count (0 or 1))
@@ -125,8 +223,8 @@ DbInterface.prototype.createUser = function(user, callback) {
  * @param callback (err, numRows (1 or 0))
  */
 DbInterface.prototype.updateUser = function(user, callback) {
-
-    throw 'Not implemented';
+    // TODO Implement
+    callback('Not implemented');
 };
 
 /**

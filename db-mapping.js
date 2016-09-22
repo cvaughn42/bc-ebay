@@ -28,6 +28,49 @@ module.exports = {
         zip_code: "address.zipCode",
         phone: "phone",
         email: "email"
+    },
+
+    listingToBusinessMapping: {
+        listing_id: 'listingId', 
+        title: 'title', 
+        description: 'description', 
+        buy_it_now_price: 'buyItNowPrice', 
+        min_bid: 'minBid', 
+        start_date: {
+            key: 'startDate',
+            transform: function(val) {
+                return val ? new Date(val) : null;
+            }
+        },
+        end_date: {
+            key: 'endDate',
+            transform: function(val) {
+                return val ? new Date(val) : null;
+            }    
+        }, 
+        sold: {
+            key: 'sold',
+            transform: function(val) {
+                return val === 1;
+            }
+        }, 
+        user_name: 'user.userName', 
+        first_name: 'user.firstName', 
+        middle_name: 'user.middleName', 
+        last_name: 'user.lastName',
+        keywords: {
+            key: "keywords",
+            transform: function(val) {
+                if (val)
+                {
+                    return val.split(',');
+                }
+                else
+                {
+                    return [];
+                }
+            }
+        }
     }
 
 };
