@@ -9,6 +9,7 @@ var session = require('express-session')
 var login = require('./login');
 var register = require('./register');
 var listing = require('./listing');
+var profile = require('./profile');
 
 // Port constant
 const port = 8080;
@@ -64,6 +65,9 @@ app.get('/listings', listing.listings);
 app.post('/search', listing.search);
 app.post('/newListing', listing.newListing);
 
+// Profile
+app.post('/profile', profile.profile);
+app.post('/updateProfile', profile.updateProfile);
 
 // Listener
 var server = app.listen(port, function () {

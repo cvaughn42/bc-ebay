@@ -13,6 +13,9 @@ app.config(function ($routeProvider) {
     }).when("/:id", {
         templateUrl: "/templates/listingDetail.html",
         controller: 'listingDetailCtrl'
+    }).when("/profile/:userName", {
+        templateUrl: "/templates/profile.html",
+        controller: 'profileCtrl'
     }).otherwise({
         redirectTo: '/'
     });
@@ -26,6 +29,10 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
         alert('Unable to load currentUser: ' + error);
     });
 
+    $scope.search = function() {    
+        $scope.$broadcast('searchEvent', $scope.srchTerm);
+    }
+
 });
 
  app.controller('listingsCtrl', function ($scope, $http){
@@ -36,14 +43,17 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
         alert('Unable to load listing: ' + error);
     });
 
-    $scope.search=function(){
-        $http.post('/search',{srchTerm: $scope.srchTerm}).success(function(data) {
+
+
+    $scope.$on('searchEvent', function (event, srchTerm) {
+        console.log(srchTerm); 
+        $http.post('/search',{srchTerm: srchTerm}).success(function(data) {
             $scope.listings = data;
             console.log(JSON.stringify(data));
         }).error(function () {
             alert('Unable to load listing: ' + error);
         });
-    };
+    });
 });
 
 app.controller('listingDetailCtrl', function ($scope, $routeParams, $http){
@@ -66,6 +76,25 @@ app.controller('newListingCtrl', function ($scope, $routeParams, $http, $locatio
         $location.path('/listings');
         }).error(function () {
             alert('Unable to add new listing: ' + error);
+        });
+    };
+});
+
+app.controller('profileCtrl', function ($scope, $routeParams, $http){
+    var userName = $routeParams.userName;
+    console.log(userName);
+    $http.post('/profile', {userName: userName}).success(function(data) {
+        console.log(JSON.stringify(data));
+        $scope.profileUser = data;
+    }).error(function () {
+        alert('Unable to load user profile: ' + error);
+    });
+
+    $scope.updateProfile = function() {    
+        $http.post('/updateProfile', {profileUser: $scope.profileUser}).success(function(data) {
+
+        }).error(function () {
+            alert('Unable to update user profile: ' + error);
         });
     };
 });
