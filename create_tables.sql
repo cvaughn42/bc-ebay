@@ -29,3 +29,51 @@ CREATE TABLE IF NOT EXISTS user_image
     FOREIGN KEY (user_name)
         REFERENCES user (user_name)
 );
+
+/*
+ * LISTING Table
+ */
+CREATE TABLE IF NOT EXISTS listing
+(
+    listing_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    user_name VARCHAR(20) NOT NULL,
+    title VARCHAR(40) NOT NULL,
+    description TEXT,
+    buy_it_now_price NUMERIC,
+    min_bid NUMERIC,
+    start_date TIMESTAMP NOT NULL DEFAULT (datetime('now', 'localtime')),
+    end_date TIMESTAMP NOT NULL DEFAULT (datetime('now', '7 days', 'localtime')),
+    sold INTEGER NOT NULL DEFAULT 0,
+    FOREIGN KEY (user_name)
+        REFERENCES user (user_name)
+);
+
+/*
+ * LISTING KEYWORD Table
+ */
+CREATE TABLE IF NOT EXISTS listing_keyword
+(
+    listing_id INTEGER NOT NULL,
+    keyword VARCHAR(20) NOT NULL,
+    FOREIGN KEY (listing_id)
+        REFERENCES listing (listing_id)
+);
+
+/*
+ * LISTING KEYWORD INDEX
+ * Should be optimized for quick retrieval of listings by keyword
+ */
+CREATE UNIQUE INDEX listing_keyword_idx
+ON listing_keyword (keyword, listing_id);
+
+/*
+ * LISTING IMAGE Table
+ */
+CREATE TABLE IF NOT EXISTS listing_image
+(
+    listing_image_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    listing_id INTEGER NOT NULL,
+    image_data BLOB NOT NULL,
+    FOREIGN KEY (listing_id)
+        REFERENCES listing (listing_id)
+);
