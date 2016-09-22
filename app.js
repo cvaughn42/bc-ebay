@@ -56,13 +56,11 @@ app.get('/currentUser', checkAuth, function(req, res) {
     res.send(req.session.currentUser);
 });
 
-app.get('/listings', function(req, res) {
-    res.send([{id:1, title:'cat'}, {id:2, title:'dog'}]);
-});
+// Listings
+app.get('/listings', listing.listings);
+app.post('/search', listing.search);
+app.post('/newListing', listing.newListing);
 
-app.post('/search', function(req, res) {
-    res.send([{id:2, title:'dog'}]);
-});
 
 // Listener
 var server = app.listen(port, function () {

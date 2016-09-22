@@ -3,7 +3,11 @@ var app = angular.module("bc-upay", ["ngRoute"]);
 app.config(function ($routeProvider) {
     $routeProvider.when("/", {
         redirectTo: '/listings'
-    }).when("/listings", {
+    }).when("/newListing", {
+        templateUrl: "/templates/newListing.html",
+        controller: 'newListingCtrl'
+    })
+    .when("/listings", {
         templateUrl: "/templates/listings.html",
         controller: 'listingsCtrl'
     }).when("/:id", {
@@ -27,7 +31,7 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
  app.controller('listingsCtrl', function ($scope, $http){
      $http.get('/listings').success(function(data) {
         $scope.listings = data;
-        console.dir(data);
+        console.log(JSON.stringify(data));
     }).error(function () {
         alert('Unable to load listing: ' + error);
     });
@@ -35,7 +39,7 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
     $scope.search=function(){
         $http.post('/search',{srchTerm: $scope.srchTerm}).success(function(data) {
             $scope.listings = data;
-            console.dir(data);
+            console.log(JSON.stringify(data));
         }).error(function () {
             alert('Unable to load listing: ' + error);
         });
@@ -49,5 +53,19 @@ app.controller('listingDetailCtrl', function ($scope, $routeParams, $http){
           $scope.listing = data.filter(function(entry){
             return entry.id === id;
           })[0];
+        }).error(function () {
+            alert('Unable to load listingDetail: ' + error);
         });
+});
+
+app.controller('newListingCtrl', function ($scope, $routeParams, $http, $location){
+    $scope.addNewListing=function(){
+        $http.post('/newListing', {title: $scope.title}).success(function(data) {
+        console.log(JSON.stringify(data));
+        $scope.listings = data;
+        $location.path('/listings');
+        }).error(function () {
+            alert('Unable to add new listing: ' + error);
+        });
+    };
 });
