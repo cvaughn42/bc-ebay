@@ -34,6 +34,7 @@ DbInterface.FIND_ACTIVE_LISTINGS_BY_KEYWORD_SQL = DbInterface.SELECT_LISTING_SQL
                                                          listing_id IN (SELECT listing_id 
                                                                         FROM listing_keyword 
                                                                         WHERE keyword IN ?)`;
+DbInterface.CREATE_LISTING_IMAGE_PS = "INSERT INTO listing_image (listing_id, image_data, mime_type) VALUES ($listingId, $imageData, $mimeType)";
                     
 /* LISTING KEYWORD TABLE SQL */
 DbInterface.CREATE_LISTING_KEYWORD_SQL = `INSERT INTO listing_keyword (listing_id, keyword) VALUES (?, ?)`;
@@ -345,5 +346,39 @@ DbInterface.prototype.authenticateUser = function(credentials, callback) {
         }
     });
 };
+
+
+/**
+ * Create a new listing image
+ * @param imageFile
+ * @param callback (err, count (0 or 1))
+ */
+DbInterface.prototype.createListingImage = function(imageFile, callback) {
+
+    var self = this;
+
+    this.db.serialize(function() {
+        var stmt = self.db.prepare(DbInterface.CREATE_LISTING_IMAGE_PS);
+        
+        var params = {
+            $listingId: imageFile.listingId,
+            $imageData: imageFile.imageData,
+            $mimeType: imageFile.mimeType
+        };
+
+        stmt.run(params, function(err) {
+            if (err)
+            {
+                callback("Unable to save listing image: " + err);
+            }
+            else
+            {
+                callback(null, this.changes);
+            }
+        });
+        stmt.finalize();
+    });
+};
+
 
 module.exports = new DbInterface();
