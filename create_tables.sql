@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS user_image
     user_image_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     user_name VARCHAR(20) NOT NULL,
     image_data BLOB NOT NULL,
+    mime_type VARCHAR(255) NOT NULL,
     active INTEGER NOT NULL DEFAULT 1,
     FOREIGN KEY (user_name)
         REFERENCES user (user_name)
@@ -74,6 +75,7 @@ CREATE TABLE IF NOT EXISTS listing_image
     listing_image_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     listing_id INTEGER NOT NULL,
     image_data BLOB NOT NULL,
+    mime_type VARCHAR(255) NOT NULL,
     FOREIGN KEY (listing_id)
         REFERENCES listing (listing_id)
 );
