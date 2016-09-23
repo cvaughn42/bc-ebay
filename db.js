@@ -18,7 +18,8 @@ DbInterface.CREATE_LISTING_SQL = `INSERT INTO listing
                                   VALUES ($title, $description, $userName, $buyItNowPrice, $minBid, $startDate, $endDate, $sold)`;
 DbInterface.SELECT_LISTING_SQL = `SELECT listing_id, title, description, buy_it_now_price, min_bid, start_date, 
                                          end_date, sold, u.user_name, u.first_name, u.middle_name, u.last_name, 
-                                         (SELECT group_concat(keyword) FROM listing_keyword WHERE listing_id = l.listing_id) AS keywords
+                                         (SELECT group_concat(keyword) FROM listing_keyword WHERE listing_id = l.listing_id) AS keywords,
+                                         (SELECT group_concat(listing_image_id) FROM listing_image WHERE listing_id = l.listing_id) AS image_ids
                                   FROM listing AS l
                                   INNER JOIN user AS u ON l.user_name = u.user_name `;
 DbInterface.FIND_LISTING_BY_LISTING_ID_SQL = DbInterface.SELECT_LISTING_SQL + 
