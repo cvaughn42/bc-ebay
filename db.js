@@ -60,6 +60,8 @@ DbInterface.SELECT_USER_SQL = `SELECT user_name, first_name, middle_name, last_n
                                FROM user `;
 DbInterface.AUTHENTICATE_USER_SQL = DbInterface.SELECT_USER_SQL + 
                                     `WHERE user_name = ? AND password = ?`;
+DbInterface.FIND_USER_BY_USERNAME_SQL = DbInterface.SELECT_USER_SQL + 
+                                    `WHERE user_name = ?`;
 
 /**
  * Open the database
@@ -381,5 +383,31 @@ DbInterface.prototype.createListingImage = function(imageFile, callback) {
     });
 };
 
+/**
+ * Find user by user name
+ * @param credentials { userName: <value>, password: <value> }
+ * @param callback (err, user)
+ */
+DbInterface.prototype.findUserByUsername = function(userName, callback) {
+
+    this.db.get(DbInterface.FIND_USER_BY_USERNAME_SQL, userName, function(err, row) {
+
+        if (err)
+        {
+            callback('Unable to find User by userName: ' + err, null);
+        }
+        else 
+        {
+            if (row == null)
+            {
+                callback('Invalid user name', null);
+            }
+            else
+            {
+                callback(null, objectMapper(row, mappings.userToBusinessMapping));
+            }
+        }
+    });
+};
 
 module.exports = new DbInterface();
