@@ -172,6 +172,7 @@ DbInterface.prototype.findActiveListings = function(callback) {
  */
 DbInterface.prototype.findListingByListingId = function(listingId, callback) {
 
+    console.log("In findListingByListingId: " + listingId);
     this.db.get(DbInterface.FIND_LISTING_BY_LISTING_ID_SQL, listingId, function(err, row) {
         if (err)
         {

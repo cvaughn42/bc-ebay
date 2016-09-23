@@ -31,6 +31,20 @@
                                 <div class="col-lg-8">
                                     <h4>{{ listing.title }}</h4>
                                     <p>{{ listing.description }}</p>
+                                    <!-- Charge Summary -->
+                                    <p>
+                                        <div class="container">
+                                            <div ng-repeat="item in billingDetailItems" class="row">
+                                                <div class="col-lg-6">{{ item.description }}</div>
+                                                <div class="col-lg-6">{{ item.amount.formatMoney() }}</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6">Total</div>
+                                                <div class="col-lg-6">{{ sumBillingDetails(billingDetailItems )}}</div>
+                                            </div>
+                                        </div>
+                                    </p>
+                                    <!-- /Charge Summary -->
                                     <p>Being sold by <a ng-click="displaySeller()">{{ listing.user.firstName }} {{ listing.user.lastName }}</a></p>
                                 </div>
                             </div>

@@ -28,12 +28,38 @@ app.controller('purchaseController', function($scope, $http, $routeParams) {
         alert("Show information about the seller");
     };
 
+    $scope.sumBillingDetails = function(billingDetails) {
+
+        var amt = 0;
+
+        if (billingDetails)
+        {
+            for (var i = 0, l = billingDetails.length; i < l; i++)
+            {
+                amt += billingDetails[i].amount;
+            }
+        }
+
+        return amt;
+    };
+
     $scope.$on('$viewContentLoaded', function (event) {
 
         // Get the listing from the server to make sure you have the latest info
         $http.get("/listing/" + $routeParams.listingId).success(function(data) {
             
+            alert("Here!");
             $scope.listing = data;
+            $scope.billingDetails = [{
+                description: 'Buy It Now Price',
+                amount: data.buyItNowPrice
+            }, {
+                description: 'Finder\'s Fee',
+                amount: data.buyItNowPrice * .1
+            }, {
+                description: 'Sales Tax ( + data.user.address.state + )',
+                amount: data.buyItNowPrice * .06
+            }]
 
             console.dir(data);
         
