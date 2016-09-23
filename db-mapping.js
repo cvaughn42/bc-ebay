@@ -116,6 +116,18 @@ module.exports = {
                     return [];
                 }
             }
+        }, image_ids: {
+            key: "imageIds",
+            transform: function(val) {
+                if (val)
+                {
+                    return val.split(',');
+                }
+                else
+                {
+                    return [];
+                }
+            }
         }
     }
 
