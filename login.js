@@ -17,8 +17,6 @@ exports.login = function (req, res) {
                 res.send(err);
             }
             else {
-                console.dir(user);
-
                 if (user) {
                     req.session.currentUser = user;
                 }

@@ -130,7 +130,6 @@ describe('Testing DbInterface', function() {
 
             if (err) done(err);
             else {
-                console.dir(user);
                 done();
             }
 

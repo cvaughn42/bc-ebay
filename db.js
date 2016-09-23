@@ -124,8 +124,6 @@ DbInterface.prototype.createListing = function(listing, callback) {
 
     var params = objectMapper(listing, mappings.listingToDatabaseMapping);
 
-    console.dir(params);
-
     this.db.run(DbInterface.CREATE_LISTING_SQL, params, function(err) {
 
         if (err)
@@ -172,7 +170,6 @@ DbInterface.prototype.findActiveListings = function(callback) {
  */
 DbInterface.prototype.findListingByListingId = function(listingId, callback) {
 
-    console.log("In findListingByListingId: " + listingId);
     this.db.get(DbInterface.FIND_LISTING_BY_LISTING_ID_SQL, listingId, function(err, row) {
         if (err)
         {

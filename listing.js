@@ -15,7 +15,6 @@ exports.listings = function(req, res) {
         }
         else
         {
-            console.log('listing = ', result);
             res.send(result);
         }
     }); 
