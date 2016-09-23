@@ -26,3 +26,12 @@ a
 {
     cursor: pointer;
 }
+
+form.dropzone { 
+    border: rgb(0, 135, 247) dashed 2px; 
+    border-radius: 5px; 
+    padding: 54px; 
+    max-width: 100%;
+    max-height: 100%;
+    display: inline-block;
+}

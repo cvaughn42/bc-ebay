@@ -12,6 +12,7 @@ var login = require('./login');
 var register = require('./register');
 var listing = require('./listing');
 var profile = require('./profile');
+var fileUpload = require('./fileUpload');
 
 // Port constant
 const port = 8080;
@@ -71,6 +72,10 @@ app.get('/listing/:listingId', listing.listing);
 // Profile
 app.get('/profile/:userName', profile.profile);
 app.post('/updateProfile', profile.updateProfile);
+
+// File Upload
+app.post('/upload', upload.single('file'), fileUpload.upload);
+
 
 // Listener
 var server = app.listen(port, function () {

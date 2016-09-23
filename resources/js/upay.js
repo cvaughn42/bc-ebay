@@ -38,9 +38,14 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
         alert('Unable to load currentUser: ' + error);
     });
 
-    $scope.search = function() {    
+    $scope.search = function() {
         $scope.$broadcast('searchEvent', $scope.srchTerm);
-    }
+    };
+
+    $scope.uploadListingFiles = function (listingId) {
+        $('#listingId').val(listingId);
+        $('#uploadModal').modal('show');
+    };
 
 });
 
@@ -118,3 +123,5 @@ app.controller('buyNowCtrl', function ($scope, $routeParams, $http){
     });
 
 });
+
+

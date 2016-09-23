@@ -20,6 +20,7 @@
 
     <!-- Custom CSS -->
     <link href="/css/sb-admin-2.css" rel="stylesheet">
+    <link href="/css/dropzone.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -67,7 +68,7 @@
                 <!-- /.dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-user fa-fw"></i> {{currentUserName()}} <i class="fa fa-caret-down"></i>
+                        <i class="fa fa-user fa-fw"></i> {{currentUser.userName}} <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
                         <li><a href="#/profile/{{currentUser.userName}}" id="mnuProfile"><i class="fa fa-user fa-fw"></i> User Profile</a>
@@ -99,14 +100,47 @@
         <!-- Page Content -->
         <div class="container-fluid">
 
-            <ng-view>
+            <ng-view>                
 
             </ng-view>
         
         </div>
         <!-- /.container-fluid -->
+    
+        <button type="button" name="upload images" ng-click="uploadListingFiles(1)">Upload Images</button>
     </div>
     <!-- /#wrapper -->
+
+    
+    <!-- Modal -->
+    <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadImageModelLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="uploadImageModelLabel">Upload Listing Images</h4>
+                </div>
+                <div class="modal-body">
+                    <section>
+                        <div id="dropzone" style="text-align: center;">
+                            <form action="/upload" class="dropzone needsclick" id="upload" enctype="multipart/form-data">
+                                <input type="hidden" name="listingId" id="listingId" value="{{listingId}}" />
+                                <div class="dz-message needsclick">
+                                    Drop files here or click to upload.<br />
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Done</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
     
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -123,6 +157,7 @@
     <script src="/js/common.js"></script>
     <script src="/js/upay.js"></script>
     <script src="/js/upay-purchase.js"></script>
+    <script src="/js/dropzone.js"></script>
 
 </body>
 
