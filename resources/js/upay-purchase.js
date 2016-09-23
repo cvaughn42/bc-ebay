@@ -5,39 +5,27 @@ app.config(function ($routeProvider) {
     });
 });
 
+app.directive('address', function () {
+    return {
+        restrict: 'EA', //E = element, A = attribute, C = class, M = comment         
+        scope: {
+            //@ reads the attribute value, = provides two-way binding, & works with functions
+            title: '@'        
+        },
+        templateUrl: '/templates/address-form.html'/*,
+        controller: controllerFunction, //Embed a custom controller in the directive
+        link: function ($scope, element, attrs) { } //DOM manipulation*/
+    };
+});
+
 app.controller('purchaseController', function($scope, $http, $routeParams) {
     
     $scope.rejectFee = function() {
-        alert("Too bad - this is u*Pay, not e*Bay!");
+        alert("Too bad - this is u$Pay, not e*Bay!");
     };
 
-    $scope.getSellerName = function(user) {
-
-        var name = "";
-        var sp = "";
-
-        if (user)
-        {
-            if (user.firstName)
-            {
-                name += user.firstName;
-                sp + " ";
-            }
-                
-            if (user.middleName)
-            {
-                name += sp + user.middleName;
-                sp + " ";
-            }
-
-            if (user.lastName)
-            {
-                name += sp + user.lastName;
-                sp + " ";
-            }
-        }
-
-        return name;
+    $scope.displaySeller = function() {
+        alert("Show information about the seller");
     };
 
     $scope.$on('$viewContentLoaded', function (event) {

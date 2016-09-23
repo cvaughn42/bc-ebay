@@ -1,0 +1,16 @@
+body
+{
+    background-color: white;
+}
+
+ng-view .row,
+ng-view .row-fluid
+{
+    margin-top: 1em;
+}
+
+div img 
+{
+    max-width: 100%;
+    max-height: 100%;
+}

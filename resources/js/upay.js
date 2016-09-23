@@ -23,7 +23,7 @@ app.config(function ($routeProvider) {
 
 app.directive("logo", function() {
     return {
-        template : "<a class='navbar-brand' href='#/'><i class='fa fa-dollar fa-fw'></i>&nbsp;UPay</a>"
+        template : "<a class='navbar-brand' href='#/'>u<sup><i class='fa fa-dollar'></i></sup>Pay</a>"
     };
 });
 
