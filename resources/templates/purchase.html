@@ -7,74 +7,119 @@
             </div>
             <div class="panel-body">
 
-                <!-- Nav tabs -->
-                <ul class="nav nav-tabs">
-                    <li class="active"><a href="#details" data-toggle="tab" target="_self">Details</a>
-                    </li>
-                    <li><a href="#billing" data-toggle="tab" target="_self">Billing Info</a>
-                    </li>
-                    <li><a href="#shipping" data-toggle="tab" target="_self">Shipping Info</a>
-                    </li>
-                    <li><a href="#summary" data-toggle="tab" target="_self">Summary</a>
-                    </li>
-                </ul>
+                <div class="container-fluid">
+                    <div class="row-fluid">
 
-                <!-- Tab panes -->
-                <div class="tab-content">
-                    <div class="tab-pane fade in active" id="details">
-                        
-                        <div class="container-fluid">
-                            <div class="row-fluid">
-                                <div class="col-lg-4">
-                                    <img src="/images/lrc.jpg" />
-                                </div>
-                                <div class="col-lg-8">
-                                    <h4>{{ listing.title }}</h4>
-                                    <p>{{ listing.description }}</p>
-                                    <!-- Charge Summary -->
-                                    <p>
-                                        <div class="container">
-                                            <div ng-repeat="item in billingDetailItems" class="row">
-                                                <div class="col-lg-6">{{ item.description }}</div>
-                                                <div class="col-lg-6">{{ item.amount.formatMoney() }}</div>
+                        <div class="col-lg-10">
+
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#details" data-toggle="tab" target="_self">Details</a>
+                                </li>
+                                <li><a href="#billing" data-toggle="tab" target="_self">Billing Info</a>
+                                </li>
+                                <li><a href="#shipping" data-toggle="tab" target="_self">Shipping Info</a>
+                                </li>
+                                <li><a href="#summary" data-toggle="tab" target="_self">Summary</a>
+                                </li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane fade in active" id="details">
+                                    
+                                    <div class="container-fluid">
+                                        <div class="row-fluid">
+                                            <div class="col-lg-6">
+                                                <img src="/images/lrc.jpg" />
                                             </div>
-                                            <div class="row">
-                                                <div class="col-lg-6">Total</div>
-                                                <div class="col-lg-6">{{ sumBillingDetails(billingDetailItems )}}</div>
+                                            <div class="col-lg-6">
+                                                <h4>{{ listing.title }}</h4>
+                                                <p>{{ listing.description }}</p>
+                                                <!-- Charge Summary -->
+                                                <div class="well" style="display: inline-block; padding: 8px;">
+                                                    <table style="min-width: 240px;">
+                                                        <tbody>
+                                                            <tr ng-repeat="item in billingDetails">
+                                                                <td style="width: 70%">
+                                                                    {{ item.description }} 
+                                                                    <sup ng-if="item.prompt">[<a ng-click="item.prompt.click()">{{ item.prompt.text}}</a>]</sup>
+                                                                </td>
+                                                                <td style="width: 2%" class="text-right">$</td>
+                                                                <td style="width: 27%" class="text-right">{{ item.amount.formatMoney() }}</td>
+                                                            </tr>
+                                                            <tr class="strong">
+                                                                <td>Total</td>
+                                                                <td class="text-right">$</td>
+                                                                <td class="text-right">{{ sumBillingDetails(billingDetails).formatMoney() }}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <!-- /Charge Summary -->
+                                                <p>Being sold by <a ng-click="displaySeller()">{{ listing.user.firstName }} {{ listing.user.lastName }}</a></p>
+                                                <p>Sale ends {{ formatDate(listing.endDate) }}</p>
                                             </div>
+                                            
                                         </div>
-                                    </p>
-                                    <!-- /Charge Summary -->
-                                    <p>Being sold by <a ng-click="displaySeller()">{{ listing.user.firstName }} {{ listing.user.lastName }}</a></p>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="billing">
+                                    <h4>Profile Tab</h4>
+                                    <address title="billing"></address>
+                                </div>
+                                <div class="tab-pane fade" id="shipping">
+                                    <h4>Messages Tab</h4>
+                                    <address></address>
+                                </div>
+                                <div class="tab-pane fade" id="summary">
+                                    <h4>Settings Tab</h4>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                                 </div>
                             </div>
+
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
                         </div>
+                        <!-- tabs section -->
 
-                        
-                        Buy Now Price: ${{ listing.buyItNowPrice.formatMoney() }}
-                        <br />
-                        <logo></logo> Finder's Fee: ${{ (listing.buyItNowPrice * .1).formatMoney() }} <a ng-click="rejectFee()">I don't want to pay this!</a>
+                        <div class="col-lg-2 text-center">
+                            <button id="nextButton" class="btn btn-primary btn-outline">Next</button>
+                            <br/>
+                            <small><a ng-click="discourageQuit()">Never mind - I changed my mind</a></small>
+                        </div>
+                        <!-- Nav section -->
+                    
                     </div>
-                    <div class="tab-pane fade" id="billing">
-                        <h4>Profile Tab</h4>
-                        <address title="billing"></address>
-                    </div>
-                    <div class="tab-pane fade" id="shipping">
-                        <h4>Messages Tab</h4>
-                        <address></address>
-                    </div>
-                    <div class="tab-pane fade" id="summary">
-                        <h4>Settings Tab</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                    </div>
+                    <!-- /row-fluid -->
                 </div>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
+                <!-- /container-fluid -->
             </div>
+            <!-- /panel-body -->
             <div class="panel-footer">
                 Panel Footer
             </div>
+            <!-- /panel-footer -->
         </div>
-    
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="purchaseModal" tabindex="-1" role="dialog" aria-labelledby="purchaseModelLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="purchaseModelLabel">{{ alert.title }}</h4>
+            </div>
+            <div class="modal-body">
+                {{alert.text }}
+            </div>
+            <div class="modal-footer">
+                <button ng-repeat="dismiss in alert.dismissals" type="button" class="btn btn-default" data-dismiss="modal">{{ dismiss }}</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
