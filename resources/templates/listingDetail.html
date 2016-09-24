@@ -16,34 +16,25 @@
           <img src="/images/{{imgId}}">
         </div>
 
-        <!-- This carousel bugs out.
-        <div id="myCarousel" class="carousel slide" data-ride="carousel">
-        
-        <ol class="carousel-indicators">
-           <div ng-repeat="imgId in listing.imageIds">  
-                <li data-target="#myCarousel" data-slide-to="$index" class="active" ng-if="$first"></li>
-                <div class="carousel-inner" role="listbox">
-                <div class="item active" >
-                  <img src="/images/{{imgId}}">
+          <div id="myCarousel" class="carousel slide">
+            <!-- Carousel items -->
+            <div class="carousel-inner">
+                <div class="item" ng-class="{active:!$index}" ng-repeat="imgId in listing.imageIds">
+                    <div class="row text-center">
+                        <!-- ITEM-->
+                        <div class="span3">
+                            <div class="thumbnail product-item">
+                                <a href="#"><img src="/images/{{imgId}}"></a>
+                            </div> 
+                        </div>  
+                        <!-- ITEM-->
+                    </div>
                 </div>
-                <li data-target="#myCarousel" data-slide-to="$index" ng-if="$index > 0"></li>
-                 <div class="item" >
-                  <img src="/images/{{imgId}}">
-                </div>
-          </div>  
-        </ol>
+            </div><!-- /INNER-->  
+            <!-- Carousel nav -->
+            <a class="carousel-control left" href="#myCarousel" target="_self" data-slide="prev"><i class="icon-chevron-left"></i></a>
+            <a class="carousel-control right" href="#myCarousel" target="_self" data-slide="next"><i class="icon-chevron-right"></i></a>  
         </div>
-        
-        <a class="left carousel-control" target="_self" href="#myCarousel" role="button" data-slide="prev">
-          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-          <span class="sr-only">Previous</span>
-        </a>
-        <a class="right carousel-control" target="_self" href="#myCarousel" role="button" data-slide="next">
-          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-          <span class="sr-only">Next</span>
-        </a>
-      </div>
-      -->
         <div class="text-info">Seller : {{listing.user.userName}}</div>
         <!--<div class="text-muted">Id: {{listing.listingId}}</div>-->
         <div class="text-info">Description {{listing.description}}</div>
