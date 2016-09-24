@@ -70,6 +70,9 @@ app.post('/newListing', listing.newListing);
 app.get('/listing/:listingId', listing.listing);
 app.get('/listingImage/:listingImageId', checkAuth, listing.listingImage);
 
+// Images 
+app.get('/images/:listingId', listing.getImageForListing);
+
 // Profile
 app.get('/profile/:userName', profile.profile);
 app.post('/updateProfile', profile.updateProfile);
