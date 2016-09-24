@@ -1,27 +1,37 @@
+ <div>
+      <div class="input-group">
+          <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term" ng-model="srchTerm">
+          <div class="input-group-btn">
+              <button class="btn btn-default" type="button" ng-click="search()"><i class="glyphicon glyphicon-search"></i></button>
+          </div>
+      </div>
+</div>
+
 <div class="row-fluid">
   <div class="col-lg-12">
     <div class="panel panel-primary">
       <div class="panel-heading fa-2x">{{listing.title}}</div>
       <div class="panel-body">
+        <div ng-repeat="imgId in listing.imageIds">
+          <img src="/images/{{imgId}}">
+        </div>
+
+        <!-- This carousel bugs out.
         <div id="myCarousel" class="carousel slide" data-ride="carousel">
         
         <ol class="carousel-indicators">
            <div ng-repeat="imgId in listing.imageIds">  
-                <li data-target="#myCarousel" data-slide-to="0" class="active" ng-if="$index == 0"></li>
-                <li data-target="#myCarousel" data-slide-to="$index" ng-if="$index != 0"></li>
+                <li data-target="#myCarousel" data-slide-to="$index" class="active" ng-if="$first"></li>
+                <div class="carousel-inner" role="listbox">
+                <div class="item active" >
+                  <img src="/images/{{imgId}}">
+                </div>
+                <li data-target="#myCarousel" data-slide-to="$index" ng-if="$index > 0"></li>
+                 <div class="item" >
+                  <img src="/images/{{imgId}}">
+                </div>
           </div>  
         </ol>
-          <div class="carousel-inner" role="listbox">
-            <div ng-repeat="imgId in listing.imageIds">  
-                
-                <div class="item active" ng-if="$index == 0">
-                  <img ng-src="/images/{{imgId}}">
-                </div>
-
-                <div class="item" ng-if="$index != 0">
-                  <img ng-src="/images/{{imgId}}">
-                </div>
-          </div>  
         </div>
         
         <a class="left carousel-control" target="_self" href="#myCarousel" role="button" data-slide="prev">
@@ -33,6 +43,7 @@
           <span class="sr-only">Next</span>
         </a>
       </div>
+      -->
         <div class="text-info">Seller : {{listing.user.userName}}</div>
         <!--<div class="text-muted">Id: {{listing.listingId}}</div>-->
         <div class="text-info">Description {{listing.description}}</div>
@@ -49,3 +60,4 @@
     </div>
   </div>
 </div>
+
