@@ -70,13 +70,11 @@ app.post('/newListing', listing.newListing);
 app.get('/listing/:listingId', listing.listing);
 app.get('/listingImage/:listingImageId', checkAuth, listing.listingImage);
 
-// Images 
-app.get('/images/:listingId', listing.getImageForListing);
-
 // Profile
 app.get('/profile/:userName', profile.profile);
 app.post('/updateProfile', profile.updateProfile);
 app.get('/userImage/:userName', checkAuth, profile.userImage);
+app.post('/userImage', checkAuth, upload.single('file'), profile.postUserImage);
 
 // File Upload
 app.post('/upload', upload.single('file'), fileUpload.upload);

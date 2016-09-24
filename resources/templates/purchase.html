@@ -31,7 +31,6 @@
                                     <div class="container-fluid">
                                         <div class="row-fluid">
                                             <div class="col-lg-6">
-                                                {{ listing.imageIds }}
                                                 <img ng-if="listing.imageIds && listing.imageIds.length" ng-src="/listingImage/{{listing.imageIds[0]}}" />
                                                 <span ng-if="!listing.imageIds || listing.imageIds.length === 0">
                                                     No image to display    

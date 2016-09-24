@@ -6,8 +6,7 @@ app.config(function ($routeProvider) {
     }).when("/newListing", {
         templateUrl: "/templates/newListing.html",
         controller: 'newListingCtrl'
-    })
-    .when("/listings", {
+    }).when("/listings", {
         templateUrl: "/templates/listings.html",
         controller: 'listingsCtrl'
     }).when("/listing/:listingId", {
@@ -110,7 +109,7 @@ app.filter('tel', function () {
 });
 
 app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams, $http, $route, $q) {
-    $http.get('/currentUser').success(function (data) {
+    $http.get('/currentUser', {cache: false}).success(function (data) {
         $scope.currentUser = data;
         console.dir(data);
     }).error(function () {
@@ -123,6 +122,9 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
 
     $scope.uploadListingFiles = function (listingId) {
         $('#listingId').val(listingId);
+        $('#uploadModal').on('hidden.bs.modal', function() {
+            $('div.dz-success').html("Drop files here or click to upload.<br />").removeClass('dz-success');
+        });
         $('#uploadModal').modal('show');
     };
 
@@ -175,15 +177,30 @@ app.controller('newListingCtrl', function ($scope, $routeParams, $http, $locatio
 app.controller('profileCtrl', function ($scope, $routeParams, $http){
     var userName = $routeParams.userName;
     $scope.successfulAlert = true;
-    console.log(userName);
+ 
     $http.get('/profile/'+userName).success(function(data) {
-        console.log(JSON.stringify(data));
         $scope.profileUser = data;
         $scope.successfulAlert = true;
+        console.dir(data);
     }).error(function () {
         $scope.successfulAlert = true;                
         alert('Unable to load user profile: ' + error);
     });
+
+     $scope.uploadUserImage = function() {
+        var formData = new FormData();
+        formData.append('file', document.getElementById('userImageFile').files[0]);
+        formData.append('userName', $scope.profileUser.userName);
+
+        $http.post("/userImage", formData, {
+            transformRequest: angular.identity,
+            headers: { 'Content-Type': undefined }
+        }).success(function (response) { 
+            location.reload(true); 
+        }).error(function (response) { 
+            alert(response); 
+        });
+    };
 
     $scope.updateProfile = function() {    
         $http.post('/updateProfile', {profileUser: $scope.profileUser}).success(function(data) {

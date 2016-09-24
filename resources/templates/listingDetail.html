@@ -13,7 +13,7 @@
       <div class="panel-heading fa-2x">{{listing.title}}</div>
       <div class="panel-body">
         <div ng-repeat="imgId in listing.imageIds">
-          <img src="/images/{{imgId}}">
+          <img ng-src="/listingImage/{{imgId}}">
         </div>
 
           <div id="myCarousel" class="carousel slide">
@@ -24,7 +24,7 @@
                         <!-- ITEM-->
                         <div class="span3">
                             <div class="thumbnail product-item">
-                                <a href="#"><img src="/images/{{imgId}}"></a>
+                                <a href="#"><img ng-src="/listingImage/{{imgId}}"></a>
                             </div> 
                         </div>  
                         <!-- ITEM-->

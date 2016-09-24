@@ -48,6 +48,16 @@ DbInterface.FIND_USER_IMAGE_BY_USER_NAME_SQL = `SELECT mime_type, image_data
                                                 ORDER BY user_image_id DESC 
                                                 LIMIT 1`;
 
+DbInterface.INSERT_USER_IMAGE_SQL = `INSERT INTO user_image 
+                                     (user_name, image_data, mime_type, active) 
+                                     VALUES ($userName, $imageData, $mimeType, 1);`
+DbInterface.MAKE_LASTEST_IMAGE_ACTIVE_SQL = `UPDATE user_image
+                                             SET active = 0
+                                             WHERE user_name = $userName AND
+                                                   user_image_id != (SELECT max(user_image_id)
+                                                                     FROM user_image
+                                                                     WHERE user_name = $userName);`;
+
 /* USER TABLE SQL */
 DbInterface.CREATE_USER_SQL = `INSERT INTO user
                                (user_name, password, first_name, middle_name, last_name, email, street1, street2, city, state, zip_code, phone) 
@@ -64,7 +74,8 @@ DbInterface.UPDATE_USER_SQL = `UPDATE user
                                    zip_code = $zipCode,
                                    phone = $phone 
                                WHERE user_name = $userName`;
-DbInterface.SELECT_USER_SQL = `SELECT user_name, first_name, middle_name, last_name, email, street1, street2, city, state, zip_code, phone 
+DbInterface.SELECT_USER_SQL = `SELECT user_name, first_name, middle_name, last_name, email, street1, street2, city, state, zip_code, phone, 
+                                      (SELECT MAX(user_image_id) FROM user_image WHERE user_name = user.user_name AND active = 1) AS user_image_id
                                FROM user `;
 DbInterface.AUTHENTICATE_USER_SQL = DbInterface.SELECT_USER_SQL + 
                                     `WHERE user_name = ? AND password = ?`;
@@ -389,6 +400,47 @@ DbInterface.prototype.authenticateUser = function(credentials, callback) {
             {
                 callback(null, objectMapper(row, mappings.userToBusinessMapping));
             }
+        }
+    });
+};
+
+/**
+ * Insert the user image (makes it the current user image)
+ */
+DbInterface.prototype.createUserImage = function(userName, imageData, mimeType, callback) {
+
+    var params = {
+        $imageData: imageData,
+        $mimeType: mimeType,
+        $userName: userName
+    };
+
+    var self = this;
+
+    this.db.run(DbInterface.INSERT_USER_IMAGE_SQL, params, function(err) {
+
+        if (err)
+        {
+            callback("Unable to insert user image: " + err);
+        }
+        else
+        {
+            var id = this.lastID;
+
+            delete params.$imageData;
+            delete params.$mimeType;
+
+            self.db.run(DbInterface.MAKE_LASTEST_IMAGE_ACTIVE_SQL, params, function(err) {
+
+                if (err)
+                {
+                    // This is a transactional issue - we still want to return the new ID in
+                    // this case.
+                    console.log("Unable to deactivate old user images: " + err);
+                }
+
+                callback(null, id);
+            });
         }
     });
 };

@@ -1,5 +1,6 @@
 var path = require('path');
 var db = require('./db.js');
+var fs = require('fs');
 
 var profileUser = {userName:'test', firstName:'Test', middleName:'T', lastName:'Test'};
 
@@ -18,6 +19,44 @@ exports.profile = function(req, res) {
         }
     });
 
+};
+
+exports.postUserImage = function(req, res) {
+
+    if (req.session.currentUser.userName !== req.body.userName)
+    {
+        res.status(403).end();
+        return;
+    }
+
+    fs.readFile(req.file.path, function(err, data) {
+
+        if (err)
+        {
+            console.log('Unable to read user image file: ' + err);
+            res.status(500).send(err);
+        }
+        else
+        {
+            db.createUserImage(req.body.userName, data, req.file.mimetype, function(err, userImageId) {
+
+                if (err)
+                {
+                    console.log("Unable to insert user image into database: " + err);
+                    res.status(500).send(err);
+                }
+                else
+                {
+                    res.send('ok');
+                }
+            });
+        }
+
+        fs.unlink(req.file.path, function(err) {
+            if (err)
+                console.log("Unable to remove temp file: " + err);
+        });
+    });
 };
 
 exports.userImage = function(req, res) {

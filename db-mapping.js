@@ -27,7 +27,8 @@ module.exports = {
         state: "address.state",
         zip_code: "address.zipCode",
         phone: "phone",
-        email: "email"
+        email: "email",
+        user_image_id: "userImageId"
     },
 
     /* NOTE: Had to add start and end date transforms because 
