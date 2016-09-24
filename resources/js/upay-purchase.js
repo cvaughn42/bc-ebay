@@ -31,34 +31,6 @@ app.controller('purchaseController', function($scope, $http, $routeParams) {
         alert("Show information about the seller");
     };
 
-    $scope.formatDate = function(date) {
-    
-        if (date && date instanceof Date)
-        {
-            var months = ['January', 'February', 'March', 'April', 'May', 'June',
-                        'July', 'August', 'September', 'October', 'November', 'December'];
-            var txt  = '';
-            var ms = "/";
-            var ts = ":";
-            
-            txt += months[date.getMonth()];
-            txt += ms;
-            txt += date.getDate();
-            txt += ms;
-            txt += date.getFullYear();
-            txt += ' At ';
-            txt += date.getHour();
-            txt += ts;
-            txt += date.getMinute();
-            
-            return txt;
-        }
-        else
-        {
-            return '';
-        }
-    };
-
     /**
      * For now, compute shipping on price points
      */
@@ -114,6 +86,16 @@ app.controller('purchaseController', function($scope, $http, $routeParams) {
         // Get the listing from the server to make sure you have the latest info
         $http.get("/listing/" + $routeParams.listingId).success(function(data) {
             
+            if (data.endDate && !(data.endDate instanceof Date))
+            {
+                data.endDate = new Date(data.endDate);
+            }
+
+            if (data.startDate && !(data.startDate instanceof Date))
+            {
+                data.startDate = new Date(data.startDate);
+            }
+
             $scope.listing = data;
 
             var st = '';
@@ -148,14 +130,14 @@ app.controller('purchaseController', function($scope, $http, $routeParams) {
                     click: function() {
                         $scope.alert = {
                             title: "Finder's Fee",
-                            text: "Hey, you won't find sweet loot like this on e*Bay, buddy!  That's the price you pay.",
+                            text: "Hey, you won't find sweet loot like this on e*Bay, buddy!",
                             dismissals: ['OK']
                         };
 
                         $('#purchaseModal').modal('show');
                     }
                 },
-                amount: data.buyItNowPrice * .1
+                amount: data.buyItNowPrice * .15
             }, {
                 description: 'Shipping',
                 amount: $scope.computeShipping(data.buyItNowPrice)

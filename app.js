@@ -68,15 +68,16 @@ app.get('/listings', listing.listings);
 app.post('/search', listing.search);
 app.post('/newListing', listing.newListing);
 app.get('/listing/:listingId', listing.listing);
+app.get('/listingImage/:listingImageId', checkAuth, listing.listingImage);
 
 // Profile
 app.get('/profile/:userName', profile.profile);
 app.post('/updateProfile', profile.updateProfile);
+app.get('/userImage/:userName', checkAuth, profile.userImage);
 
 // File Upload
 app.post('/upload', upload.single('file'), fileUpload.upload);
-
-
+ 
 // Listener
 var server = app.listen(port, function () {
     console.log('u*Pay listening on port ' + port + '!');

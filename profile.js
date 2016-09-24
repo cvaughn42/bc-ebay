@@ -20,6 +20,32 @@ exports.profile = function(req, res) {
 
 };
 
+exports.userImage = function(req, res) {
+
+    db.findUserImage(req.params.userName, function(err, image) {
+
+        if (err)
+        {
+            console.log(err);
+            res.status(500).send(err);
+        }
+        else
+        {
+            if (image)
+            {
+                res.type(image.mime_type);
+                res.send(image.image_data);
+            }
+            else
+            {
+                console.log('User image is null for user name ' + req.params.userName);
+                res.status(500).send("Image is null.");
+            }
+        }
+    });
+    
+};
+
 // app.post('/updateProfile')
 exports.updateProfile = function(req, res) {
     var profileUser = req.body.profileUser;

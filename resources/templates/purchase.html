@@ -31,7 +31,11 @@
                                     <div class="container-fluid">
                                         <div class="row-fluid">
                                             <div class="col-lg-6">
-                                                <img src="/images/lrc.jpg" />
+                                                {{ listing.imageIds }}
+                                                <img ng-if="listing.imageIds && listing.imageIds.length" ng-src="/listingImage/{{listing.imageIds[0]}}" />
+                                                <span ng-if="!listing.imageIds || listing.imageIds.length === 0">
+                                                    No image to display    
+                                                </span>
                                             </div>
                                             <div class="col-lg-6">
                                                 <h4>{{ listing.title }}</h4>
@@ -58,7 +62,7 @@
                                                 </div>
                                                 <!-- /Charge Summary -->
                                                 <p>Being sold by <a ng-click="displaySeller()">{{ listing.user.firstName }} {{ listing.user.lastName }}</a></p>
-                                                <p>Sale ends {{ formatDate(listing.endDate) }}</p>
+                                                <p ng-if="listing.endDate">Sale ends {{ listing.endDate.format('M/dd/yyyy at h:mm ap') }}</p>
                                             </div>
                                             
                                         </div>
@@ -77,15 +81,14 @@
                                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                                 </div>
                             </div>
-
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
+                        
                         </div>
                         <!-- tabs section -->
 
                         <div class="col-lg-2 text-center">
                             <button id="nextButton" class="btn btn-primary btn-outline">Next</button>
                             <br/>
-                            <small><a ng-click="discourageQuit()">Never mind - I changed my mind</a></small>
+                            <small><a ng-click="discourageQuit()">I changed my mind</a></small>
                         </div>
                         <!-- Nav section -->
                     

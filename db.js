@@ -40,6 +40,14 @@ DbInterface.CREATE_LISTING_IMAGE_PS = "INSERT INTO listing_image (listing_id, im
 /* LISTING KEYWORD TABLE SQL */
 DbInterface.CREATE_LISTING_KEYWORD_SQL = `INSERT INTO listing_keyword (listing_id, keyword) VALUES (?, ?)`;
 
+/* IMAGE SQL */
+DbInterface.FIND_LISTING_IMAGE_BY_LISTING_IMAGE_ID_SQL = "SELECT mime_type, image_data FROM listing_image WHERE listing_image_id = ?";
+DbInterface.FIND_USER_IMAGE_BY_USER_NAME_SQL = `SELECT mime_type, image_data 
+                                                FROM user_image 
+                                                WHERE user_name = ? AND active = 1 
+                                                ORDER BY user_image_id DESC 
+                                                LIMIT 1`;
+
 /* USER TABLE SQL */
 DbInterface.CREATE_USER_SQL = `INSERT INTO user
                                (user_name, password, first_name, middle_name, last_name, email, street1, street2, city, state, zip_code, phone) 
@@ -163,6 +171,41 @@ DbInterface.prototype.findActiveListings = function(callback) {
             }
 
             callback(null, listings);
+        }
+    });
+};
+
+DbInterface.prototype.findListingImage = function(listingImageId, callback) {
+
+    this.db.get(DbInterface.FIND_LISTING_IMAGE_BY_LISTING_IMAGE_ID_SQL, listingImageId, function(err, row) {
+        if (err || !row)
+        {
+            callback("Unable to retrieve image for listing image ID " + listingImageId + ": " + err);
+        }
+        else
+        {
+            callback(null, row);
+        }
+    });
+}
+
+DbInterface.prototype.findUserImage = function(userName, callback) {
+
+    this.db.get(DbInterface.FIND_USER_IMAGE_BY_USER_NAME_SQL, userName, function(err, row) {
+        if (err)
+        {
+            callback("Unable to retrieve image for userName \"" + userName + "\": " + err);
+        }
+        else
+        {
+            if (row)
+            {
+                callback(null, row);
+            }
+            else
+            {
+                callback("No image found for userName \"" + userName + "\"");
+            }
         }
     });
 };

@@ -20,6 +20,32 @@ exports.listings = function(req, res) {
     }); 
 };
 
+exports.listingImage = function(req, res) {
+
+    db.findListingImage(req.params.listingImageId, function(err, image) {
+
+        if (err)
+        {
+            console.log(err);
+            res.status(500).send(err);
+        }
+        else
+        {
+            if (image)
+            {
+                res.type(image.mime_type);
+                res.send(image.image_data);
+            }
+            else
+            {
+                console.log('Listing image ' + req.params.listingImageId + ' not found');
+                res.status(500).send("Image is null.");
+            }
+        }
+    });
+};
+ 
+
 // app.get('/listing/:listing')
 exports.listing = function(req, res) {
 
