@@ -1,16 +1,54 @@
-<!-- styling for list items -->
-<div ng-repeat="listing in listings" class="row-fluid">
-  <div class="col-lg-12">
-    <div class="panel panel-default">
-      <div class="panel-heading panel-title fa-2x"> {{listing.title}} </div>
-      <div style="display:inline">
-        <div class="panel-body"><a ng-href="#/listing/{{listing.listingId}}" style="float:left; position:relative; display:inline-block">{{listing.title}}</a>
-          <div style="float:right; margin-left:15%; position:relative; display:inline-block"> {{listing.endDate}}</div>
-          <div style="float:left; margin-left:15%;position:relative; display:inline-block">{{listing.description}}</div>
-          <div style="float:right; position:relative; display:inlin-block">{{listing.buyItNowPrice | currency}}</div>
-          <div><a class="btn btn-primary" ng-href="#/purchase/{{listing.listingId}}" style="float:right;position:relative;margin-left:90%;">Buy Now</a></div>
-        </div>
-      </div>
-    </div>
+<div class="row-fluid">
+  <div class="col-lg-2">
+    &nbsp;
+    <!-- Keywords listed here -->
   </div>
+
+  <div class="col-lg-8">
+    <!-- styling for list items -->
+    <div ng-repeat="listing in listings" class="row-fluid">
+      <div class="panel panel-default">
+
+        <div class="panel-heading panel-title">
+          <a ng-href="#/listing/{{listing.listingId}}">
+            {{listing.title}}
+          </a>
+        </div>
+        <div class="panel-body">
+
+          <div class="container-fluid">
+            <div class="row-fluid">
+
+              <div class="col-lg-2">
+                <img ng-if="listing.listingImageIds.length" ng-src="/listingImage/{{listing.listingImageIds[0]}}" />
+                <span ng-if="!listing.listingImageIds.length">No image available</span>
+              </div>
+
+              <div class="col-lg-8">
+                <p>{{ listing.description }}</p>
+                <p>Buy it now price: {{ listing.buyItNowPrice | currency }}</p>
+                <p>Ends {{ listing.endDate }}</p>
+              </div>
+
+              <div class="col-lg-2">
+                <a class="btn btn-primary" ng-href="#/purchase/{{listing.listingId}}" style="float:right;position:relative;margin-left:90%;">Buy Now</a>
+              </div>
+            </div>
+            <!-- /row-fluid -->
+          </div>
+          <!-- /container-fluid -->
+        </div>
+        <!-- /panel-body -->
+      </div>
+      <!-- /panel -->
+    </div>
+    <!-- /row-fluid -->
+  </div>
+  <!-- /col-lg-8 -->
+
+  <div class="col-lg-2">
+    &nbsp;
+    <!-- Gutter for ads -->
+  </div>
+
 </div>

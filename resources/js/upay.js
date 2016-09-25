@@ -9,6 +9,8 @@ app.config(function ($routeProvider) {
     }).when("/listings", {
         templateUrl: "/templates/listings.html",
         controller: 'listingsCtrl'
+    }).when('/todo', {
+        templateUrl: '/templates/todo.html'
     }).when("/listing/:listingId", {
         templateUrl: "/templates/listingDetail.html",
         controller: 'listingDetailCtrl'
