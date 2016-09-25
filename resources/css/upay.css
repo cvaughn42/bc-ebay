@@ -35,3 +35,12 @@ form.dropzone {
     max-height: 100%;
     display: inline-block;
 }
+
+.alert.keyword {
+    padding: 2px;
+    margin-bottom: 8px;
+}
+
+.alert-dismissable.keyword .close {
+    right: -2px;
+}

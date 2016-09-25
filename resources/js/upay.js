@@ -131,7 +131,51 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
 
  app.controller('listingsCtrl', function ($scope, $http, $location){
      $http.get('/listings', {cache: false}).success(function(data) {
+        
         $scope.listings = data;
+
+        var keywords = [];
+
+        for (var i = 0, l = data.length; i < l; i++)
+        {
+            if (data[i].keywords && data[i].keywords.length)
+            {
+                for (var i2 = 0, l2 = data[i].keywords.length; i2 < l2; i2++)
+                {
+                    if (keywords.indexOf(data[i].keywords[i2]) === -1)
+                    {
+                        keywords.push(data[i].keywords[i2]);
+                    }
+                }
+            }
+        }
+
+        keywords.sort(function(a, b) {
+            if (typeof(a) === 'string')
+            {
+                a = a.toLowerCase();
+            }
+            if (typeof(b) === 'string')
+            {
+                b = b.toLowerCase();
+            }
+
+            if (a < b)
+            {
+                return -1;
+            }
+            else if (a > b)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        });
+
+        $scope.keywords = keywords;
+
     }).error(function () {
         alert('Unable to load listing: ' + error);
     });

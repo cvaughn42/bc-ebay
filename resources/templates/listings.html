@@ -1,7 +1,24 @@
 <div class="row-fluid">
   <div class="col-lg-2">
-    &nbsp;
-    <!-- Keywords listed here -->
+    
+    <div class="panel panel-primary">
+
+      <div class="panel-heading panel-title">
+        Keywords
+      </div>
+
+      <div class="panel-body">
+
+        <div ng-repeat="keyword in keywords" class="alert alert-info alert-dismissable keyword">
+          
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true" onclick="alert('remove listings for this keyword');return false;">&times;</button>
+          <a onclick="alert('filter the list on this keyword'); return false;" target='_self' class="alert-link">{{ keyword }}</a>.
+        </div>
+
+      </div>
+
+    </div>
+
   </div>
 
   <div class="col-lg-8">
