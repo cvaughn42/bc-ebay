@@ -23,8 +23,7 @@
 
   <div class="col-lg-8">
     <!-- styling for list items -->
-    <div ng-repeat="listing in listings" class="row-fluid">
-      <div class="panel panel-default">
+      <div ng-repeat="listing in listings" class="panel panel-default">
 
         <div class="panel-heading panel-title">
           <a ng-href="#/listing/{{listing.listingId}}">
@@ -37,8 +36,8 @@
             <div class="row-fluid">
 
               <div class="col-lg-2">
-                <img ng-if="listing.listingImageIds.length" ng-src="/listingImage/{{listing.listingImageIds[0]}}" />
-                <span ng-if="!listing.listingImageIds.length">No image available</span>
+                <img ng-if="listing.imageIds && listing.imageIds.length" ng-src="/listingImage/{{listing.imageIds[0]}}" />
+                <span ng-if="!listing.imageIds || !listing.imageIds.length">No image available</span>
               </div>
 
               <div class="col-lg-8">
@@ -58,8 +57,6 @@
         <!-- /panel-body -->
       </div>
       <!-- /panel -->
-    </div>
-    <!-- /row-fluid -->
   </div>
   <!-- /col-lg-8 -->
 
