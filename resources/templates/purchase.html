@@ -60,7 +60,13 @@
                                                     </table>
                                                 </div>
                                                 <!-- /Charge Summary -->
-                                                <p>Being sold by <a ng-click="displaySeller()">{{ listing.user.firstName }} {{ listing.user.lastName }}</a></p>
+                                                <p>
+                                                    Being sold by 
+                                                    <a ng-click="displaySeller()">
+                                                        {{ listing.user.firstName }} {{ listing.user.lastName }}
+                                                        <img src="getUserImageSource()" alt="Seller Avatar" class="img-circle" />
+                                                    </a>
+                                                </p>
                                                 <p ng-if="listing.endDate">Sale ends {{ listing.endDate.format('M/dd/yyyy at h:mm ap') }}</p>
                                             </div>
                                             

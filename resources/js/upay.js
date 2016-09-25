@@ -15,9 +15,6 @@ app.config(function ($routeProvider) {
     }).when("/profile/:userName", {
         templateUrl: "/templates/profile.html",
         controller: 'profileCtrl'
-    }).when("/buyNow/:listingId", {
-        templateUrl: "/templates/buyNow.html",
-        controller: 'buyNowCtrl'
     }).otherwise({
         redirectTo: '/'
     });
@@ -131,7 +128,7 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
 });
 
  app.controller('listingsCtrl', function ($scope, $http, $location){
-     $http.get('/listings').success(function(data) {
+     $http.get('/listings', {cache: false}).success(function(data) {
         $scope.listings = data;
     }).error(function () {
         alert('Unable to load listing: ' + error);
@@ -139,23 +136,19 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
 
     $scope.$on('searchEvent', function (event, srchTerm) {
         console.log(srchTerm); 
-        $http.post('/search',{srchTerm: srchTerm}).success(function(data) {
+        $http.post('/search',{srchTerm: srchTerm, cache: false}).success(function(data) {
             $scope.listings = data;
             console.log(JSON.stringify(data));
         }).error(function () {
             alert('Unable to load listing: ' + error);
         });
     });
-
-    $scope.buyNow=function(listing){
-        $location.path('/buyNow/' + listing.listingId);
-    };
 });
 
 app.controller('listingDetailCtrl', function ($scope, $routeParams, $http){
     var listingId = parseInt($routeParams.listingId);
         console.log(listingId);
-        $http.get('/listing/'+listingId).success(function(data) {
+        $http.get('/listing/'+listingId, {cache: false}).success(function(data) {
           $scope.listing = data;
         }).error(function () {
             alert('Unable to load listingDetail: ' + error);
@@ -178,7 +171,7 @@ app.controller('profileCtrl', function ($scope, $routeParams, $http){
     var userName = $routeParams.userName;
     $scope.successfulAlert = true;
  
-    $http.get('/profile/'+userName).success(function(data) {
+    $http.get('/profile/'+userName, {cache: false}).success(function(data) {
         $scope.profileUser = data;
         $scope.successfulAlert = true;
         console.dir(data);
@@ -211,17 +204,3 @@ app.controller('profileCtrl', function ($scope, $routeParams, $http){
         });
     };
 });
-
-app.controller('buyNowCtrl', function ($scope, $routeParams, $http){
-    var listingId = $routeParams.listingId;
-    console.log(listingId);
-    $http.get('/listing', {listingId: listingId}).success(function(data) {
-        console.log(JSON.stringify(data));
-        $scope.buyNowItem = data;
-    }).error(function () {
-        alert('Unable to load purchase item: ' + error);
-    });
-
-});
-
-

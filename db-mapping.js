@@ -105,6 +105,7 @@ module.exports = {
         first_name: 'user.firstName', 
         middle_name: 'user.middleName', 
         last_name: 'user.lastName',
+        user_image_id: 'user.userImageId',
         keywords: {
             key: "keywords",
             transform: function(val) {

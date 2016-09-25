@@ -70,7 +70,7 @@ app.controller('purchaseController', function($scope, $http, $routeParams) {
         return amt;
     };
 
-    $scope.discourageQuit = function() {
+    $scope.discourageQuit = function() {    
 
         $scope.alert = {
             title: "Oh Come On",
@@ -81,10 +81,24 @@ app.controller('purchaseController', function($scope, $http, $routeParams) {
         $('#purchaseModal').modal('show');
     };
 
+    $scope.getUserImageSource = function() {
+
+        console.dir($scope.listing);
+
+        if ($scope.listing && $scope.listing.user && $scope.listing.user.userImageId)
+        {
+            return '/userImage/' + $scope.listing.user.userName;
+        }
+        else
+        {
+            return 'http://placehold.it/50/55C1E7/fff';
+        }
+    };
+
     $scope.$on('$viewContentLoaded', function (event) {
 
         // Get the listing from the server to make sure you have the latest info
-        $http.get("/listing/" + $routeParams.listingId).success(function(data) {
+        $http.get("/listing/" + $routeParams.listingId, {cache: false}).success(function(data) {
             
             if (data.endDate && !(data.endDate instanceof Date))
             {
@@ -97,6 +111,8 @@ app.controller('purchaseController', function($scope, $http, $routeParams) {
             }
 
             $scope.listing = data;
+
+            console.dir(data);
 
             var st = '';
 
