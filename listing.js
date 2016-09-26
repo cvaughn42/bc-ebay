@@ -92,3 +92,30 @@ exports.newListing = function(req, res) {
     data.push({id:count, title:req.body.title});
     res.send(data);
 };
+
+// app.post('/listings')
+exports.filterOn = function (req, res){    
+    var stringVersion =  req.body.filterOnTerm;
+    console.log(stringVersion );
+    db.findActiveListingsByKeyword (stringVersion, function (err, listing){
+        if(err){
+            res.status(500).send(err);
+        }else{
+            console.log('sending back listing');
+            res.send(listing);
+        }
+    });
+};
+
+exports.filterRemove = function (req, res){
+    console.dir(req.params.keywords);
+    
+    db.findActiveWhereMissingKeyword(req.params.keyword, function(err, listing){
+        if(err){
+            res.status(500).send(err);
+        }else{
+            console.dir(listing);
+            res.send(listing);
+        }
+    });
+}

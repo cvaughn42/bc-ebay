@@ -10,9 +10,11 @@
       <div class="panel-body">
 
         <div ng-repeat="keyword in keywords" class="alert alert-info alert-dismissable keyword">
-          
-          <button type="button" class="close" data-dismiss="alert" aria-hidden="true" onclick="alert('remove listings for this keyword');return false;">&times;</button>
-          <a onclick="alert('filter the list on this keyword'); return false;" target='_self' class="alert-link">{{ keyword }}</a>.
+          <!-- remove filter -->
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true" ng-click="removeFilter(keyword)">&times;</button>
+          <!-- add filter -->
+          <!-- alert('filter the list on this keyword'); return false; -->
+          <a ng-click="filterOn(keyword)" target='_self' class="alert-link" name="filter-On-Term" id="filter-On-Term"  ng-model="filterOnTerm">{{ keyword }}</a>.
         </div>
 
       </div>
