@@ -1,4 +1,4 @@
-var app = angular.module("bc-upay", ["ngRoute"]);
+var app = angular.module("bc-upay", ['ngRoute', 'ui.utils.masks', 'datePicker']);
 
 app.config(['$httpProvider', function ($httpProvider) {
     if (!$httpProvider.defaults.headers.get) {
@@ -229,14 +229,40 @@ app.controller('listingDetailCtrl', function ($scope, $routeParams, $http){
 });
 
 app.controller('newListingCtrl', function ($scope, $routeParams, $http, $location){
+    $scope.getCurrentDatetime = function() {
+        return (new Date).toLocaleFormat("%A, %B %e, %Y");
+    };
+
+    $scope.newListing = {};
+    $scope.today = new Date();
+    $scope.newListing.keywords = [];
+
+    $scope.addKeyword = function() {
+        var newItemNo = $scope.newListing.keywords.length+1;
+        $scope.newListing.keywords.push($scope.newListing.newKeyword);
+        $scope.newListing.newKeyword = '';
+    };
+        
+     $scope.removeKeyword = function(value) {
+        var index = $scope.newListing.keywords.indexOf(value);
+        if ( index >= 0 ) {
+            $scope.newListing.keywords.splice(index, 1);
+        }
+    };
+
     $scope.addNewListing=function(){
-        $http.post('/newListing', {title: $scope.title}).success(function(data) {
-        console.log(JSON.stringify(data));
-        $scope.listings = data;
-        $location.path('/listings');
-        }).error(function () {
-            alert('Unable to add new listing: ' + error);
-        });
+        console.log('keywords: ', JSON.stringify($scope.newListing.keywords));
+        $scope.newListing.sold = false;
+        console.log('new listing: ', JSON.stringify($scope.newListing));
+        if ($scope.newListing.title) {
+            $http.post('/newListing', {newListing: $scope.newListing}).success(function(data) {
+                console.log(JSON.stringify(data));
+                $scope.newListing = {};
+                $scope.newListing.keywords = [];
+                }).error(function () {
+                    alert('Unable to add new listing: ' + error);
+                });
+        }
     };
 });
 
