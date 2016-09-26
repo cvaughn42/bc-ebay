@@ -67,17 +67,23 @@ exports.search = function(req, res) {
     var srchResult = [];
     console.log('srchTerm = ' + srchTerm);
     if (srchTerm) {
-        data.forEach(function(value){
-            if(value.title.toLowerCase().indexOf(srchTerm.toLowerCase()) > -1) {
-                srchResult.push(value);
+        db.findActiveListingsByKeyword(srchTerm, function(err,listing){
+            if(err){
+                console.log(err);
+            }else{
+                for(var i in listing){
+                    srchResult.push(listing[i]);
+                }
+                
+                //srchResult.push(listing);
+                console.log('search result = ', srchResult);
+                res.send(srchResult);
             }
         });
     }
     else {
         srchResult = data;
-    }
-    console.log('search result = ', srchResult);
-    res.send(srchResult);
+    }  
 };
 
 // app.post('/newListing')
