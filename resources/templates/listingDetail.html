@@ -12,9 +12,9 @@
     <div class="panel panel-primary">
       <div class="panel-heading fa-2x">{{listing.title}}</div>
       <div class="panel-body">
-        <div ng-repeat="imgId in listing.imageIds">
+        <!-- <div ng-repeat="imgId in listing.imageIds">
           <img ng-src="/listingImage/{{imgId}}">
-        </div>
+        </div> -->
 
           <div id="myCarousel" class="carousel slide">
             <!-- Carousel items -->
@@ -48,7 +48,7 @@
         <a ng-click="uploadListingFiles(listing.listingId)" class='btn btn-primary btn-outline'>Upload Images</a>
 
         <div>
-              <div><a href="/" class="btn btn-outline btn-primary" style="float:left;">Go back</a></div>
+              <div><a href="/#/listings" class="btn btn-outline btn-primary" style="float:left;">Go back</a></div>
               <div><a ng-ref="#/purchase/{{listing.listingId}}" class="btn btn-outline btn-success" style="float:right;"> Buy now ! </a></div>
         </div>
       </div>
