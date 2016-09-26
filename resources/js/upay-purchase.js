@@ -21,6 +21,16 @@ app.directive('address', function () {
     };
 });
 
+app.directive('paymentInfo', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            paymentInfo: '=info'
+        },
+        templateUrl: '/templates/payment-info.html'
+    }
+});
+
 app.controller('purchaseController', function($scope, $http, $routeParams) {
     
     $scope.rejectFee = function() {
@@ -159,6 +169,8 @@ app.controller('purchaseController', function($scope, $http, $routeParams) {
                 amount: $scope.computeShipping(data.buyItNowPrice)
             }]
 
+            $scope.useShippingAddress = true;
+
             $scope.billingAddress = {
                 street1: '1313 Mockingbird La',
                 city: 'Fresno',
@@ -172,6 +184,10 @@ app.controller('purchaseController', function($scope, $http, $routeParams) {
                 city: 'New York',
                 state: 'NY',
                 zipCode: '10019-3219'
+            };
+
+            $scope.paymentInfo = {
+                creditCardBillingName: $scope.currentUser.firstName + ' ' + $scope.currentUser.listName
             };
         
         }).error(function(err) {

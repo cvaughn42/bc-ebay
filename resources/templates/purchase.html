@@ -27,7 +27,7 @@
                             <!-- Tab panes -->
                             <div class="tab-content">
                                 <div class="tab-pane fade in active" id="details">
-                                    
+
                                     <div class="container-fluid">
                                         <div class="row-fluid">
                                             <div class="col-lg-6">
@@ -45,7 +45,7 @@
                                                         <tbody>
                                                             <tr ng-repeat="item in billingDetails">
                                                                 <td style="width: 70%">
-                                                                    {{ item.description }} 
+                                                                    {{ item.description }}
                                                                     <sup ng-if="item.prompt">[<a ng-click="item.prompt.click()">{{ item.prompt.text}}</a>]</sup>
                                                                 </td>
                                                                 <td style="width: 2%" class="text-right">$</td>
@@ -61,7 +61,7 @@
                                                 </div>
                                                 <!-- /Charge Summary -->
                                                 <p>
-                                                    Being sold by 
+                                                    Being sold by
                                                     <a ng-click="displaySeller()">
                                                         {{ listing.user.firstName }} {{ listing.user.lastName }}
                                                         <img src="getUserImageSource()" alt="Seller Avatar" class="img-circle" />
@@ -69,44 +69,75 @@
                                                 </p>
                                                 <p ng-if="listing.endDate">Sale ends {{ listing.endDate.format('M/dd/yyyy at h:mm ap') }}</p>
                                             </div>
-                                            
+
                                         </div>
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="billing">
-                                    <h4>Profile Tab</h4>
-                                    <address address="billingAddress"></address>
+
+                                    <div class="container-fluid">
+                                        <div class="row-fluid">
+                                            <payment-info info="paymentInfo"></payment-info>
+                                        </div>
+
+                                        <div class="form-group row-fluid">
+                                            <label>Billing Address</label>
+                                            <div>
+                                                <div class="form-group">
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input ng-model="useShippingAddress" type="checkbox" value="">Use Shipping Address
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                                <address ng-if="useShippingAddress === false" address="billingAddress"></address>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="tab-pane fade" id="shipping">
-                                    <h4>Messages Tab</h4>
-                                    <address address="shippingAddress"></address>
+                                    <div class="container-fluid">
+                                        <div class="form-group row-fluid">
+                                            <label>Ship To</label>
+                                            <input type="text" class="form-control" id="shipTo" ng-bind="shipTo" />
+                                        </div>
+                                        <div class="form-group row-fluid">
+                                            <label>Shipping Address</label>
+                                            <div>
+                                                <address address="shippingAddress"></address>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="tab-pane fade" id="summary">
                                     <h4>Settings Tab</h4>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
+                                        ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                                        ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+                                        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+                                        sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim
+                                        id est laborum.</p>
                                 </div>
                             </div>
-                        
+
                         </div>
                         <!-- tabs section -->
 
                         <div class="col-lg-2 text-center">
-                            <button id="nextButton" class="btn btn-primary btn-outline">Next</button>
+                            <button id="nextButton" class="btn btn-primary btn-outline btn-block">Next</button>
                             <br/>
                             <small><a ng-click="discourageQuit()">I changed my mind</a></small>
                         </div>
                         <!-- Nav section -->
-                    
+
                     </div>
                     <!-- /row-fluid -->
                 </div>
                 <!-- /container-fluid -->
             </div>
             <!-- /panel-body -->
-            <div class="panel-footer">
-                Panel Footer
-            </div>
-            <!-- /panel-footer -->
+
         </div>
     </div>
 </div>

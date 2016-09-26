@@ -44,3 +44,21 @@ form.dropzone {
 .alert-dismissable.keyword .close {
     right: -2px;
 }
+
+img.cc-image 
+{
+    border-width: 0px;
+    background-color: white;
+    border-radius: 5px;
+    padding: 4px 12px;
+}
+
+.tab-content
+{
+    border-right: silver 1px solid;
+    border-left: silver 1px solid;
+    border-bottom: silver 1px solid;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding-bottom: 1em;
+}
