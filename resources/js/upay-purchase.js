@@ -10,10 +10,10 @@ app.config(function ($routeProvider) {
 
 app.directive('address', function () {
     return {
-        restrict: 'EA', //E = element, A = attribute, C = class, M = comment         
+        restrict: 'E', // Element
         scope: {
             //@ reads the attribute value, = provides two-way binding, & works with functions
-            title: '@'        
+            address: '=address'        
         },
         templateUrl: '/templates/address-form.html'/*,
         controller: controllerFunction, //Embed a custom controller in the directive
@@ -158,6 +158,21 @@ app.controller('purchaseController', function($scope, $http, $routeParams) {
                 description: 'Shipping',
                 amount: $scope.computeShipping(data.buyItNowPrice)
             }]
+
+            $scope.billingAddress = {
+                street1: '1313 Mockingbird La',
+                city: 'Fresno',
+                state: 'CA',
+                zipCode: '90210'
+            };
+
+            $scope.shippingAddress = {
+                street1: '100 W Havre De Grace Blvd',
+                street2: 'Apt 3G',
+                city: 'New York',
+                state: 'NY',
+                zipCode: '10019-3219'
+            };
         
         }).error(function(err) {
         
