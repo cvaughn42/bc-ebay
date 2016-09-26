@@ -1,58 +1,68 @@
- <div>
-      <div class="input-group">
-          <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term" ng-model="srchTerm">
-          <div class="input-group-btn">
-              <button class="btn btn-default" type="button" ng-click="search()"><i class="glyphicon glyphicon-search"></i></button>
-          </div>
-      </div>
-</div>
-
 <div class="row-fluid">
-  <div class="col-lg-12">
-    <div class="panel panel-primary">
-      <div class="panel-heading fa-2x">{{listing.title}}</div>
-      <div class="panel-body">
-        <!-- <div ng-repeat="imgId in listing.imageIds">
-          <img ng-src="/listingImage/{{imgId}}">
-        </div> -->
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">{{listing.title}}</div>
+            <div class="panel-body">
 
-          <div id="myCarousel" class="carousel slide">
-            <!-- Carousel items -->
-            <div class="carousel-inner">
-                <div class="item" ng-class="{active:!$index}" ng-repeat="imgId in listing.imageIds">
-                    <div class="row text-center">
-                        <!-- ITEM-->
-                        <div class="span3">
-                            <div class="thumbnail product-item">
-                                <img ng-src="/listingImage/{{imgId}}">
-                            </div> 
-                        </div>  
-                        <!-- ITEM-->
+                <div class="container-fluid">
+                    <div class="row-fluid">
+                        <div class="col-lg-5">
+
+                            <div id="myCarousel" class="carousel slide">
+                                <!-- Carousel items -->
+                                <div class="carousel-inner">
+                                    <div class="item" ng-class="{active:!$index}" ng-repeat="imgId in listing.imageIds">
+                                        <div class="row text-center">
+                                            <!-- ITEM-->
+                                            <div class="span3">
+                                                <div class="thumbnail product-item">
+                                                    <img ng-src="/listingImage/{{imgId}}">
+                                                </div>
+                                            </div>
+                                            <!-- ITEM-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /INNER-->
+                                <!-- Carousel nav -->
+                                <a class="carousel-control left" href="#myCarousel" target="_self" data-slide="prev"><i class="glyphicon glyphicon-chevron-left"></i></a>
+                                <a class="carousel-control right" href="#myCarousel" target="_self" data-slide="next"><i class="glyphicon glyphicon-chevron-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <p>{{ listing.description }}</p>
+                            <p>
+                                Buy it Now Price: Only ${{ listing.buyItNowPrice.formatMoney() }}!
+                            </p>
+                            <p>
+                                Minimum Bin: {{ listing.minBid | currency }}
+                            </p>
+                            <p>
+                                Sale Ends: {{ listing.endDate }}
+                            </p>
+                            <p>
+                                Being sold by
+                                <a ng-click="displaySeller()">
+                            {{ listing.user.firstName }} {{ listing.user.lastName }}
+                            <img ng-if="listing.user.userName" ng-src="/userImage/{{ listing.user.userName }}" width="40px;" alt="Seller Avatar" class="img-circle" />
+                        </a>
+                            </p>
+
+                        </div>
+                   
+                       <div class="col-lg-2">
+                            <a href='#/purchase/{{listing.listingId}}' class="btn btn-primary btn-block">Buy It Now!</a>
+                            <a ng-if="currentUser.userName === listing.user.userName" ng-click="uploadListingFiles(listing.listingId)" class='btn btn-success btn-outline btn-block'>Upload Images</a>
+                        </div>
+                    </div>
+
+                    <div class="row-fluid">
+                        <div class="col-lg-12 text-center">
+                            <a href="/#/">[ Return to Listings ]</a>
+                        </div>
                     </div>
                 </div>
-            </div><!-- /INNER-->  
-            <!-- Carousel nav -->
-            <a class="carousel-control left" href="#myCarousel" target="_self" data-slide="prev"><i class="icon-chevron-left"></i></a>
-            <a class="carousel-control right" href="#myCarousel" target="_self" data-slide="next"><i class="icon-chevron-right"></i></a>  
+            </div>
         </div>
-
-        <div class="text-info">Seller : {{listing.user.userName}}</div>
-        <!--<div class="text-muted">Id: {{listing.listingId}}</div>-->
-        <div class="text-info">Description {{listing.description}}</div>
-        <div class="text-primary">Buy it Now Price {{listing.buyItNowPrice}}</div>
-        <div class="text-warning">Minimum bid Price {{listing.minBid}}</div>
-        <div class="text-warning">End date : {{listing.endDate}}</div>
-        <div class="text-warning">{{listing.sold}}</div>
-        <div class="text-info">Keywords : {{listing.keywords}}</div>
-               
-        <a ng-click="uploadListingFiles(listing.listingId)" class='btn btn-primary btn-outline'>Upload Images</a>
-
-        <div>
-              <div><a href="/#/listings" class="btn btn-outline btn-primary" style="float:left;">Go back</a></div>
-              <div><a ng-ref="#/purchase/{{listing.listingId}}" class="btn btn-outline btn-success" style="float:right;"> Buy now ! </a></div>
-        </div>
-      </div>
     </div>
-  </div>
 </div>
-
