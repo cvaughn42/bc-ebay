@@ -83,6 +83,13 @@ DbInterface.AUTHENTICATE_USER_SQL = DbInterface.SELECT_USER_SQL +
 DbInterface.FIND_USER_BY_USERNAME_SQL = DbInterface.SELECT_USER_SQL + 
                                     `WHERE user_name = ?`;
 
+DbInterface.FIND_ACTIVE_LISTINGS_BY_KEYWORD_SQL_NOT_EQUAL = DbInterface.SELECT_LISTING_SQL + 
+                                                  `WHERE sold = 0 AND 
+                                                         start_date <= current_timestamp AND 
+                                                         end_date >= current_timestamp AND
+                                                         listing_id IN (SELECT listing_id 
+                                                                        FROM listing_keyword 
+                                                                        WHERE keyword NOT IN ?)`;
 /**
  * Open the database
  */
@@ -502,6 +509,31 @@ DbInterface.prototype.findUserByUsername = function(userName, callback) {
             {
                 callback(null, objectMapper(row, mappings.userToBusinessMapping));
             }
+        }
+    });
+};
+/** 
+ * Finds Active listing removing a possibility
+ * @param keyword 
+ * @param callback (err, row)
+ */
+DbInterface.prototype.findActiveWhereMissingKeyword = function(keyword, callback){
+    this.db.all(DbInterface.FIND_ACTIVE_LISTINGS_BY_KEYWORD_SQL_NOT_EQUAL, keywords, function(err, rows) {
+
+        if (err)
+        {
+            callback("Unable to find active listings that don't contain keywords: " + keywords + ": " + err);
+        }
+        else
+        {
+            var listings = [];
+
+            for (var row of rows)
+            {
+                listings.push(objectMapper(row, mappings.listingToBusinessMapping));
+            }
+            console.log('returning listings!');
+            return listings;
         }
     });
 };

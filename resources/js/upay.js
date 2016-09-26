@@ -127,6 +127,9 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
     $scope.search = function() {
         $scope.$broadcast('searchEvent', $scope.srchTerm);
     };
+    $scope.filterOn = function(keyword){
+        $scope.$broadcast('filterOnEvent', keyword);
+    }
 
     $scope.uploadListingFiles = function (listingId) {
         $('#listingId').val(listingId);
@@ -138,7 +141,7 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
 
 });
 
- app.controller('listingsCtrl', function ($scope, $http, $location){
+app.controller('listingsCtrl', function ($scope, $http, $location){
      $http.get('/listings', {cache: false}).success(function(data) {
         
         $scope.listings = data;
@@ -183,10 +186,41 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
             }
         });
 
+        $scope.removeFilter = function (keyword){
+            console.log('in!');
+            console.log('keyword is : ' + keyword);
+            
+
+            for(var i = 0 ; i < $scope.listings.length; i++){
+                if($scope.listings[i].keywords.indexOf(keyword) != -1){
+                    //$scope.listings[i] = null;
+                    //$scope.listings[i] = null;
+                    $scope.listings.splice(i, 1);
+                }
+            }
+            for(var i in $scope.keywords){
+                if($scope.keywords[i].indexOf(keyword) != -1){
+                    //$scope.keywords[i] = null;
+                    $scope.keywords.splice(i, 1);
+                }
+            }
+            
+        }
         $scope.keywords = keywords;
 
     }).error(function () {
         alert('Unable to load listing: ' + error);
+    });
+
+    $scope.$on('filterOnEvent', function( event, filterOnTerm){
+
+        $http.post('/listing',{filterOnTerm: filterOnTerm, cache:false}).success(function (listingData){
+            $scope.listings = listingData;
+            
+        }).error(function (error){
+            console.log("error is " + error);
+
+        });
     });
 
     $scope.$on('searchEvent', function (event, srchTerm) {
