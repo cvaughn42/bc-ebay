@@ -1,7 +1,8 @@
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="col-lg-4">
-            <img ng-if="seller.imageId" ng-src="/userImage/{{seller.sellerId}}" class="circle" />
+            <img ng-if="seller.imageId" ng-src="/userImage/{{seller.sellerId}}" class="img-circle" />
+            <span ng-if="!seller.imageId">No image available</span>
         </div>
         <div class="col-lg-8">
             <div class="form-set">

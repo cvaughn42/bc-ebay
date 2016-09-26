@@ -31,14 +31,30 @@ app.directive('paymentInfo', function() {
     }
 });
 
+app.directive('sellerInfo', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            seller: '=info'
+        },
+        templateUrl: '/templates/seller-info.html'
+    }
+});
+
 app.controller('purchaseController', function($scope, $http, $routeParams) {
     
     $scope.rejectFee = function() {
         alert("Too bad - this is u$Pay, not e*Bay!");
     };
 
-    $scope.displaySeller = function() {
-        alert("Show information about the seller");
+    $scope.displaySeller = function(sellerId) {
+        
+        $http.get('/getSellerInfo/' + sellerId, {cache: false}).success(function(data) {
+
+            $scope.seller = data;
+        }).error(function(err) {
+            alert("Unable to retrieve seller information for seller " + sellerId + ": " + err);
+        });
     };
 
     /**

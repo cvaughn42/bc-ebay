@@ -37,12 +37,12 @@ exports.getSellerInfo = function(req, res) {
         {
             var sellerInfo = {
                 sellerId: seller.userName,
-                imageId: seller.imageId,
+                imageId: seller.userImageId,
                 city: seller.address.city,
                 state: seller.address.state,
                 email: seller.email,
                 name: seller.firstName + 
-                    seller.middleName ? ' ' + seller.middleName : '' +
+                    seller.middleName ? ' ' + seller.middleName : '' + ' ' + 
                     seller.lastName,
                 sinceDate: new Date(
                     (new Date()).getTime() - 
