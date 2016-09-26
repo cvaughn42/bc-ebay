@@ -42,7 +42,7 @@ exports.getSellerInfo = function(req, res) {
                 state: seller.address.state,
                 email: seller.email,
                 name: seller.firstName + 
-                    seller.middleName ? ' ' + seller.middleName : '' + ' ' + 
+                    (seller.middleName ? ' ' + seller.middleName : '') + ' ' + 
                     seller.lastName,
                 sinceDate: new Date(
                     (new Date()).getTime() - 

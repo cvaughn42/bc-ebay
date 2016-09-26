@@ -49,9 +49,16 @@ app.controller('purchaseController', function($scope, $http, $routeParams) {
 
     $scope.displaySeller = function(sellerId) {
         
+        $('#sellerInfoModal').modal('show');
+
         $http.get('/getSellerInfo/' + sellerId, {cache: false}).success(function(data) {
 
             $scope.seller = data;
+
+            if (data.sinceDate && !(data.sinceDate instanceof Date))
+            {
+                data.sinceDate = new Date(data.sinceDate);
+            }
         }).error(function(err) {
             alert("Unable to retrieve seller information for seller " + sellerId + ": " + err);
         });

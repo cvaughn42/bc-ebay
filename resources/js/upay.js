@@ -192,6 +192,24 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
 });
 
 app.controller('listingDetailCtrl', function ($scope, $routeParams, $http){
+
+    $scope.displaySeller = function(sellerId) {
+        
+        $('#sellerInfoModal').modal('show');
+
+        $http.get('/getSellerInfo/' + sellerId, {cache: false}).success(function(data) {
+
+            $scope.seller = data;
+
+            if (data.sinceDate && !(data.sinceDate instanceof Date))
+            {
+                data.sinceDate = new Date(data.sinceDate);
+            }
+        }).error(function(err) {
+            alert("Unable to retrieve seller information for seller " + sellerId + ": " + err);
+        });
+    };
+    
     var listingId = parseInt($routeParams.listingId);
         console.log(listingId);
         $http.get('/listing/'+listingId, {cache: false}).success(function(data) {
