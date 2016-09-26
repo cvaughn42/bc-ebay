@@ -252,8 +252,9 @@ app.controller('profileCtrl', function ($scope, $routeParams, $http){
 
     $scope.updateProfile = function() {    
         $http.post('/updateProfile', {profileUser: $scope.profileUser}).success(function(data) {
-        $scope.successfulAlert = false;
-        }).error(function () {
+        
+            $scope.successfulAlert = false;
+        }).error(function (error) {
             $scope.successfulAlert = true;
             alert('Unable to update user profile: ' + error);
         });
