@@ -75,6 +75,7 @@ app.get('/profile/:userName', profile.profile);
 app.post('/updateProfile', profile.updateProfile);
 app.get('/userImage/:userName', checkAuth, profile.userImage);
 app.post('/userImage', checkAuth, upload.single('file'), profile.postUserImage);
+app.get('/getSellerInfo/:sellerId', checkAuth, profile.getSellerInfo);
 
 // File Upload
 app.post('/upload', upload.single('file'), fileUpload.upload);

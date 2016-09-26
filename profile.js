@@ -21,6 +21,42 @@ exports.profile = function(req, res) {
 
 };
 
+/**
+ * Returns "seller info" for the specified user name
+ * 
+ */
+exports.getSellerInfo = function(req, res) {
+
+    db.findUserByUsername(req.params.sellerId, function(err, seller) {
+
+        if (err)
+        {
+            res.status(500).send(err);
+        }
+        else
+        {
+            var sellerInfo = {
+                sellerId: seller.userName,
+                imageId: seller.imageId,
+                city: seller.address.city,
+                state: seller.address.state,
+                email: seller.email,
+                name: seller.firstName + 
+                    seller.middleName ? ' ' + seller.middleName : '' +
+                    seller.lastName,
+                sinceDate: new Date(
+                    (new Date()).getTime() - 
+                    ((24 * 60 * 60 * 1000) * Math.ceil(Math.random() * 100))),
+                totalSales: Math.floor(Math.random() * 10000),
+                averageRating: (Math.random() * 5).toFixed(1)
+            };
+
+            res.send(sellerInfo);
+        }
+    });
+
+};
+
 exports.postUserImage = function(req, res) {
 
     if (req.session.currentUser.userName !== req.body.userName)
