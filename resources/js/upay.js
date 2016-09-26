@@ -227,18 +227,27 @@ app.controller('profileCtrl', function ($scope, $routeParams, $http){
     });
 
      $scope.uploadUserImage = function() {
-        var formData = new FormData();
-        formData.append('file', document.getElementById('userImageFile').files[0]);
-        formData.append('userName', $scope.profileUser.userName);
 
-        $http.post("/userImage", formData, {
-            transformRequest: angular.identity,
-            headers: { 'Content-Type': undefined }
-        }).success(function (response) { 
-            location.reload(true); 
-        }).error(function (response) { 
-            alert(response); 
-        });
+         if (!$('#userImageFile').val())
+         {
+             alert("Please select a user image to upload");
+             $('#userImageFile').focus();
+         }
+         else 
+         {
+            var formData = new FormData();
+            formData.append('file', document.getElementById('userImageFile').files[0]);
+            formData.append('userName', $scope.profileUser.userName);
+
+            $http.post("/userImage", formData, {
+                transformRequest: angular.identity,
+                headers: { 'Content-Type': undefined }
+            }).success(function (response) { 
+                location.reload(true); 
+            }).error(function (response) { 
+                alert(response); 
+            });
+         }
     };
 
     $scope.updateProfile = function() {    
