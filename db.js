@@ -247,7 +247,7 @@ DbInterface.prototype.findListingByListingId = function(listingId, callback) {
  * @param callback (err, listings)
  */
 DbInterface.prototype.findActiveListingsByKeyword = function(keywords, callback) {
-
+  
     this.db.all(DbInterface.FIND_ACTIVE_LISTINGS_BY_KEYWORD_SQL, keywords, function(err, rows) {
 
         if (err)
@@ -262,8 +262,8 @@ DbInterface.prototype.findActiveListingsByKeyword = function(keywords, callback)
             {
                 listings.push(objectMapper(row, mappings.listingToBusinessMapping));
             }
-
-            return listings;
+            
+            callback(null,listings);
         }
     });
 };
