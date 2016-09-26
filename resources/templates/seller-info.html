@@ -1,0 +1,33 @@
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="col-lg-4">
+            <img ng-if="seller.imageId" ng-src="/userImage/{{seller.sellerId}}" class="circle" />
+        </div>
+        <div class="col-lg-8">
+            <div class="form-set">
+                <label>Name</label>
+                <p class="form-control-static">{{ seller.name }}</p>
+            </div>
+            <div class="form-set">
+                <label>E-mail Address</label>
+                <p class="form-control-static">{{ seller.email }}</p>
+            </div>
+            <div class="form-set">
+                <label>Location</label>
+                <p class="form-control-static">{{ seller.city }}, {{seller.state }}</p>
+            </div>
+            <div class="form-set">
+                <label>Since</label>
+                <p class="form-control-static">{{ seller.sinceDate }}</p>
+            </div>
+            <div class="form-set">
+                <label>Total Sales</label>
+                <p class="form-control-static">{{ seller.totalSales | currency }}</p>
+            </div>
+            <div class="form-set">
+                <label>Average Rating</label>
+                <p class="form-control-static">{{ seller.averageRating }}</p>
+            </div>
+        </div>
+    </div>
+</div>
