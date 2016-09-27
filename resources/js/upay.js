@@ -119,7 +119,7 @@ app.filter('tel', function () {
 app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams, $http, $route, $q, $location) {
     $http.get('/currentUser', {cache: false}).success(function (data) {
         $scope.currentUser = data;
-        console.dir(data);
+        // console.dir(data);
     }).error(function () {
         alert('Unable to load currentUser: ' + error);
     });
@@ -133,9 +133,12 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
 
     $scope.uploadListingFiles = function (listingId) {
         $('#listingId').val(listingId);
-        $('#uploadModal').on('hidden.bs.modal', function() {
-            $('div.dz-success').html("Drop files here or click to upload.<br />").removeClass('dz-success');
-        });
+
+        // need to remove the div created by dropzone.js after success uploading of the file(s)
+        // <div class='dz-preview dz-processing dz-image-preview dz-success dz-complete' />
+        var divRemove = $('div.dz-preview, .dz-processing, .dz-image-preview, .dz-success, .dz-complete');
+        $(divRemove).remove();
+
         $('#uploadModal').modal('show');
     };
     //fixed search --- search
@@ -199,7 +202,7 @@ app.controller('listingsCtrl', function ($scope, $http, $location){
      $http.get('/listings', {cache: false}).success(function(data) {
         
         $scope.listings = data;
-        console.dir($scope.listings);
+        // console.dir($scope.listings);
         var keywords = getKeywords(data);
         $scope.removeFilter = function (keyword){
             console.log('in!');
@@ -257,7 +260,7 @@ app.controller('listingDetailCtrl', function ($scope, $routeParams, $http){
     };
     
     var listingId = parseInt($routeParams.listingId);
-        console.log(listingId);
+        // console.log(listingId);
         $http.get('/listing/'+listingId, {cache: false}).success(function(data) {
           $scope.listing = data;
         }).error(function () {
