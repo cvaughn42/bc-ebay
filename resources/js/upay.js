@@ -167,7 +167,8 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
             // console.log(JSON.stringify(data));
             $location.path('/listings');
             //location.reload(true);
-            
+            // var keyword = getKeywords(data.listings);
+            // $scope.keywords = keyword;
         }).error(function () {
             alert('Unable to load listing: ' + error);
         });
@@ -341,6 +342,7 @@ app.controller('listingsCtrl', function ($scope, $http, $location){
                 
                 console.dir(data);
                 $scope.listings = data;
+                $scope.keywords = getKeywords(data);
                 console.log(JSON.stringify(data));
                 //$location.path('/listings');
                 //location.reload(true);

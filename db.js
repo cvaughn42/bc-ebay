@@ -128,7 +128,6 @@ DbInterface.FIND_VALID_BIDS_SQL = `SELECT b.bid_id, b.amount, b.user_name, b.bid
 DbInterface.CREATE_BID_SQL = `INSERT INTO bid 
                               (amount, user_name, bid_date, listing_id)
                               VALUES (?, ?, ?, ?)`;
-
 /**
  * Open the database
  */
@@ -690,5 +689,7 @@ DbInterface.prototype.findActiveWhereMissingKeyword = function(keyword, callback
         }
     });
 };
+
+
 
 module.exports = new DbInterface();
