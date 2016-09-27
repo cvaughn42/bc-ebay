@@ -67,7 +67,7 @@
                         <i class="fa fa-tasks fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#/newListing" id="mnuProfile"><i class="fa fa-cross fa-fw"></i> New Listing</a>
+                        <li><a href="#/newListing/{{currentUser.userName}}" id="mnuProfile"><i class="fa fa-cross fa-fw"></i> New Listing</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -130,10 +130,10 @@
                 <div class="modal-body">
                     <section>
                         <div id="dropzone" style="text-align: center;">
+                            Drop files inside the square or click the square to upload.<br /> <br />
                             <form action="/upload" class="dropzone needsclick" id="upload" enctype="multipart/form-data">
                                 <input type="hidden" name="listingId" id="listingId" value="{{listingId}}" />
                                 <div class="dz-message needsclick">
-                                    Drop files here or click to upload.<br />
                                 </div>
                             </form>
                         </div>
@@ -167,6 +167,7 @@
     <script src="/js/dropzone.js"></script>
     <script src="/js/angular-input-masks-standalone.js"></script>
     <script src="/js/moment.js"></script>
+    <script src="/js/moment-timezone-with-data.js"></script>
     <script src="/js/angular-datepicker.js"></script>
     
 </body>

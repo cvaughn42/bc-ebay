@@ -27,11 +27,11 @@ exports.purchaseListing = function(req, res) {
         if (err)
         {
             console.log(err);
-            res.sendStatus(500);
+            res.status(500).send(err);
         }
         else
         {
-            res.send(listingId);
+            res.send('ok');
         }
     });
 };
@@ -116,9 +116,26 @@ exports.search = function(req, res) {
 
 // app.post('/newListing')
 exports.newListing = function(req, res) {
-    count++;
-    data.push({id:count, title:req.body.title});
-    res.send(data);
+
+    var data = req.body.newListing;
+    console.log('data = ', data);
+   
+    db.createListing(data, function (err, listingId){
+        if(err){
+            res.status(500).send(err);
+        }else{
+            console.log('Get new listing id: ' + listingId);
+            db.addListingKeywords(listingId, data.keywords, function (err, count){
+                if(err){
+                    res.status(500).send(err);
+                }else{
+                    console.log('Add keywords: ' + count);
+                    res.send(JSON.stringify(count));
+                }
+            });
+        }
+    });
+   
 };
 
 // app.post('/listings')

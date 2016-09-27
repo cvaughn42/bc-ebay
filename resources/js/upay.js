@@ -12,7 +12,7 @@ app.config(['$httpProvider', function ($httpProvider) {
 app.config(function ($routeProvider) {
     $routeProvider.when("/", {
         redirectTo: '/listings'
-    }).when("/newListing", {
+    }).when("/newListing/:userName", {
         templateUrl: "/templates/newListing.html",
         controller: 'newListingCtrl'
     }).when("/listings", {
@@ -119,7 +119,7 @@ app.filter('tel', function () {
 app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams, $http, $route, $q, $location) {
     $http.get('/currentUser', {cache: false}).success(function (data) {
         $scope.currentUser = data;
-        console.dir(data);
+        // console.dir(data);
     }).error(function () {
         alert('Unable to load currentUser: ' + error);
     });
@@ -133,9 +133,12 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
 
     $scope.uploadListingFiles = function (listingId) {
         $('#listingId').val(listingId);
-        $('#uploadModal').on('hidden.bs.modal', function() {
-            $('div.dz-success').html("Drop files here or click to upload.<br />").removeClass('dz-success');
-        });
+
+        // need to remove the div created by dropzone.js after success uploading of the file(s)
+        // <div class='dz-preview dz-processing dz-image-preview dz-success dz-complete' />
+        var divRemove = $('div.dz-preview, .dz-processing, .dz-image-preview, .dz-success, .dz-complete');
+        $(divRemove).remove();
+
         $('#uploadModal').modal('show');
     };
     //fixed search --- search
@@ -279,7 +282,7 @@ app.controller('listingsCtrl', function ($scope, $http, $location){
      $http.get('/listings', {cache: false}).success(function(data) {
         
         $scope.listings = data;
-        console.dir($scope.listings);
+        // console.dir($scope.listings);
         var keywords = getKeywords(data);
         $scope.removeFilter = function (keyword){
             console.log('in!');
@@ -339,7 +342,7 @@ app.controller('listingDetailCtrl', function ($scope, $routeParams, $http){
     };
     
     var listingId = parseInt($routeParams.listingId);
-        console.log(listingId);
+        // console.log(listingId);
         $http.get('/listing/'+listingId, {cache: false}).success(function(data) {
           $scope.listing = data;
         }).error(function () {
@@ -348,18 +351,16 @@ app.controller('listingDetailCtrl', function ($scope, $routeParams, $http){
 });
 
 app.controller('newListingCtrl', function ($scope, $routeParams, $http, $location){
-    $scope.getCurrentDatetime = function() {
-        return (new Date).toLocaleFormat("%A, %B %e, %Y");
-    };
 
     $scope.newListing = {};
     $scope.today = new Date();
     $scope.newListing.keywords = [];
+    $scope.successfulAlert = true;
 
     $scope.addKeyword = function() {
         var newItemNo = $scope.newListing.keywords.length+1;
-        $scope.newListing.keywords.push($scope.newListing.newKeyword);
-        $scope.newListing.newKeyword = '';
+        $scope.newListing.keywords.push($scope.newKeyword);
+        $scope.newKeyword = '';
     };
         
      $scope.removeKeyword = function(value) {
@@ -372,14 +373,17 @@ app.controller('newListingCtrl', function ($scope, $routeParams, $http, $locatio
     $scope.addNewListing=function(){
         console.log('keywords: ', JSON.stringify($scope.newListing.keywords));
         $scope.newListing.sold = false;
+        $scope.newListing.minBid = 0;
+        var userName = $routeParams.userName;
+        $scope.newListing.user = {};
+        $scope.newListing.user.userName = userName;
         console.log('new listing: ', JSON.stringify($scope.newListing));
         if ($scope.newListing.title) {
-            $http.post('/newListing', {newListing: $scope.newListing}).success(function(data) {
-                console.log(JSON.stringify(data));
-                $scope.newListing = {};
-                $scope.newListing.keywords = [];
-                }).error(function () {
-                    alert('Unable to add new listing: ' + error);
+            $http.post('/newListing', {newListing: $scope.newListing}).success(function(count) {
+                $scope.successfulAlert = false;
+                }).error(function (error) {
+                    alert('Unable to add new listing with keywords: ' + error);
+                    $scope.successfulAlert = true;
                 });
         }
     };

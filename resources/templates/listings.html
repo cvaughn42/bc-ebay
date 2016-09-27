@@ -57,11 +57,13 @@
               <div class="col-lg-8">
                 <p>{{ listing.description }}</p>
                 <p>Buy it now price: {{ listing.buyItNowPrice | currency }}</p>
+                <p ng-if="listing.minBid">Show bidding information (min = {{ listing.minBid | currency }})</p>
                 <p>Ends {{ listing.endDate }}</p>
               </div>
 
               <div class="col-lg-2">
-                <a class="btn btn-primary" ng-href="#/purchase/{{listing.listingId}}" style="float:right;position:relative;margin-left:90%;">Buy Now</a>
+                <a class="btn btn-primary btn-block" ng-href="#/purchase/{{listing.listingId}}">Buy Now</a>
+                <button ng-if="listing.minBid" class="btn btn-default btn-block" ng-click="makeBid()">Bid</a>
               </div>
             </div>
             <!-- /row-fluid -->
