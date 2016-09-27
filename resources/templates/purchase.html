@@ -64,7 +64,7 @@
                                                     Being sold by
                                                     <a ng-click="displaySeller(listing.user.userName)">
                                                         {{ listing.user.firstName }} {{ listing.user.lastName }}
-                                                        <img ng-if="listing.user.userImageId" src="/userImage/{{listing.user.userName}}" alt="Seller Avatar" width="40px;" class="img-circle" />
+                                                        <img ng-if="listing.user.userImageId" ng-src="/userImage/{{listing.user.userName}}" alt="Seller Avatar" width="40px;" class="img-circle" />
                                                     </a>
                                                 </p>
 

@@ -31,6 +31,58 @@ module.exports = {
         user_image_id: "userImageId"
     },
 
+    purchaseToDatabaseMapping: {
+        listingId: '$listingId',
+        userName: '$userName',
+        amount: '$amount',
+        purchaseDate: '$purchaseDate',
+        'billing.name': '$billingName',
+        'billing.street1': '$billingStreet1',
+        'billing.street2': '$billingStreet2',
+        'billing,city': '$billingCity',
+        'billing.state': '$billingState',
+        'billing,zipCode': '$billingZipCode',
+        'shipping,name': '$shippingName',
+        'shipping.street1': '$shippingStreet1',
+        'shipping.street2': '$shippingStreet2',
+        'shipping.city': '$shippingCity',
+        'shipping.state': '$shippingState',
+        'shipping.zipCode': '$hippingZipCode',
+        creditCardNumber: '$creditCardNumber',
+        creditCardExpirationDate: '$creditCardExpirationDate',
+        creditCardValidationCode: '$creditCardValidationCode',
+        creditCardType: '$creditCardType'
+    },
+
+    purchaseToBusinessMapping: {
+        purchase_id: 'purchaseId',
+        listing_id: 'listingId',
+        user_name: 'userName',
+        amount: 'amount',
+        purchase_date: {
+            key: 'purchaseDate',
+            transform: function(val) {
+                return (val ? new Date(val) : null);
+            }
+        },
+        billing_name: 'billing.name',
+        billing_street1: 'billing.street1',
+        billing_street2: 'billing.street2',
+        billing_city: 'billing.city',
+        billing_state: 'billing.state',
+        billing_zip_code: 'billing.zipCode',
+        shipping_name: 'shipping.name',
+        shipping_street1: 'shipping.street1',
+        shipping_street2: 'shipping.street2',
+        shipping_city: 'shipping.city',
+        shipping_state: 'shipping.state',
+        shipping_zip_code: 'shipping.zipCode',
+        credit_card_number: 'creditCardNumber',
+        credit_card_expiration_date: 'creditCardExpirationDate',
+        credit_card_validation_code: 'creditCardValidationCode',
+        credit_card_type: 'creditCardType' 
+    },
+    
     /* NOTE: Had to add start and end date transforms because 
      * database defaults were failing when params were undefined 
      * or null 

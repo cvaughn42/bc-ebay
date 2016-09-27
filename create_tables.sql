@@ -79,3 +79,33 @@ CREATE TABLE IF NOT EXISTS listing_image
     FOREIGN KEY (listing_id)
         REFERENCES listing (listing_id)
 );
+
+/**
+ * Purchase table
+ */ 
+CREATE TABLE IF NOT EXISTS purchase
+(
+    purchase_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    listing_id INTEGER NOT NULL,
+    user_name VARCHAR(20) NOT NULL,
+    amount NUMERIC NOT NULL,
+    purchase_date TIMESTAMP NOT NULL DEFAULT (datetime('now', 'localtime')),
+    billing_name VARCHAR(80) NOT NULL,
+    billing_street1 VARCHAR(255) NOT NULL,
+    billing_street2 VARCHAR(255),
+    billing_city VARCHAR(255) NOT NULL,
+    billing_state CHAR(2) NOT NULL,
+    billing_zip_code VARCHAR(10) NOT NULL,
+    shipping_name VARCHAR(80) NOT NULL,
+    shipping_street1 VARCHAR(255) NOT NULL,
+    shipping_street2 VARCHAR(255),
+    shipping_city VARCHAR(255) NOT NULL,
+    shipping_state CHAR(2) NOT NULL,
+    shipping_zip_code VARCHAR(10) NOT NULL,
+    credit_card_number VARCHAR(32) NOT NULL,
+    credit_card_expiration_date CHAR(4) NOT NULL,
+    credit_card_validation_code VARCHAR(4) NOT NULL,
+    credit_card_type CHAR(1) NOT NULL,
+    FOREIGN KEY (listing_id) REFERENCES listing (listing_id),
+    FOREIGN KEY (user_name) REFERENCES user (user_name)
+);

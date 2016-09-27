@@ -37,9 +37,29 @@ DbInterface.FIND_ACTIVE_LISTINGS_BY_KEYWORD_SQL = DbInterface.SELECT_LISTING_SQL
                                                                         FROM listing_keyword 
                                                                         WHERE keyword IN ?)`;
 DbInterface.CREATE_LISTING_IMAGE_PS = "INSERT INTO listing_image (listing_id, image_data, mime_type) VALUES ($listingId, $imageData, $mimeType)";
+DbInterface.MARK_LISTING_SOLD_SQL = "UPDATE listing SET sold = 1 WHERE listing_id = ?";
                     
 /* LISTING KEYWORD TABLE SQL */
 DbInterface.CREATE_LISTING_KEYWORD_SQL = `INSERT INTO listing_keyword (listing_id, keyword) VALUES (?, ?)`;
+
+/* PURCHASE TABLE SQL */
+DbInterface.CREATE_PURCHASE_SQL = `INSERT INTO purchase 
+                                   (user_name, listing_id, amount, purchase_date, billing_name, billing_street1,
+                                    billing_street2, billing_city, billing_state, billing_zip_code, shipping_name,
+                                    shipping_street1, shipping_street2, shipping_city, shipping_state,
+                                    shipping_zip_code, credit_card_number, credit_card_expiration_date, 
+                                    credit_card_validation_code, credit_card_type) 
+                                   VALUES ($userName, $listingId, $amount, $purchaseDate, $billingName, $billingStreet1,
+                                           $billingStreet2, $billingCity, $billingState, $billingZipCode, $shippingName,
+                                           $shippingStreet1, $shippingStreet2, $shippingCity, $shippingState, 
+                                           $shippingZipCode, $creditCardNumber, $creditCardExpirationDate, 
+                                           $creditCardValidationCode, $creditCardType)`;
+
+DbInterface.SELECT_PURCHASE_SQL = `SELECT purchase_id, user_name, listing_id, amount, purchase_date, billing_name, billing_street1,
+                                          billing_street2, billing_city, billing_state, billing_zip_code, shipping_name,
+                                          shipping_street1, shipping_street2, shipping_city, shipping_state, shipping_zip_code,
+                                          credit_card_number, credit_card_expiration_date, credit_card_type, credit_card_validation_code
+                                   FROM purchase `;
 
 /* IMAGE SQL */
 DbInterface.FIND_LISTING_IMAGE_BY_LISTING_IMAGE_ID_SQL = "SELECT mime_type, image_data FROM listing_image WHERE listing_image_id = ?";
@@ -165,6 +185,47 @@ DbInterface.prototype.createListing = function(listing, callback) {
         {
             callback(null, this.lastID);
         }
+    });
+};
+
+/**
+ * Record a purchase
+ */
+DbInterface.prototype.purchaseListing = function(purchase, callback) {
+
+    var self = this;
+
+    this.db.serialize(function() {
+
+        var stmt = self.db.prepare(DbInterface.CREATE_PURCHASE_SQL);
+
+        stmt.run(objectMapper(purchase, mappings.purchaseToDatabaseMapping), function(err) {
+
+            if (err)
+            {
+                callback("Unable to insert purchase: " + err);
+            }
+            else
+            {
+                var lid = this.lastID;
+
+                var stmt2 = self.db.prepare(DbInterface.MARK_LISTING_SOLD_SQL);
+
+                stmt2.run(purchase.listingId, function(err) {
+
+                    if (err)
+                    {
+                        console.log("Unable to mark listing " + purchase.listingId + " sold: " + err);
+                    }
+                    
+                    callback(null, lid);
+                });
+
+                stmt2.finalize();
+            }
+        });
+
+        stmt.finalize();
     });
 };
 
