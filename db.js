@@ -21,7 +21,7 @@ DbInterface.SELECT_LISTING_SQL = `SELECT listing_id, title, description, buy_it_
                                          (SELECT max(user_image_id) FROM user_image WHERE user_name = u.user_name AND active = 1) as user_image_id,
                                          (SELECT group_concat(keyword) FROM listing_keyword WHERE listing_id = l.listing_id) AS keywords,
                                          (SELECT group_concat(listing_image_id) FROM listing_image WHERE listing_id = l.listing_id) AS image_ids,
-                                         (SELECT max(amount) FROM bid WHERE listing_id = l.listing_id AND bid_date BETWEEN l.start_date AND l.end_date AND bid_amount >= l.min_bid) AS max_bid
+                                         (SELECT max(amount) FROM bid WHERE listing_id = l.listing_id AND bid_date BETWEEN l.start_date AND l.end_date AND amount >= l.min_bid) AS max_bid
                                   FROM listing AS l
                                   INNER JOIN user AS u ON l.user_name = u.user_name `;
 DbInterface.FIND_LISTING_BY_LISTING_ID_SQL = DbInterface.SELECT_LISTING_SQL + 
@@ -113,7 +113,7 @@ DbInterface.FIND_ACTIVE_LISTINGS_BY_KEYWORD_SQL_NOT_EQUAL = DbInterface.SELECT_L
                                                                         WHERE keyword NOT IN (?))`;
 
 /* BID TABLE SQL */
-DbInterface.FIND_VALID_BIDS_SQL = `SELECT b.bid_id, b.bid_amount, b.user_name, b.bid_date,
+DbInterface.FIND_VALID_BIDS_SQL = `SELECT b.bid_id, b.amount, b.user_name, b.bid_date,
                                           u.first_name, u.middle_name, u.last_name 
                                    FROM bid AS b
                                    INNER JOIN user AS u
@@ -122,11 +122,11 @@ DbInterface.FIND_VALID_BIDS_SQL = `SELECT b.bid_id, b.bid_amount, b.user_name, b
                                         ON b.listing_id = l.listing_id
                                    WHERE b.listing_id = ? AND
                                          b.bid_date BETWEEN l.start_date AND l.end_date AND
-                                         b.bid_amount >= l.min_bid
+                                         b.amount >= l.min_bid
                                    ORDER BY b.bid_amound DESC`;
 
 DbInterface.CREATE_BID_SQL = `INSERT INTO bid 
-                              (bid_amount, user_name, bid_date, listing_id)
+                              (amount, user_name, bid_date, listing_id)
                               VALUES (?, ?, ?, ?)`;
 
 /**
