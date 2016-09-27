@@ -355,26 +355,35 @@ DbInterface.prototype.addListingKeywords = function(listingId, keywords, callbac
         this.db.serialize(function() {
 
             var stmt = self.db.prepare(DbInterface.CREATE_LISTING_KEYWORD_SQL);
+            var ps  = [];
             var cnt = 0;
-
+            
             for (var keyword of keywords)
             {
-                stmt.run(listingId, keyword, function(err) {
-                    if (err) 
-                    {
-                        callback("There was an error inserting keyword \"" + keyword + "\": " + err, cnt);
-                        return;
-                    }
-                    else
-                    {
-                        cnt++;
-                    }
-                });
+                ps.push(new Promise(function(resolve, reject) {
+
+                    stmt.run(listingId, keyword, function(err) {
+                        if (err)
+                        {
+                            reject(err);
+                        }
+                        else
+                        {
+                            cnt++;
+                            resolve();
+                        }
+                    })
+                }));
             }
 
-            stmt.finalize();
+            Promise.all(ps).then(function() {
+                callback(null, cnt);
 
-            callback(null, cnt);
+            }, function(err) {
+                callback(err, cnt);
+            });
+
+            stmt.finalize();            
         });
     }
     else
