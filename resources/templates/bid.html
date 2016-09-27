@@ -47,13 +47,13 @@
                     <div class="form-group row-fluid">
                         <label class="col-form-lable col-lg-6">Your Bid</label>
                         <div class="col-lg-6">
-                            <input type="text" class="form-control" />
+                            <input type="text" class="form-control" ng-model="bidAmount" />
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary btn-block" data-dismiss="modal">Post</button>
+                <button type="button" class="btn btn-primary btn-block" data-dismiss="modal" ng-click="submitBid()">Post</button>
                 <a data-dismiss="modal">Cancel</a>
             </div>
         </div>
