@@ -198,7 +198,87 @@ function getKeywords (data){
         });
         return keywords;
 }
+
+function sort(obj, TorP, sign){
+    
+    obj.sort(function(a,b){
+            if(TorP === 'P'){
+                
+                //sort on Price
+                if(sign === '+'){
+                    //sort ascending
+                    if(a.buyItNowPrice < b.buyItNowPrice){
+                        return -1;
+                    }else if(a.buyItNowPrice > b.buyItNowPrice){
+                        return 1;
+                    }else{
+                        return 0;
+                    }
+                }else{
+                    //sort descending
+                    if(a.buyItNowPrice < b.buyItNowPrice){
+                        return 1;
+                    }else if(a.buyItNowPrice > b.buyItNowPrice){
+                        return -1;
+                    }else{
+                        return 0;
+                    }
+                }   
+            }else if(TorP === 'T'){
+                if(sign === '+'){
+                    //sort on title Ascending
+                    if(a.title.toLowerCase() < b.title.toLowerCase()){
+                        return -1;
+                    }else if(a.title.toLowerCase() > b.title.toLowerCase()){
+                        return 1;
+                    }else{
+                        return 0;
+                    }
+                }else{
+                    //sort on title Descending
+                    if(a.title.toLowerCase() < b.title.toLowerCase()){
+                        return 1;
+                    }else if(a.title.toLowerCase() > b.title.toLowerCase()){
+                        return -1;
+                    }else{
+                        return 0;
+                    }
+                }
+            }
+        }, TorP, sign);
+        return obj;
+};
+
+
 app.controller('listingsCtrl', function ($scope, $http, $location){
+
+    $scope.sortedLists = [
+        {key:"Relevance", value:"Relevance"}, 
+        {key:"Alphabetical Ascending", value:"Alphabetical Ascending"}, 
+        {key:"Alphabetical Descending", value: "Alphabetical Descending"},
+        {key:"Price Ascending", value:"Price Ascending"}, 
+        {key:"Price Descending", value:"Price Descending"}];
+    //$scope.sortedList = "Relevance";
+
+    $scope.sortListing = function(value){
+        console.log("in");
+        console.log(value);
+        if(value == "Relevance"){
+            location.reload();
+        }else if(value == "Alphabetical Ascending"){
+            //console.dir($scope.listing);
+            $scope.listings = sort($scope.listings, 'T', '+');
+        }else if(value == "Alphabetical Descending"){
+            $scope.listings = sort($scope.listings, 'T', '-');
+        }else if(value == "Price Ascending"){
+            $scope.listings = sort($scope.listings, 'P', '+');
+        }else if(value == "Price Descending"){
+            $scope.listings = sort($scope.listings, 'P', '-');
+        }else{
+            //do nothing
+        }
+        console.log('done');
+    }
      $http.get('/listings', {cache: false}).success(function(data) {
         
         $scope.listings = data;
@@ -216,7 +296,6 @@ app.controller('listingsCtrl', function ($scope, $http, $location){
                     console.log('removing = ' + $scope.listings[i]);
                     $scope.listings.splice(i, 1);
                     console.log('index ' + i + ' length of array ' + $scope.listings.length);
-                    // i--;
                 }
             }
             keywords = getKeywords($scope.listings);
@@ -238,6 +317,9 @@ app.controller('listingsCtrl', function ($scope, $http, $location){
 
         });
     });
+
+
+
 });
 
 app.controller('listingDetailCtrl', function ($scope, $routeParams, $http){

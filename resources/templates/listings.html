@@ -1,6 +1,17 @@
 <div class="row-fluid">
   <div class="col-lg-2">
-    
+        <div>
+          <!--<select ng-model="sortedList" ng-options="c.key as c.value for c in sortedLists" ng-change="sortListing(c.value)"></select>-->
+          <select ng-model="sortedList" target='_self' data-ng-change="sortListing(sortedList)">
+            <option ng-repeat="option in sortedLists" value="{{option.key}}" >{{option.value}}</option>
+        </select>
+          <!--<option value="Relevance">Relevance </option>
+          <option value="ascABC">Alphabetical Ascending</option>
+          <option value="descABC">Alphabetical Descending</option>
+          <option value="ascPRICE">Price Ascending</option>
+          <option value="descPRICE">Price Descending</option>
+        </select>-->
+    </div> 
     <div class="panel panel-primary">
 
       <div class="panel-heading panel-title">
@@ -20,9 +31,10 @@
       </div>
 
     </div>
+    <!-- relavence(default) , alpha , price asc , price desc , enddate --> 
+
 
   </div>
-
   <div class="col-lg-8">
     <!-- styling for list items -->
       <div ng-repeat="listing in listings" class="panel panel-default">
@@ -70,3 +82,11 @@
   </div>
 
 </div>
+
+<!--        <select onchange="sort(this.value)">
+          <option value="Relevance">Relevance </option>
+          <option value="ascABC">Alphabetical Ascending</option>
+          <option value="descABC">Alphabetical Descending</option>
+          <option value="ascPRICE">Price Ascending</option>
+          <option value="descPRICE">Price Descending</option>
+        </select>
