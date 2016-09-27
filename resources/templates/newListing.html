@@ -11,6 +11,12 @@
 
             <!-- Info -->
             <div class="tab-pane fade in active" id="info-pill">
+                <div class="alert-group" ng-hide="successfulAlert">
+
+                    <div class="alert alert-success">
+                        New listing has been saved successfully!
+                    </div>
+                </div>
                 <div class="well">
                     <form role="form" name="newListingForm">
                         <div class="form-group">
@@ -50,7 +56,7 @@
                         </div>
 
                         <button type="button" id="addNewListingButton" ng-click="addNewListing()" class="btn btn-primary"
-                                ng-disabled="newListingForm.title.$dirty && newListingForm.title.$invalid">
+                                ng-disabled="newListingForm.title.$untouched || newListingForm.title.$dirty && newListingForm.title.$invalid">
                             <i class="fa fa-check"></i>&nbsp;Save
                         </button>
                     </form>

@@ -273,6 +273,7 @@ app.controller('newListingCtrl', function ($scope, $routeParams, $http, $locatio
     $scope.newListing = {};
     $scope.today = new Date();
     $scope.newListing.keywords = [];
+    $scope.successfulAlert = true;
 
     $scope.addKeyword = function() {
         var newItemNo = $scope.newListing.keywords.length+1;
@@ -297,9 +298,10 @@ app.controller('newListingCtrl', function ($scope, $routeParams, $http, $locatio
         console.log('new listing: ', JSON.stringify($scope.newListing));
         if ($scope.newListing.title) {
             $http.post('/newListing', {newListing: $scope.newListing}).success(function(count) {
-                console.log(JSON.stringify(count));
+                $scope.successfulAlert = false;
                 }).error(function (error) {
                     alert('Unable to add new listing with keywords: ' + error);
+                    $scope.successfulAlert = true;
                 });
         }
     };
