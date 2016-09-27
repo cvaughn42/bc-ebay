@@ -133,9 +133,12 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
 
     $scope.uploadListingFiles = function (listingId) {
         $('#listingId').val(listingId);
-        $('#uploadModal').on('hidden.bs.modal', function() {
-            $('div.dz-success').html("Drop files here or click to upload.<br />").removeClass('dz-success');
-        });
+
+        // need to remove the div created by dropzone.js after success uploading of the file(s)
+        // <div class='dz-preview dz-processing dz-image-preview dz-success dz-complete' />
+        var divRemove = $('div.dz-preview, .dz-processing, .dz-image-preview, .dz-success, .dz-complete');
+        $(divRemove).remove();
+
         $('#uploadModal').modal('show');
     };
     //fixed search --- search
