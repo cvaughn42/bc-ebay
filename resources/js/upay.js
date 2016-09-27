@@ -116,7 +116,7 @@ app.filter('tel', function () {
     };
 });
 
-app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams, $http, $route, $q) {
+app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams, $http, $route, $q, $location) {
     $http.get('/currentUser', {cache: false}).success(function (data) {
         $scope.currentUser = data;
         console.dir(data);
@@ -138,6 +138,19 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
         });
         $('#uploadModal').modal('show');
     };
+    //fixed search --- search
+    $scope.$on('searchEvent', function (event, srchTerm) {
+        $http.post('/search',{srchTerm: srchTerm, cache: false}).success(function(data) {
+            console.dir("getting result : "+data);
+            $scope.listings = data;
+            console.log(JSON.stringify(data));
+            $location.path('/listings');
+            location.reload(true);
+            
+        }).error(function () {
+            alert('Unable to load listing: ' + error);
+        });
+    });
 
 });
 
@@ -220,16 +233,6 @@ app.controller('listingsCtrl', function ($scope, $http, $location){
         }).error(function (error){
             console.log("error is " + error);
 
-        });
-    });
-
-    $scope.$on('searchEvent', function (event, srchTerm) {
-        console.log(srchTerm); 
-        $http.post('/search',{srchTerm: srchTerm, cache: false}).success(function(data) {
-            $scope.listings = data;
-            console.log(JSON.stringify(data));
-        }).error(function () {
-            alert('Unable to load listing: ' + error);
         });
     });
 });

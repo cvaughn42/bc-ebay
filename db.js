@@ -102,14 +102,14 @@ DbInterface.AUTHENTICATE_USER_SQL = DbInterface.SELECT_USER_SQL +
                                     `WHERE user_name = ? AND password = ?`;
 DbInterface.FIND_USER_BY_USERNAME_SQL = DbInterface.SELECT_USER_SQL + 
                                     `WHERE user_name = ?`;
-
+//fixed NOT --- search 
 DbInterface.FIND_ACTIVE_LISTINGS_BY_KEYWORD_SQL_NOT_EQUAL = DbInterface.SELECT_LISTING_SQL + 
                                                   `WHERE sold = 0 AND 
                                                          start_date <= current_timestamp AND 
                                                          end_date >= current_timestamp AND
-                                                         listing_id IN (SELECT listing_id 
+                                                         listing_id NOT IN (SELECT listing_id 
                                                                         FROM listing_keyword 
-                                                                        WHERE keyword NOT IN (?))`;
+                                                                        WHERE keyword IN ?)`;
 /**
  * Open the database
  */
@@ -315,7 +315,7 @@ DbInterface.prototype.findListingByListingId = function(listingId, callback) {
  * @param callback (err, listings)
  */
 DbInterface.prototype.findActiveListingsByKeyword = function(keywords, callback) {
-  
+    
     this.db.all(DbInterface.FIND_ACTIVE_LISTINGS_BY_KEYWORD_SQL, keywords, function(err, rows) {
 
         if (err)
@@ -331,6 +331,7 @@ DbInterface.prototype.findActiveListingsByKeyword = function(keywords, callback)
                 listings.push(objectMapper(row, mappings.listingToBusinessMapping));
             }
             
+
             callback(null, listings);
         }
     });

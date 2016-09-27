@@ -98,9 +98,19 @@ exports.search = function(req, res) {
         });
     }
     else {
-        srchResult = data;
-        console.log('search result = ', srchResult);
-        res.send(srchResult);
+          //added default search capabilities --- search
+        db.findActiveListings(function (err, result){
+            if (err)
+            {
+                res.send("Unable to find active listings: " + err);
+            }
+            else
+            {
+                srchResult = result;
+                console.log('search result = ', srchResult);
+                res.send(srchResult);
+            }
+        });
     }  
 };
 
