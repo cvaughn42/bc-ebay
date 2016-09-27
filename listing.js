@@ -31,7 +31,7 @@ exports.purchaseListing = function(req, res) {
         }
         else
         {
-            res.send(listingId);
+            res.send('ok');
         }
     });
 };
