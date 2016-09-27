@@ -153,12 +153,7 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
     });
 
 });
-
-app.controller('listingsCtrl', function ($scope, $http, $location){
-     $http.get('/listings', {cache: false}).success(function(data) {
-        
-        $scope.listings = data;
-
+function getKeywords (data){
         var keywords = [];
 
         for (var i = 0, l = data.length; i < l; i++)
@@ -198,26 +193,31 @@ app.controller('listingsCtrl', function ($scope, $http, $location){
                 return 0;
             }
         });
-
+        return keywords;
+}
+app.controller('listingsCtrl', function ($scope, $http, $location){
+     $http.get('/listings', {cache: false}).success(function(data) {
+        
+        $scope.listings = data;
+        console.dir($scope.listings);
+        var keywords = getKeywords(data);
         $scope.removeFilter = function (keyword){
             console.log('in!');
             console.log('keyword is : ' + keyword);
-            
 
-            for(var i = 0 ; i < $scope.listings.length; i++){
-                if($scope.listings[i].keywords.indexOf(keyword) != -1){
-                    //$scope.listings[i] = null;
-                    //$scope.listings[i] = null;
-                    $scope.listings.splice(i, 1);
-                }
-            }
-            for(var i in $scope.keywords){
-                if($scope.keywords[i].indexOf(keyword) != -1){
-                    //$scope.keywords[i] = null;
-                    $scope.keywords.splice(i, 1);
-                }
-            }
+            var buildKeywords = null;
             
+            for(var i = $scope.listings.length-1 ; i >= 0 ; i--){
+                console.log('keyword: '+ keyword +' value : ' + $scope.listings[i].keywords + ' does contain : ' + ($scope.listings[i].keywords.indexOf(keyword) != -1));
+                if($scope.listings[i].keywords.indexOf(keyword) != -1){
+                    console.log('removing = ' + $scope.listings[i]);
+                    $scope.listings.splice(i, 1);
+                    console.log('index ' + i + ' length of array ' + $scope.listings.length);
+                    // i--;
+                }
+            }
+            keywords = getKeywords($scope.listings);
+            $scope.keywords = keywords;
         }
         $scope.keywords = keywords;
 
