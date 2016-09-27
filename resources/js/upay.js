@@ -200,7 +200,7 @@ function getKeywords (data){
 }
 
 function sort(obj, TorP, sign){
-    console.log('TorP ' + TorP);
+    
     obj.sort(function(a,b){
             if(TorP === 'P'){
                 
