@@ -182,7 +182,8 @@ module.exports = {
                     return [];
                 }
             }
-        }
+        },
+        max_bid: "maxBid"
     }
 
 };

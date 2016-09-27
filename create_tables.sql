@@ -109,3 +109,14 @@ CREATE TABLE IF NOT EXISTS purchase
     FOREIGN KEY (listing_id) REFERENCES listing (listing_id),
     FOREIGN KEY (user_name) REFERENCES user (user_name)
 );
+
+CREATE TABLE IF NOT EXISTS bid
+(
+    bid_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    amount NUMERIC NOT NULL,
+    user_name VARCHAR(20) NOT NULL,
+    listing_id INTEGER NOT NULL,
+    bid_date TIMESTAMP DEFAULT(datetime('now', 'localtime')),
+    FOREIGN KEY (listing_id) REFERENCES listing (listing_id),
+    FOREIGN KEY (user_name) REFERENCES user (user_name)
+);
