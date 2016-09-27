@@ -16,6 +16,14 @@ DbInterface.DB_FILE_NAME = 'upay.sqlite';
 DbInterface.CREATE_LISTING_SQL = `INSERT INTO listing 
                                   (title, description, user_name, buy_it_now_price, min_bid, start_date, end_date, sold) 
                                   VALUES ($title, $description, $userName, $buyItNowPrice, $minBid, $startDate, $endDate, $sold)`;
+DbInterface.UPDATE_LISTING_SQL = `UPDATE listing 
+                                  SET title = $title, 
+                                      description = $description, 
+                                      buy_it_now_price = $buyItNowPrice, 
+                                      min_bid = $minBid, 
+                                      start_date = $minBid, 
+                                      end_date = $endDate
+                                  WHERE listing_id = $listingId`;
 DbInterface.SELECT_LISTING_SQL = `SELECT listing_id, title, description, buy_it_now_price, min_bid, start_date, 
                                          end_date, sold, u.user_name, u.first_name, u.middle_name, u.last_name, 
                                          (SELECT max(user_image_id) FROM user_image WHERE user_name = u.user_name AND active = 1) as user_image_id,
@@ -265,6 +273,33 @@ DbInterface.prototype.createListing = function(listing, callback) {
         {
             callback(null, this.lastID);
         }
+    });
+};
+
+DbInterface.prototype.updateListing = function(listing, callback) {
+
+    var params = objectMapper(listing, mappings.listingToDatabaseMapping);
+
+    this.db.run(DbInterface.UPDATE_LISTING_SQL, params, function(err) {
+        if (err)
+        {
+            callback("Unable to update listing: " + err);
+        }
+        else
+        {
+            if (this.changes === 1)
+            {
+                callback(null);
+            }
+            else if (this.changes === 0)
+            {
+                callback("Unable to update listing: no rows were affected");
+            }
+            else
+            {
+                callback("Multiple listings were affected by this update!");
+            }
+        }    
     });
 };
 
