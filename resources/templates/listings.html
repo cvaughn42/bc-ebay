@@ -57,13 +57,16 @@
               <div class="col-lg-8">
                 <p>{{ listing.description }}</p>
                 <p>Buy it now price: {{ listing.buyItNowPrice | currency }}</p>
-                <p ng-if="listing.minBid">Show bidding information (min = {{ listing.minBid | currency }})</p>
+                <p ng-if="listing.minBid">
+                    <span ng-if="listing.maxBid">Current Max Bid: {{listng.maxBid | currency}}</span>
+                    <span ng-if="!listing.maxBid">Minimum Bid: {{ listing.minBid | currency }}</span>
+                </p>
                 <p>Ends {{ listing.endDate }}</p>
               </div>
 
               <div class="col-lg-2">
                 <a class="btn btn-primary btn-block" ng-href="#/purchase/{{listing.listingId}}">Buy Now</a>
-                <button ng-if="listing.minBid" class="btn btn-default btn-block" ng-click="makeBid()">Bid</a>
+                <button ng-if="listing.minBid" class="btn btn-default btn-block" ng-click="makeBid(listing)">Bid</a>
               </div>
             </div>
             <!-- /row-fluid -->
@@ -82,6 +85,8 @@
   </div>
 
 </div>
+
+<bid-modal listing="bidListing"></bid-modal>
 
 <!--        <select onchange="sort(this.value)">
           <option value="Relevance">Relevance </option>
