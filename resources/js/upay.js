@@ -31,6 +31,16 @@ app.config(function ($routeProvider) {
     });
 });
 
+app.directive('bidModal', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            listing: '=listing'
+        },
+        templateUrl: '/templates/bid.html'
+    };
+});
+
 app.directive("logo", function() {
     return {
         template : "<a class='navbar-brand' href='#/'>u<sup><i class='fa fa-dollar'></i></sup>Pay</a>"
@@ -123,6 +133,13 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
     }).error(function () {
         alert('Unable to load currentUser: ' + error);
     });
+
+    $scope.bidListing;
+
+    $scope.makeBid = function(listing) {
+        $scope.bidListing = listing;
+        $('#bidModal').modal('show');
+    };
 
     $scope.search = function() {
         $scope.$broadcast('searchEvent', $scope.srchTerm);

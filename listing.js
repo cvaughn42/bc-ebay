@@ -20,6 +20,27 @@ exports.listings = function(req, res) {
     }); 
 };
 
+exports.findValidBids = function(req, res) {
+
+    db.findValidBids(req.params.listingId, function(err, bids) {
+        if (err) res.status(500).send(err);
+        else res.send(bids);
+    });
+};
+
+exports.makeBid = function(req, res) {
+
+    db.createBid({ 
+        listingId: req.body.listingId, 
+        userName: req.body.userName,
+        amount: req.body.amount,
+        bidDate: req.body.bidDate
+    }, function(err, bidId) {
+        if (err) res.status(500).send(err)
+        else res.send('ok');
+    });
+};
+
 exports.purchaseListing = function(req, res) {
 
     db.purchaseListing(req.body, function(err, listingId) {

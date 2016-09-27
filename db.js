@@ -20,7 +20,8 @@ DbInterface.SELECT_LISTING_SQL = `SELECT listing_id, title, description, buy_it_
                                          end_date, sold, u.user_name, u.first_name, u.middle_name, u.last_name, 
                                          (SELECT max(user_image_id) FROM user_image WHERE user_name = u.user_name AND active = 1) as user_image_id,
                                          (SELECT group_concat(keyword) FROM listing_keyword WHERE listing_id = l.listing_id) AS keywords,
-                                         (SELECT group_concat(listing_image_id) FROM listing_image WHERE listing_id = l.listing_id) AS image_ids
+                                         (SELECT group_concat(listing_image_id) FROM listing_image WHERE listing_id = l.listing_id) AS image_ids,
+                                         (SELECT max(amount) FROM bid WHERE listing_id = l.listing_id AND bid_date BETWEEN l.start_date AND l.end_date AND amount >= l.min_bid) AS max_bid
                                   FROM listing AS l
                                   INNER JOIN user AS u ON l.user_name = u.user_name `;
 DbInterface.FIND_LISTING_BY_LISTING_ID_SQL = DbInterface.SELECT_LISTING_SQL + 
@@ -110,6 +111,24 @@ DbInterface.FIND_ACTIVE_LISTINGS_BY_KEYWORD_SQL_NOT_EQUAL = DbInterface.SELECT_L
                                                          listing_id IN (SELECT listing_id 
                                                                         FROM listing_keyword 
                                                                         WHERE keyword NOT IN (?))`;
+
+/* BID TABLE SQL */
+DbInterface.FIND_VALID_BIDS_SQL = `SELECT b.bid_id, b.amount, b.user_name, b.bid_date,
+                                          u.first_name, u.middle_name, u.last_name 
+                                   FROM bid AS b
+                                   INNER JOIN user AS u
+                                        ON b.user_name = u.user_name
+                                   INNER JOIN listing AS l
+                                        ON b.listing_id = l.listing_id
+                                   WHERE b.listing_id = ? AND
+                                         b.bid_date BETWEEN l.start_date AND l.end_date AND
+                                         b.amount >= l.min_bid
+                                   ORDER BY b.bid_amound DESC`;
+
+DbInterface.CREATE_BID_SQL = `INSERT INTO bid 
+                              (amount, user_name, bid_date, listing_id)
+                              VALUES (?, ?, ?, ?)`;
+
 /**
  * Open the database
  */
@@ -162,6 +181,67 @@ DbInterface.prototype.close = function() {
         else
         {
             delete this.db;
+        }
+    });
+};
+
+/**
+ * Create a new bid
+ */
+DbInterface.prototype.createBid = function(bid, callback) {
+
+    var self = this;
+
+    this.db.serialize(function() {
+
+        var stmt = self.db.prepare(DbInterface.CREATE_BID_SQL);
+
+        stmt.run(bid.amount, bid.user.userName, bid.bidDate, bid.listingId, function(err) {
+            if (err)
+            {
+                callback("Unable to place bid: " + err);
+            }
+            else
+            {
+                callback(null, this.lastID);
+            }
+        })
+
+        stmt.finalize();
+    });
+
+};
+
+/**
+ * Get all bids
+ */
+DbInterface.prototype.findValidBids = function(listingId, callback) {
+
+    this.db.all(DbInterface.FIND_VALID_BIDS_SQL, listingId, function(err, rows) {
+
+        if (err)
+        {
+            callback('Unable to find valid bids: ' + err);
+        }
+        else
+        {
+            var bids = [];
+
+            for (var row of rows)
+            {
+                bids.push({
+                    bidId: row.bid_id,
+                    bidAmount: row.amount,
+                    listingId: row.listing_id,
+                    bidDate: new Date(row.bid_date),
+                    user: {
+                        userName: row.user_name,
+                        firstName: row.first_name,
+                        middleName: row.middle_name,
+                        lastName: row.last_name
+                    }
+                })
+            }
         }
     });
 };
