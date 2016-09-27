@@ -35,7 +35,7 @@ DbInterface.FIND_ACTIVE_LISTINGS_BY_KEYWORD_SQL = DbInterface.SELECT_LISTING_SQL
                                                          end_date >= current_timestamp AND
                                                          listing_id IN (SELECT listing_id 
                                                                         FROM listing_keyword 
-                                                                        WHERE keyword IN ?)`;
+                                                                        WHERE keyword IN (?))`;
 DbInterface.CREATE_LISTING_IMAGE_PS = "INSERT INTO listing_image (listing_id, image_data, mime_type) VALUES ($listingId, $imageData, $mimeType)";
 DbInterface.MARK_LISTING_SOLD_SQL = "UPDATE listing SET sold = 1 WHERE listing_id = ?";
                     
@@ -109,7 +109,7 @@ DbInterface.FIND_ACTIVE_LISTINGS_BY_KEYWORD_SQL_NOT_EQUAL = DbInterface.SELECT_L
                                                          end_date >= current_timestamp AND
                                                          listing_id IN (SELECT listing_id 
                                                                         FROM listing_keyword 
-                                                                        WHERE keyword NOT IN ?)`;
+                                                                        WHERE keyword NOT IN (?))`;
 /**
  * Open the database
  */
@@ -331,7 +331,7 @@ DbInterface.prototype.findActiveListingsByKeyword = function(keywords, callback)
                 listings.push(objectMapper(row, mappings.listingToBusinessMapping));
             }
             
-            callback(null,listings);
+            callback(null, listings);
         }
     });
 };

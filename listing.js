@@ -83,6 +83,8 @@ exports.search = function(req, res) {
     }
     else {
         srchResult = data;
+        console.log('search result = ', srchResult);
+        res.send(srchResult);
     }  
 };
 
@@ -97,7 +99,7 @@ exports.newListing = function(req, res) {
 exports.filterOn = function (req, res){    
     var stringVersion =  req.body.filterOnTerm;
     console.log(stringVersion );
-    db.findActiveListingsByKeyword (stringVersion, function (err, listing){
+    db.findActiveListingsByKeyword(stringVersion, function (err, listing){
         if(err){
             res.status(500).send(err);
         }else{
