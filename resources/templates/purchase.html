@@ -14,13 +14,13 @@
 
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs">
-                                <li class="active"><a href="#details" data-toggle="tab" target="_self">Details</a>
+                                <li class="active"><a id="detailsTab" href="#details" data-toggle="tab" target="_self">Details</a>
                                 </li>
-                                <li><a href="#billing" data-toggle="tab" target="_self">Billing Info</a>
+                                <li><a href="#billing" id="billingTab" data-toggle="tab" target="_self">Billing Info</a>
                                 </li>
-                                <li><a href="#shipping" data-toggle="tab" target="_self">Shipping Info</a>
+                                <li><a href="#shipping" id="shippingTab" data-toggle="tab" target="_self">Shipping Info</a>
                                 </li>
-                                <li><a href="#summary" data-toggle="tab" target="_self">Summary</a>
+                                <li><a href="#summary" id="summaryTab" data-toggle="tab" target="_self">Summary</a>
                                 </li>
                             </ul>
 
@@ -63,7 +63,7 @@
                                                 <p>
                                                     Being sold by
                                                     <a ng-click="displaySeller(listing.user.userName)">
-                                                        {{ listing.user.firstName }} {{ listing.user.lastName }}
+                                                        {{ buildUserName(listing.user) }}
                                                         <img ng-if="listing.user.userImageId" ng-src="/userImage/{{listing.user.userName}}" alt="Seller Avatar" width="40px;" class="img-circle" />
                                                     </a>
                                                 </p>
@@ -80,7 +80,7 @@
 
                                     <div class="container-fluid">
                                         <div class="row-fluid">
-                                            <payment-info info="paymentInfo"></payment-info>
+                                            <payment-info info="purchase"></payment-info>
                                         </div>
 
                                         <div class="form-group row-fluid">
@@ -94,7 +94,7 @@
                                                     </div>
                                                 </div>
 
-                                                <address ng-if="useShippingAddress === false" address="billingAddress"></address>
+                                                <address ng-if="useShippingAddress === false" address="purchase.billing"></address>
                                             </div>
                                         </div>
                                     </div>
@@ -103,12 +103,12 @@
                                     <div class="container-fluid">
                                         <div class="form-group row-fluid">
                                             <label>Ship To</label>
-                                            <input type="text" class="form-control" id="shipTo" ng-bind="shipTo" />
+                                            <input type="text" class="form-control" id="shipTo" ng-model="purchase.shipping.name" />
                                         </div>
                                         <div class="form-group row-fluid">
                                             <label>Shipping Address</label>
                                             <div>
-                                                <address address="shippingAddress"></address>
+                                                <address address="purchase.shipping"></address>
                                             </div>
                                         </div>
                                     </div>
@@ -128,7 +128,7 @@
                         <!-- tabs section -->
 
                         <div class="col-lg-2 text-center">
-                            <button id="nextButton" class="btn btn-primary btn-outline btn-block">Next</button>
+                            <button id="nextButton" class="btn btn-primary btn-outline btn-block" ng-click="moveNext()">Next</button>
                             <br/>
                             <small><a ng-click="discourageQuit()">I changed my mind</a></small>
                         </div>

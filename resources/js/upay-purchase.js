@@ -47,6 +47,37 @@ app.controller('purchaseController', function($scope, $http, $routeParams) {
         alert("Too bad - this is u$Pay, not e*Bay!");
     };
 
+    /**
+     * Build user name from user object
+     */
+    $scope.buildUserName = function(user) {
+
+        var n = '';
+        var sp = '';
+
+        if (user)
+        {
+            if (user.firstName)
+            {
+                n += user.firstName;
+                sp = " ";
+            }
+
+            if (user.middleName)
+            {
+                n += sp + user.middleName;
+                sp = " ";
+            }
+
+            if (user.lastName)
+            {
+                n += sp + user.lastName;
+            }
+        }
+
+        return n;
+    };
+
     $scope.displaySeller = function(sellerId) {
         
         $('#sellerInfoModal').modal('show');
@@ -128,6 +159,40 @@ app.controller('purchaseController', function($scope, $http, $routeParams) {
         }
     };
 
+    /**
+     * Handle the next button click event
+     */
+    $scope.moveNext = function() {
+
+        var nextStep;
+        var currentStep = $('.nav-tabs li.active a').attr('id');
+
+        // Get current step
+        if (currentStep.substr(0, 7) === 'details')
+        {
+            // No action necessary
+            nextStep = 'billing';
+        }
+        else if (currentStep.substr(0, 7) === 'billing')
+        {
+            
+            nextStep = 'shipping';
+        }
+        else if (currentStep.substr(0, 8) === 'shipping')
+        {
+
+            nextStep = 'summary';
+        }
+        else if (currentStep.substr(0, 7) === 'summary')
+        {
+
+            nextStep = 'summary';
+        }
+
+
+        $('#' + nextStep + 'Tab').trigger('click');
+     }; 
+
     $scope.$on('$viewContentLoaded', function (event) {
 
         // Get the listing from the server to make sure you have the latest info
@@ -145,8 +210,6 @@ app.controller('purchaseController', function($scope, $http, $routeParams) {
 
             $scope.listing = data;
 
-            console.dir(data);
-
             var st = '';
 
             if (data && data.user && data.user.address && data.user.address.state)
@@ -154,6 +217,8 @@ app.controller('purchaseController', function($scope, $http, $routeParams) {
                 st = '(' + data.user.address.state + ')';
             }
 
+            // Billing details (order line items)
+            //
             $scope.billingDetails = [{
                 description: 'Buy It Now Price',
                 amount: data.buyItNowPrice
@@ -194,24 +259,34 @@ app.controller('purchaseController', function($scope, $http, $routeParams) {
 
             $scope.useShippingAddress = true;
 
-            $scope.billingAddress = {
-                street1: '1313 Mockingbird La',
-                city: 'Fresno',
-                state: 'CA',
-                zipCode: '90210'
+            $scope.purchase = {
+                listingId: data.listingId,
+                userName: $scope.currentUser.userName,
+                amount: $scope.sumBillingDetails($scope.billingDetails),
+                purchaseDate: new Date(),
+                billing: {
+                    name: $scope.buildUserName($scope.currentUser),
+                    street1: $scope.currentUser.address.street1,
+                    street2: $scope.currentUser.address.street2,
+                    city: $scope.currentUser.address.city,
+                    state: $scope.currentUser.address.state,
+                    zipCode: $scope.currentUser.address.zipCode
+                }, 
+                shipping: {
+                    name: $scope.buildUserName($scope.currentUser),
+                    street1: $scope.currentUser.address.street1,
+                    street2: $scope.currentUser.address.street2,
+                    city: $scope.currentUser.address.city,
+                    state: $scope.currentUser.address.state,
+                    zipCode: $scope.currentUser.address.zipCode
+                },
+                creditCardNumber: '',
+                creditCardExpirationDate: '',
+                creditCardValidationCode: '',
+                creditCardType: '' 
             };
 
-            $scope.shippingAddress = {
-                street1: '100 W Havre De Grace Blvd',
-                street2: 'Apt 3G',
-                city: 'New York',
-                state: 'NY',
-                zipCode: '10019-3219'
-            };
-
-            $scope.paymentInfo = {
-                creditCardBillingName: $scope.currentUser.firstName + ' ' + $scope.currentUser.listName
-            };
+            console.dir($scope.purchase);
         
         }).error(function(err) {
         
