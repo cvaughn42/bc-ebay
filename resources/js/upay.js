@@ -119,7 +119,7 @@ app.filter('tel', function () {
 app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams, $http, $route, $q, $location) {
     $http.get('/currentUser', {cache: false}).success(function (data) {
         $scope.currentUser = data;
-        console.dir(data);
+        // console.dir(data);
     }).error(function () {
         alert('Unable to load currentUser: ' + error);
     });
@@ -202,7 +202,7 @@ app.controller('listingsCtrl', function ($scope, $http, $location){
      $http.get('/listings', {cache: false}).success(function(data) {
         
         $scope.listings = data;
-        console.dir($scope.listings);
+        // console.dir($scope.listings);
         var keywords = getKeywords(data);
         $scope.removeFilter = function (keyword){
             console.log('in!');
@@ -260,7 +260,7 @@ app.controller('listingDetailCtrl', function ($scope, $routeParams, $http){
     };
     
     var listingId = parseInt($routeParams.listingId);
-        console.log(listingId);
+        // console.log(listingId);
         $http.get('/listing/'+listingId, {cache: false}).success(function(data) {
           $scope.listing = data;
         }).error(function () {
