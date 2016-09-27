@@ -135,10 +135,25 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
     });
 
     $scope.bidListing;
+    $scope.bidAmount;
 
     $scope.makeBid = function(listing) {
         $scope.bidListing = listing;
         $('#bidModal').modal('show');
+    };
+
+    $scope.submitBid = function() {
+
+        $http.post('/makeBid', {
+            listingId: $scope.bidAmount.listingId, 
+            userName: $scope.currentUser.userName,
+            amount: $scope.bidAmount,
+            bidDate: new Date()
+        }).success(function() {
+            alert("Your bid was placed");
+        }).error(function(err) {
+            alert("There was a problem posting your bid: " + err);
+        });
     };
 
     $scope.search = function() {
