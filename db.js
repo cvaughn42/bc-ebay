@@ -199,7 +199,9 @@ DbInterface.prototype.purchaseListing = function(purchase, callback) {
 
         var stmt = self.db.prepare(DbInterface.CREATE_PURCHASE_SQL);
 
-        stmt.run(objectMapper(purchase, mappings.purchaseToDatabaseMapping), function(err) {
+        var params = objectMapper(purchase, mappings.purchaseToDatabaseMapping);
+
+        stmt.run(params, function(err) {
 
             if (err)
             {

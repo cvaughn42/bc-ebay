@@ -175,7 +175,7 @@ app.controller('purchaseController', function($scope, $http, $routeParams) {
         }
         else if (currentStep.substr(0, 7) === 'billing')
         {
-            
+
             nextStep = 'shipping';
         }
         else if (currentStep.substr(0, 8) === 'shipping')
@@ -258,6 +258,16 @@ app.controller('purchaseController', function($scope, $http, $routeParams) {
             }]
 
             $scope.useShippingAddress = true;
+
+            $scope.submitPurchase = function() {
+                // TODO Validate purchase info
+                $http.post('/buyIt', $scope.purchase).success(function(data) {
+                    $scope.listing.sold = true;
+
+                }).error(function(err) {
+                    alert("Something's gone wrong with your order.");
+                });
+            };
 
             $scope.purchase = {
                 listingId: data.listingId,

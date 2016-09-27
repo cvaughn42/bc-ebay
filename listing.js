@@ -27,7 +27,7 @@ exports.purchaseListing = function(req, res) {
         if (err)
         {
             console.log(err);
-            res.sendStatus(500);
+            res.status(500).send(err);
         }
         else
         {
