@@ -98,6 +98,17 @@ exports.listing = function(req, res) {
     });
 };
 
+exports.getKeywords = function(req, res){
+    db.getAllKeywords(function(err,keywords){
+        if(err){
+            console.log(err);
+            res.status.send(500);
+        }else{
+            res.send(keywords);
+        }
+    });
+}
+
 // app.post('/search')
 exports.search = function(req, res) {
     var srchTerm = req.body.srchTerm;
@@ -107,6 +118,7 @@ exports.search = function(req, res) {
         db.findActiveListingsByKeyword(srchTerm, function(err,listing){
             if(err){
                 console.log(err);
+                res.status.send(500);
             }else{
                 for(var i in listing){
                     srchResult.push(listing[i]);

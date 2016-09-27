@@ -176,12 +176,14 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
     //fixed search --- search
     $scope.$on('searchEvent', function (event, srchTerm) {
         $http.post('/search',{srchTerm: srchTerm, cache: false}).success(function(data) {
-            console.dir("getting result : "+data);
-            $scope.listings = data;
-            console.log(JSON.stringify(data));
-            $location.path('/listings');
-            location.reload(true);
             
+            // console.dir(data);
+            // $scope.listings = data;
+            // console.log(JSON.stringify(data));
+            $location.path('/listings');
+            //location.reload(true);
+            // var keyword = getKeywords(data.listings);
+            // $scope.keywords = keyword;
         }).error(function () {
             alert('Unable to load listing: ' + error);
         });
@@ -296,7 +298,8 @@ app.controller('listingsCtrl', function ($scope, $http, $location){
         console.log("in");
         console.log(value);
         if(value == "Relevance"){
-            location.reload();
+            //removed reload
+            $location.path('/');
         }else if(value == "Alphabetical Ascending"){
             //console.dir($scope.listing);
             $scope.listings = sort($scope.listings, 'T', '+');
@@ -349,7 +352,20 @@ app.controller('listingsCtrl', function ($scope, $http, $location){
 
         });
     });
-
+    $scope.$on('searchEvent', function (event, srchTerm) {
+            $http.post('/search',{srchTerm: srchTerm, cache: false}).success(function(data) {
+                
+                console.dir(data);
+                $scope.listings = data;
+                $scope.keywords = getKeywords(data);
+                console.log(JSON.stringify(data));
+                //$location.path('/listings');
+                //location.reload(true);
+                
+            }).error(function () {
+                alert('Unable to load listing: ' + error);
+            });
+    });
 
 
 });
