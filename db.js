@@ -107,9 +107,9 @@ DbInterface.FIND_ACTIVE_LISTINGS_BY_KEYWORD_SQL_NOT_EQUAL = DbInterface.SELECT_L
                                                   `WHERE sold = 0 AND 
                                                          start_date <= current_timestamp AND 
                                                          end_date >= current_timestamp AND
-                                                         listing_id NOT IN (SELECT listing_id 
+                                                         listing_id IN (SELECT listing_id 
                                                                         FROM listing_keyword 
-                                                                        WHERE keyword IN ?)`;
+                                                                        WHERE keyword NOT IN (?))`;
 /**
  * Open the database
  */
