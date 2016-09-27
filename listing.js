@@ -20,6 +20,22 @@ exports.listings = function(req, res) {
     }); 
 };
 
+exports.purchaseListing = function(req, res) {
+
+    db.purchaseListing(req.body, function(err, listingId) {
+
+        if (err)
+        {
+            console.log(err);
+            res.sendStatus(500);
+        }
+        else
+        {
+            res.send(listingId);
+        }
+    });
+};
+
 exports.listingImage = function(req, res) {
 
     db.findListingImage(req.params.listingImageId, function(err, image) {

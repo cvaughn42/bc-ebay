@@ -71,6 +71,8 @@ app.post('/newListing', listing.newListing);
 app.get('/listing/:listingId', listing.listing);
 app.get('/listingImage/:listingImageId', checkAuth, listing.listingImage);
 app.get('listing/removeFilter/:keyword', listing.filterRemove);
+app.post('/buyIt', checkAuth, listing.purchaseListing);
+
 // Profile
 app.get('/profile/:userName', profile.profile);
 app.post('/updateProfile', profile.updateProfile);
