@@ -1,6 +1,6 @@
 <div class="row-fluid">
   <div class="col-lg-2">
-    
+
     <div class="panel panel-primary">
       <div class="panel-heading panel-title">
         Sort
@@ -13,7 +13,7 @@
         </div>
       </div>
     </div>
-    
+
     <div class="panel panel-primary">
 
       <div class="panel-heading panel-title">
@@ -41,11 +41,6 @@
     <!-- styling for list items -->
     <div ng-repeat="listing in listings" class="panel panel-default">
 
-      <div class="panel-heading panel-title">
-        <a ng-href="#/listing/{{listing.listingId}}">
-            {{listing.title}}
-          </a>
-      </div>
       <div class="panel-body">
 
         <div class="container-fluid">
@@ -60,6 +55,9 @@
             </div>
 
             <div class="col-lg-8">
+              <p><a ng-href="#/listing/{{listing.listingId}}">
+            {{listing.title}}
+          </a></p>
               <p>{{ listing.description }}</p>
               <p>Buy it now price: {{ listing.buyItNowPrice | currency }}</p>
               <p ng-if="listing.minBid">
@@ -73,15 +71,15 @@
               <a class="btn btn-primary btn-block" ng-href="#/purchase/{{listing.listingId}}">Buy Now</a>
               <button ng-if="listing.minBid" class="btn btn-default btn-block" ng-click="makeBid(listing)">Bid</a></button>
               <a ng-if="currentUser.userName === listing.user.userName" href="#/updateListing/{{listing.listingId}}" class='btn btn-success btn-outline btn-block'>Update Listing</a>
-              </div>
             </div>
-            <!-- /row-fluid -->
           </div>
-          <!-- /container-fluid -->
+          <!-- /row-fluid -->
         </div>
-        <!-- /panel-body -->
+        <!-- /container-fluid -->
       </div>
-      <!-- /panel -->
+      <!-- /panel-body -->
+    </div>
+    <!-- /panel -->
   </div>
   <!-- /col-lg-8 -->
 

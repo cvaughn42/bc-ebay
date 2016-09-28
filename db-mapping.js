@@ -96,27 +96,47 @@ module.exports = {
         startDate: {
             key: '$startDate',
             transform: function(val) {
+                
                 if (!val)
                 {
-                    return new Date();
+                    val = new Date();
                 }
-                else
+
+                if (!val instanceof Date)
                 {
-                    return val;
+                    val = new Date(val);
                 }
+
+                return  val.getFullYear() + '-' + 
+                        (val.getMonth() < 9 ? '0' : '') +
+                        (val.getMonth() + 1) + '-' + 
+                        val.getDate() + ' ' +
+                        val.getHours() + ':' +
+                        val.getMinutes() + ':' +
+                        val.getSeconds();  
             }
         },
         endDate: {
             key: '$endDate',
             transform: function(val) {
+                
                 if (!val)
                 {
-                    return new Date();
+                    val = new Date( (new Date()).getTime() + (24 * 5 * 60 * 60 * 1000) );
                 }
-                else
+
+                if (!val instanceof Date)
                 {
-                    return val;
+                    val = new Date(val);
                 }
+
+                return  val.getFullYear() + '-' + 
+                        (val.getMonth() < 9 ? '0' : '') +
+                        (val.getMonth() + 1) + '-' + 
+                        val.getDate() + ' ' +
+                        val.getHours() + ':' +
+                        val.getMinutes() + ':' +
+                        val.getSeconds();  
             }
         },
         sold: {
