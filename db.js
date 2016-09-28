@@ -24,7 +24,7 @@ DbInterface.UPDATE_LISTING_SQL = `UPDATE listing
                                       start_date = $startDate, 
                                       end_date = $endDate
                                   WHERE listing_id = $listingId`;
-DbInterface.SELECT_LISTING_SQL = `SELECT listing_id, title, description, buy_it_now_price, min_bid, start_date, 
+DbInterface.SELECT_LISTING_SQL = `SELECT DISTINCT l.listing_id, title, description, buy_it_now_price, min_bid, start_date, 
                                          end_date, sold, u.user_name, u.first_name, u.middle_name, u.last_name, 
                                          (SELECT max(user_image_id) FROM user_image WHERE user_name = u.user_name AND active = 1) as user_image_id,
                                          (SELECT group_concat(keyword) FROM listing_keyword WHERE listing_id = l.listing_id) AS keywords,
@@ -39,11 +39,11 @@ DbInterface.FIND_ACTIVE_LISTINGS_SQL = DbInterface.SELECT_LISTING_SQL +
                                               start_date <= current_timestamp AND 
                                               end_date >= current_timestamp`;
 DbInterface.FIND_ACTIVE_LISTINGS_BY_KEYWORD_SQL = DbInterface.SELECT_LISTING_SQL +
-                                                  `WHERE sold = 0 AND 
+                                                  `LEFT OUTER JOIN listing_keyword AS k ON l.listing_id = k.listing_id 
+                                                  WHERE sold = 0 AND 
                                                          start_date <= current_timestamp AND 
                                                          end_date >= current_timestamp AND
-                                                         (listing_id IN (SELECT listing_id FROM listing_keyword WHERE keyword IN (?)) 
-                                                                    or listing_id in (SELECT listing_id from listing where title like ?))`;
+                                                         (k.keyword LIKE ? OR l.title like ? OR l.description like ?)`;
 DbInterface.CREATE_LISTING_IMAGE_PS = "INSERT INTO listing_image (listing_id, image_data, mime_type) VALUES ($listingId, $imageData, $mimeType)";
 DbInterface.MARK_LISTING_SOLD_SQL = "UPDATE listing SET sold = 1 WHERE listing_id = ?";
                     
@@ -433,7 +433,8 @@ DbInterface.prototype.findListingByListingId = function(listingId, callback) {
  */
 DbInterface.prototype.findActiveListingsByKeyword = function(keywords, callback) {
     
-    this.db.all(DbInterface.FIND_ACTIVE_LISTINGS_BY_KEYWORD_SQL, keywords, '%'+keywords+'%', function(err, rows) {
+    var keywordsLike = '%'+keywords+'%';
+    this.db.all(DbInterface.FIND_ACTIVE_LISTINGS_BY_KEYWORD_SQL, keywordsLike, keywordsLike, keywordsLike, function(err, rows) {
 
         if (err)
         {
