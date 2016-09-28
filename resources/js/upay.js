@@ -377,7 +377,9 @@ function sort(obj, TorP, sign){
 app.controller('listingsCtrl', function ($scope, $http, $location){
 
     $scope.resetKeywords = function (){
-        $scope.activeKeyword = null;
+        // $scope.activeKeyword = null;
+        // location.path('/#/listings');
+        $location.path('/');
     }
 
     $scope.displaySeller = function(sellerId) {
