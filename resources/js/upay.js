@@ -141,6 +141,37 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
     }).error(function () {
         alert('Unable to load currentUser: ' + error);
     });
+    
+    /**
+     * Build user name from user object
+     */
+    $scope.buildUserName = function(user) {
+
+        var n = '';
+        var sp = '';
+
+        if (user)
+        {
+            if (user.firstName)
+            {
+                n += user.firstName;
+                sp = " ";
+            }
+
+            if (user.middleName)
+            {
+                n += sp + user.middleName;
+                sp = " ";
+            }
+
+            if (user.lastName)
+            {
+                n += sp + user.lastName;
+            }
+        }
+
+        return n;
+    };
 
     $scope.bidListing;
     $scope.bidAmount;
