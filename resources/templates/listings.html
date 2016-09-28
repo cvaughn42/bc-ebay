@@ -21,7 +21,7 @@
       </div>
 
       <div class="panel-body">
-        <div ng-if=" activeKeyword != null"> Active keyword is : {{activeKeyword}}</div>
+        <button ng-if=" activeKeyword != null"  class="btn btn-xs btn-default btn-outline" style="position:relative;" ng-click="resetKeywords()"> <b>Active keyword is :</b> {{activeKeyword}} &nbsp; &times;</button>
         <div ng-repeat="keyword in keywords" class="alert alert-info alert-dismissable keyword">
           <!-- remove filter -->    
           
