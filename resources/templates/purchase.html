@@ -36,6 +36,7 @@
                                                 <a ng-click="displayGallery(listing.imageIds)">
                                                     <img ng-if="listing.imageIds && listing.imageIds.length" ng-src="/listingImage/{{listing.imageIds[0]}}" />
                                                 </a>
+                                                <h5 class='text-center' ng-if="listing.imageIds && listing.imageIds.length"> 1 of {{listing.imageIds.length}}</h5>
                                                 <span ng-if="!listing.imageIds || listing.imageIds.length === 0">
                                                     No image to display    
                                                 </span>
@@ -122,6 +123,7 @@
                                                 <a ng-click="displayGallery(listing.imageIds)">
                                                     <img ng-if="listing.imageIds && listing.imageIds.length" ng-src="/listingImage/{{listing.imageIds[0]}}" />
                                                 </a>
+                                                <h5 class='text-center' ng-if="listing.imageIds && listing.imageIds.length"> 1 of {{listing.imageIds.length}}</h5>
                                                 <img ng-if="!listing.imageIds || !listing.imageIds.length" ng-src="/images/noPicture.png" />
                                             </div>
                                             <div class="col-lg-8">
