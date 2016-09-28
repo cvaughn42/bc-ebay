@@ -74,3 +74,8 @@ img.cc-image
     margin-left: -10px;
     font-size: 125%;
 }
+
+.form-group.row-fluid 
+{
+    margin-bottom: 1em;
+}
