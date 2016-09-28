@@ -1,17 +1,19 @@
 <div class="row-fluid">
   <div class="col-lg-2">
-        <div>
-          <!--<select ng-model="sortedList" ng-options="c.key as c.value for c in sortedLists" ng-change="sortListing(c.value)"></select>-->
-          <select ng-model="sortedList" target='_self' data-ng-change="sortListing(sortedList)">
-            <option ng-repeat="option in sortedLists" value="{{option.key}}" >{{option.value}}</option>
-        </select>
-          <!--<option value="Relevance">Relevance </option>
-          <option value="ascABC">Alphabetical Ascending</option>
-          <option value="descABC">Alphabetical Descending</option>
-          <option value="ascPRICE">Price Ascending</option>
-          <option value="descPRICE">Price Descending</option>
-        </select>-->
-    </div> 
+    
+    <div class="panel panel-primary">
+      <div class="panel-heading panel-title">
+        Sort
+      </div>
+      <div class="panel-body">
+        <div class="form-group">
+          <select ng-model="sortedList" target='_self' data-ng-change="sortListing(sortedList)" class="form-control" ng-init='sortedList = sortedLists[0].key'>
+            <option ng-repeat="option in sortedLists" value="{{option.key}}" >{{option.value}}</option> 
+          </select>
+        </div>
+      </div>
+    </div>
+    
     <div class="panel panel-primary">
 
       <div class="panel-heading panel-title">
@@ -25,48 +27,48 @@
           <button type="button" class="close" data-dismiss="alert" aria-hidden="true" ng-click="removeFilter(keyword)">&times;</button>
           <!-- add filter -->
           <!-- alert('filter the list on this keyword'); return false; -->
-          <a ng-click="filterOn(keyword)" target='_self' class="alert-link" name="filter-On-Term" id="filter-On-Term"  ng-model="filterOnTerm">{{ keyword }}</a>.
+          <a ng-click="filterOn(keyword)" target='_self' class="alert-link" name="filter-On-Term" id="filter-On-Term" ng-model="filterOnTerm">{{ keyword }}</a>.
         </div>
 
       </div>
 
     </div>
-    <!-- relavence(default) , alpha , price asc , price desc , enddate --> 
+    <!-- relavence(default) , alpha , price asc , price desc , enddate -->
 
 
   </div>
   <div class="col-lg-8">
     <!-- styling for list items -->
-      <div ng-repeat="listing in listings" class="panel panel-default">
+    <div ng-repeat="listing in listings" class="panel panel-default">
 
-        <div class="panel-heading panel-title">
-          <a ng-href="#/listing/{{listing.listingId}}">
+      <div class="panel-heading panel-title">
+        <a ng-href="#/listing/{{listing.listingId}}">
             {{listing.title}}
           </a>
-        </div>
-        <div class="panel-body">
+      </div>
+      <div class="panel-body">
 
-          <div class="container-fluid">
-            <div class="row-fluid">
+        <div class="container-fluid">
+          <div class="row-fluid">
 
-              <div class="col-lg-2">
-                <img ng-if="listing.imageIds && listing.imageIds.length" ng-src="/listingImage/{{listing.imageIds[0]}}" />
-                <span ng-if="!listing.imageIds || !listing.imageIds.length">No image available</span>
-              </div>
+            <div class="col-lg-2">
+              <img ng-if="listing.imageIds && listing.imageIds.length" ng-src="/listingImage/{{listing.imageIds[0]}}" />
+              <span ng-if="!listing.imageIds || !listing.imageIds.length">No image available</span>
+            </div>
 
-              <div class="col-lg-8">
-                <p>{{ listing.description }}</p>
-                <p>Buy it now price: {{ listing.buyItNowPrice | currency }}</p>
-                <p ng-if="listing.minBid">
-                    <span ng-if="listing.maxBid">Current Max Bid: {{listng.maxBid | currency}}</span>
-                    <span ng-if="!listing.maxBid">Minimum Bid: {{ listing.minBid | currency }}</span>
-                </p>
-                <p>Ends {{ listing.endDate }}</p>
-              </div>
+            <div class="col-lg-8">
+              <p>{{ listing.description }}</p>
+              <p>Buy it now price: {{ listing.buyItNowPrice | currency }}</p>
+              <p ng-if="listing.minBid">
+                <span ng-if="listing.maxBid">Current Max Bid: {{listng.maxBid | currency}}</span>
+                <span ng-if="!listing.maxBid">Minimum Bid: {{ listing.minBid | currency }}</span>
+              </p>
+              <p>Ends {{ listing.endDate }}</p>
+            </div>
 
-              <div class="col-lg-2">
-                <a class="btn btn-primary btn-block" ng-href="#/purchase/{{listing.listingId}}">Buy Now</a>
-                <button ng-if="listing.minBid" class="btn btn-default btn-block" ng-click="makeBid(listing)">Bid</a>
+            <div class="col-lg-2">
+              <a class="btn btn-primary btn-block" ng-href="#/purchase/{{listing.listingId}}">Buy Now</a>
+              <button ng-if="listing.minBid" class="btn btn-default btn-block" ng-click="makeBid(listing)">Bid</a>
               </div>
             </div>
             <!-- /row-fluid -->

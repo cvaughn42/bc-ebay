@@ -278,6 +278,40 @@ function sort(obj, TorP, sign){
                         return 0;
                     }
                 }
+            } 
+            else if (TorP === 'E')
+            {
+                var getMs = function(d) {
+                    if (d)
+                    {
+                        if (!(d instanceof Date))
+                        {
+                            try
+                            {
+                                d = new Date(d);
+                                return d.getTime();
+                            }
+                            catch (err)
+                            {
+                                return null;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                };
+
+                var av = getMs(a.endDate);
+                var bv = getMs(b.endDate);
+                var v = 0;
+
+                if (av > bv) v = 1;
+                if (bv > av) v = -1;
+
+                if (sign === '-') return v * -1;
+                else return v;
             }
         }, TorP, sign);
         return obj;
@@ -291,7 +325,9 @@ app.controller('listingsCtrl', function ($scope, $http, $location){
         {key:"Alphabetical Ascending", value:"Alphabetical Ascending"}, 
         {key:"Alphabetical Descending", value: "Alphabetical Descending"},
         {key:"Price Ascending", value:"Price Ascending"}, 
-        {key:"Price Descending", value:"Price Descending"}];
+        {key:"Price Descending", value:"Price Descending"},
+        {key:"End Date Ascending", value:"End Date Ascending"}, 
+        {key:"End Date Descending", value:"End Date Descending"}];
     //$scope.sortedList = "Relevance";
 
     $scope.sortListing = function(value){
@@ -309,6 +345,10 @@ app.controller('listingsCtrl', function ($scope, $http, $location){
             $scope.listings = sort($scope.listings, 'P', '+');
         }else if(value == "Price Descending"){
             $scope.listings = sort($scope.listings, 'P', '-');
+        }else if(value == "End Date Ascending"){
+            $scope.listings = sort($scope.listings, 'E', '+');
+        }else if(value == "End Date Descending"){
+            $scope.listings = sort($scope.listings, 'E', '-');
         }else{
             //do nothing
         }
