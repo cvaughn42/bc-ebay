@@ -195,6 +195,23 @@ app.controller('purchaseController', function($scope, $http, $routeParams) {
 
     $scope.$on('$viewContentLoaded', function (event) {
 
+        setTimeout(function() {
+
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                var target = $(e.target).attr("href"); // activated tab
+
+                if (target === '#summary')
+                {
+                    $('#nextButton').addClass('disabled').disable(true);
+                }
+                else
+                {
+                    $('#nextButton').removeClass('disabled').disable(false);
+                }
+            });
+
+        }, 500);
+
         // Get the listing from the server to make sure you have the latest info
         $http.get("/listing/" + $routeParams.listingId, {cache: false}).success(function(data) {
             
@@ -263,6 +280,8 @@ app.controller('purchaseController', function($scope, $http, $routeParams) {
                 // TODO Validate purchase info
                 $http.post('/buyIt', $scope.purchase).success(function(data) {
                     $scope.listing.sold = true;
+                    alert("Congratulations!  You've successfully purchased " + $scope.listing.title + 
+                        "!  The drone is being dispatched now with your item.");
 
                 }).error(function(err) {
                     alert("Something's gone wrong with your order.");
