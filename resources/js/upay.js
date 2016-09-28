@@ -548,8 +548,9 @@ app.controller('newListingCtrl', function ($scope, $routeParams, $http, $locatio
     $scope.successfulAlert = true;
 
     $scope.addKeyword = function() {
-        var newItemNo = $scope.newListing.keywords.length+1;
-        $scope.newListing.keywords.push($scope.newKeyword);
+        if ($scope.newKeyword) {
+            $scope.newListing.keywords.push($scope.newKeyword);
+        }
         $scope.newKeyword = '';
     };
         
@@ -605,8 +606,9 @@ app.controller('updateistingCtrl', function ($scope, $routeParams, $http, $locat
     });
 
     $scope.addKeyword = function() {
-        var newItemNo = $scope.myListing.keywords.length+1;
-        $scope.myListing.keywords.push($scope.newKeyword);
+        if ($scope.newKeyword) {
+            $scope.myListing.keywords.push($scope.newKeyword);
+        }
         $scope.newKeyword = '';
     };
         
