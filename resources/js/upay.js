@@ -188,6 +188,7 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
     $scope.makeBid = function(listing) {
         $scope.bidListing = listing;
         $('#bidModal').modal('show');
+        $('#bidModal #bidAmount').autoNumeric('init');
     };
 
     $scope.submitBid = function() {
