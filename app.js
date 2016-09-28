@@ -64,27 +64,27 @@ app.get('/currentUser', checkAuth, function(req, res) {
 });
 
 // Listings
-app.get('/listings', listing.listings);
-app.post('/search', listing.search);
-app.post('/listing', listing.filterOn);
-app.post('/newListing', listing.newListing);
-app.post('/updateListing', listing.updateListing);
-app.get('/listing/:listingId', listing.listing);
+app.get('/listings', checkAuth, listing.listings);
+app.post('/search', checkAuth, listing.search);
+app.post('/listing', checkAuth, listing.filterOn);
+app.post('/newListing', checkAuth, listing.newListing);
+app.post('/updateListing', checkAuth, listing.updateListing);
+app.get('/listing/:listingId', checkAuth, listing.listing);
 app.get('/listingImage/:listingImageId', checkAuth, listing.listingImage);
-app.get('listing/removeFilter/:keyword', listing.filterRemove);
+app.get('listing/removeFilter/:keyword', checkAuth, listing.filterRemove);
 app.post('/buyIt', checkAuth, listing.purchaseListing);
 app.post('/makeBid', checkAuth, listing.makeBid);
 app.get('/bids/:listingId', checkAuth, listing.findValidBids);
 
 // Profile
-app.get('/profile/:userName', profile.profile);
-app.post('/updateProfile', profile.updateProfile);
+app.get('/profile/:userName', checkAuth, profile.profile);
+app.post('/updateProfile', checkAuth, profile.updateProfile);
 app.get('/userImage/:userName', checkAuth, profile.userImage);
 app.post('/userImage', checkAuth, upload.single('file'), profile.postUserImage);
 app.get('/getSellerInfo/:sellerId', checkAuth, profile.getSellerInfo);
 
 // File Upload
-app.post('/upload', upload.single('file'), fileUpload.upload);
+app.post('/upload', checkAuth, upload.single('file'), fileUpload.upload);
  
 // Listener
 var server = app.listen(port, function () {
