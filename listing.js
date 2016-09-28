@@ -171,6 +171,33 @@ exports.newListing = function(req, res) {
    
 };
 
+// app.post('/updateListing')
+exports.updateListing = function(req, res) {
+
+    var data = req.body.updateListing;
+    console.log('data = ', data);
+   /*
+    db.createListing(data, function (err, listingId){
+        if(err){
+            res.status(500).send(err);
+        }else{
+            console.log('Get new listing id: ' + listingId);
+            db.addListingKeywords(listingId, data.keywords, function (err, count){
+                if(err){
+                    res.status(500).send(err);
+                }else{
+                    console.log('Add keywords: ' + count);
+                    res.send(JSON.stringify(count));
+                }
+            });
+        }
+    });
+   */
+
+  res.send('successful');
+
+};
+
 // app.post('/listings')
 exports.filterOn = function (req, res){    
     var stringVersion =  req.body.filterOnTerm;

@@ -68,6 +68,7 @@ app.get('/listings', listing.listings);
 app.post('/search', listing.search);
 app.post('/listing', listing.filterOn);
 app.post('/newListing', listing.newListing);
+app.post('/updateListing', listing.updateListing);
 app.get('/listing/:listingId', listing.listing);
 app.get('/listingImage/:listingImageId', checkAuth, listing.listingImage);
 app.get('listing/removeFilter/:keyword', listing.filterRemove);

@@ -15,6 +15,9 @@ app.config(function ($routeProvider) {
     }).when("/newListing/:userName", {
         templateUrl: "/templates/newListing.html",
         controller: 'newListingCtrl'
+    }).when("/updateListing/:listingId", {
+        templateUrl: "/templates/updateListing.html",
+        controller: 'updateistingCtrl'
     }).when("/listings", {
         templateUrl: "/templates/listings.html",
         controller: 'listingsCtrl'
@@ -497,7 +500,6 @@ app.controller('newListingCtrl', function ($scope, $routeParams, $http, $locatio
     $scope.addNewListing=function(){
         console.log('keywords: ', JSON.stringify($scope.newListing.keywords));
         $scope.newListing.sold = false;
-        $scope.newListing.minBid = 0;
         var userName = $routeParams.userName;
         $scope.newListing.user = {};
         $scope.newListing.user.userName = userName;
@@ -507,6 +509,47 @@ app.controller('newListingCtrl', function ($scope, $routeParams, $http, $locatio
                 $scope.successfulAlert = false;
                 }).error(function (error) {
                     alert('Unable to add new listing with keywords: ' + error);
+                    $scope.successfulAlert = true;
+                });
+        }
+    };
+});
+
+app.controller('updateistingCtrl', function ($scope, $routeParams, $http, $location){
+
+    $scope.currentDate = new Date();
+    $scope.successfulAlert = true;
+
+    var listingId = parseInt($routeParams.listingId);
+    // console.log(listingId);
+    $http.get('/listing/'+listingId, {cache: false}).success(function(data) {
+        $scope.myListing = data;
+        console.log('updateList: ', $scope.myListing);
+    }).error(function () {
+        alert('Unable to load updateListing: ' + error);
+    });
+
+    $scope.addKeyword = function() {
+        var newItemNo = $scope.myListing.keywords.length+1;
+        $scope.myListing.keywords.push($scope.newKeyword);
+        $scope.newKeyword = '';
+    };
+        
+     $scope.removeKeyword = function(value) {
+        var index = $scope.myListing.keywords.indexOf(value);
+        if ( index >= 0 ) {
+            $scope.myListing.keywords.splice(index, 1);
+        }
+    };
+
+    $scope.updateListing=function(){
+        console.log('keywords: ', JSON.stringify($scope.myListing.keywords));
+        console.log('update listing: ', JSON.stringify($scope.myListing));
+        if ($scope.myListing.title) {
+            $http.post('/updateListing', {updateListing: $scope.myListing}).success(function(count) {
+                $scope.successfulAlert = false;
+                }).error(function (error) {
+                    alert('Unable to update listing with keywords: ' + error);
                     $scope.successfulAlert = true;
                 });
         }
