@@ -62,3 +62,15 @@ img.cc-image
     border-bottom-right-radius: 5px;
     padding-bottom: 1em;
 }
+
+.dim
+{
+    opacity: .5;
+}
+
+.shift-left
+{
+    color: green;
+    margin-left: -10px;
+    font-size: 125%;
+}
