@@ -24,6 +24,8 @@
                                 </li>
                             </ul>
 
+                            <gallery data="imageIds"></gallery>
+
                             <!-- Tab panes -->
                             <div class="tab-content">
                                 <div class="tab-pane fade in active" id="details">
@@ -31,7 +33,9 @@
                                     <div class="container-fluid">
                                         <div class="row-fluid">
                                             <div class="col-lg-6">
-                                                <img ng-if="listing.imageIds && listing.imageIds.length" ng-src="/listingImage/{{listing.imageIds[0]}}" />
+                                                <a ng-click="displayGallery(listing.imageIds)">
+                                                    <img ng-if="listing.imageIds && listing.imageIds.length" ng-src="/listingImage/{{listing.imageIds[0]}}" />
+                                                </a>
                                                 <span ng-if="!listing.imageIds || listing.imageIds.length === 0">
                                                     No image to display    
                                                 </span>
@@ -115,7 +119,9 @@
                                     <div class="container-fluid">
                                         <div class="row-fluid">
                                             <div class="col-lg-4">
-                                                <img ng-if="listing.imageIds && listing.imageIds.length" ng-src="/listingImage/{{listing.imageIds[0]}}" />
+                                                <a ng-click="displayGallery(listing.imageIds)">
+                                                    <img ng-if="listing.imageIds && listing.imageIds.length" ng-src="/listingImage/{{listing.imageIds[0]}}" />
+                                                </a>
                                                 <img ng-if="!listing.imageIds || !listing.imageIds.length" ng-src="/images/noPicture.png" />
                                             </div>
                                             <div class="col-lg-8">
