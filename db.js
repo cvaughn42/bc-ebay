@@ -42,9 +42,8 @@ DbInterface.FIND_ACTIVE_LISTINGS_BY_KEYWORD_SQL = DbInterface.SELECT_LISTING_SQL
                                                   `WHERE sold = 0 AND 
                                                          start_date <= current_timestamp AND 
                                                          end_date >= current_timestamp AND
-                                                         listing_id IN (SELECT listing_id 
-                                                                        FROM listing_keyword 
-                                                                        WHERE keyword IN (?))`;
+                                                         (listing_id IN (SELECT listing_id FROM listing_keyword WHERE keyword IN (?)) 
+                                                                    or listing_id in (SELECT listing_id from listing where title like ?))`;
 DbInterface.CREATE_LISTING_IMAGE_PS = "INSERT INTO listing_image (listing_id, image_data, mime_type) VALUES ($listingId, $imageData, $mimeType)";
 DbInterface.MARK_LISTING_SOLD_SQL = "UPDATE listing SET sold = 1 WHERE listing_id = ?";
                     
@@ -434,7 +433,7 @@ DbInterface.prototype.findListingByListingId = function(listingId, callback) {
  */
 DbInterface.prototype.findActiveListingsByKeyword = function(keywords, callback) {
     
-    this.db.all(DbInterface.FIND_ACTIVE_LISTINGS_BY_KEYWORD_SQL, keywords, function(err, rows) {
+    this.db.all(DbInterface.FIND_ACTIVE_LISTINGS_BY_KEYWORD_SQL, keywords, '%'+keywords+'%', function(err, rows) {
 
         if (err)
         {
