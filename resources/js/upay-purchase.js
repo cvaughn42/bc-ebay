@@ -197,16 +197,20 @@ app.controller('purchaseController', function($scope, $http, $routeParams) {
 
         setTimeout(function() {
 
+            $('#ccNumber').payment('formatCardNumber');
+            $('#ccExpires').payment('formatCardExpiry');
+            $('#ccCcv').payment('formatCardCVC');
+
             $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
                 var target = $(e.target).attr("href"); // activated tab
 
                 if (target === '#summary')
                 {
-                    $('#nextButton').addClass('disabled').disable(true);
+                    $('#nextButton').addClass('disabled').prop('disabled', true);
                 }
                 else
                 {
-                    $('#nextButton').removeClass('disabled').disable(false);
+                    $('#nextButton').removeClass('disabled').prop('disabled', false);
                 }
             });
 
