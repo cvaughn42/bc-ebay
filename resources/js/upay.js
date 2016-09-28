@@ -43,7 +43,12 @@ app.directive('bidModal', function() {
 
 app.directive("logo", function() {
     return {
-        template : "<a class='navbar-brand' href='#/'>u<sup><i class='fa fa-dollar'></i></sup>Pay</a>"
+        template : "<a class='navbar-brand' href='#/'>" +
+                   "<span style='font-size: 150%; color: red;'>u</span>" +
+                   "<span style='font-size: 150%; color: blue;'>p</span>" +
+                   "<span style='font-size: 150%; color: gold;'>a</span>" +
+                   "<span style='font-size: 150%; color: green;'>y</span>" +
+                   "</a>"
     };
 });
 
