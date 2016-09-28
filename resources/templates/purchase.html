@@ -126,7 +126,7 @@
                                                 <h5 class='text-center' ng-if="listing.imageIds && listing.imageIds.length"> 1 of {{listing.imageIds.length}}</h5>
                                                 <img ng-if="!listing.imageIds || !listing.imageIds.length" ng-src="/images/noPicture.png" />
                                             </div>
-                                            <div class="col-lg-8">
+                                            <div class="col-lg-5">
 
                                                 <p>
                                                     {{ listing.title }}
@@ -151,9 +151,10 @@
                                                     {{ purchase.billing.street1 }}<br />
                                                     <span ng-if="purchase.billing.street2">{{ purchase.billing.street2 }}</span><br ng-if="purchase.billing.street2" />
                                                     {{ purchase.billing.city }}, {{ purchase.billing.state }} {{ purchase.billing.zipCode }}
-                                                </p>     
-
-                                                <button ng-if="!listing.sold" ng-click="submitPurchase()" class="btn btn-primary btn-block">Purchase {{ listing.title }}</button>
+                                                </p>  
+                                            </div>   
+                                            <div class="col-lg-3">
+                                                <button ng-if="!listing.sold" ng-click="submitPurchase()" class="btn btn-success"><i class="fa fa-fw fa-check"></i> &nbsp;Purchase {{ listing.title }}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -164,9 +165,9 @@
                         <!-- tabs section -->
 
                         <div class="col-lg-2 text-center">
-                            <button id="nextButton" class="btn btn-primary btn-outline btn-block" ng-click="moveNext()">Next</button>
+                            <button id="nextButton" class="btn btn-primary btn-block" ng-click="moveNext()">Next</button>
                             <br/>
-                            <small><a ng-click="discourageQuit()">I changed my mind</a></small>
+                            <small><a ng-click="discourageQuit()">[ I changed my mind ]</a></small>
                         </div>
                         <!-- Nav section -->
 
