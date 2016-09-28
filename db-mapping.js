@@ -102,7 +102,7 @@ module.exports = {
                     val = new Date();
                 }
 
-                if (!val instanceof Date)
+                if (!(val instanceof Date))
                 {
                     val = new Date(val);
                 }
@@ -120,12 +120,14 @@ module.exports = {
             key: '$endDate',
             transform: function(val) {
                 
+                console.log('$endDate val = ' + val);
+                
                 if (!val)
                 {
                     val = new Date( (new Date()).getTime() + (24 * 5 * 60 * 60 * 1000) );
                 }
 
-                if (!val instanceof Date)
+                if (!(val instanceof Date))
                 {
                     val = new Date(val);
                 }
