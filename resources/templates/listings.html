@@ -52,7 +52,10 @@
           <div class="row-fluid">
 
             <div class="col-lg-2">
-              <img ng-if="listing.imageIds && listing.imageIds.length" ng-src="/listingImage/{{listing.imageIds[0]}}" />
+              <a ng-click="displayGallery(listing.imageIds)">
+                <img ng-if="listing.imageIds && listing.imageIds.length" ng-src="/listingImage/{{listing.imageIds[0]}}" />
+              </a>
+              <gallery data="imageIds"></gallery>
               <span ng-if="!listing.imageIds || !listing.imageIds.length">No image available</span>
             </div>
 
