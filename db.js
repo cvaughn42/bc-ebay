@@ -721,8 +721,8 @@ DbInterface.prototype.findActiveWhereMissingKeyword = function(keyword, callback
             {
                 listings.push(objectMapper(row, mappings.listingToBusinessMapping));
             }
-            console.log('returning listings!');
-            return listings;
+ 
+             return listings;
         }
     });
 };

@@ -113,7 +113,7 @@ exports.getKeywords = function(req, res){
 exports.search = function(req, res) {
     var srchTerm = req.body.srchTerm;
     var srchResult = [];
-    console.log('srchTerm = ' + srchTerm);
+
     if (srchTerm) {
         db.findActiveListingsByKeyword(srchTerm, function(err,listing){
             if(err){
@@ -125,7 +125,6 @@ exports.search = function(req, res) {
                 }
                 
                 //srchResult.push(listing);
-                console.log('search result = ', srchResult);
                 res.send(srchResult);
             }
         });
@@ -140,7 +139,6 @@ exports.search = function(req, res) {
             else
             {
                 srchResult = result;
-                console.log('search result = ', srchResult);
                 res.send(srchResult);
             }
         });
@@ -151,13 +149,11 @@ exports.search = function(req, res) {
 exports.newListing = function(req, res) {
 
     var data = req.body.newListing;
-    console.log('data = ', data);
-
+ 
     db.createListing(data, function (err, listingId){
         if(err){
             res.status(500).send(err);
         }else{
-            console.log('Get new listing id: ' + listingId);
              res.send(JSON.stringify(listingId));
         }
     }); 
@@ -167,7 +163,6 @@ exports.newListing = function(req, res) {
 exports.updateListing = function(req, res) {
 
     var data = req.body.updateListing;
-    console.log('data = ', data);
 
     var listing = {};
     listing.listingId = data.listingId;
@@ -177,8 +172,6 @@ exports.updateListing = function(req, res) {
     listing.minBid = data.minBid;
     listing.startDate = data.startDate;
     listing.endDate = data.endDate;
-
-    console.log('listing: ', listing);
 
     db.updateListing(listing, function (err, result){
         if(err){
@@ -194,25 +187,21 @@ exports.updateListing = function(req, res) {
 // app.post('/listings')
 exports.filterOn = function (req, res){    
     var stringVersion =  req.body.filterOnTerm;
-    console.log(stringVersion );
     db.findActiveListingsByKeyword(stringVersion, function (err, listing){
         if(err){
             res.status(500).send(err);
         }else{
-            console.log('sending back listing');
             res.send(listing);
         }
     });
 };
 
 exports.filterRemove = function (req, res){
-    console.dir(req.params.keywords);
     
     db.findActiveWhereMissingKeyword(req.params.keyword, function(err, listing){
         if(err){
             res.status(500).send(err);
         }else{
-            console.dir(listing);
             res.send(listing);
         }
     });

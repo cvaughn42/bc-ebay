@@ -3,15 +3,12 @@ var db = require('./db.js');
 
 // app.get('/register')
 exports.display = function (req, res) {
-    console.dir(path.join(__dirname));
     res.sendFile(path.join(__dirname + '/register.html'));
 };
 
 
 // app.post('/register')
 exports.registerUser = function (req, res) {
-
-    console.dir(req.body);
 
     var user = {
         userName: req.body.userName,

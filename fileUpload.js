@@ -2,19 +2,8 @@ var path = require('path');
 var db = require('./db.js');
 var fs = require('fs');
 
-/*
-// app.get('/upload/:listingId')
-exports.uploadInit = function (req, res) {
-    console.log('listingId ==> ' + req.params.listingId);
-    res.sendFile(path.join(__dirname + '/upload.html'));
-};
-*/
-
-
-
 // app.post('/upload')
 exports.upload = function (req, res) {
-    console.log(req.body.listingId);
     
     var file = req.file;
     fs.readFile(file.path, function (err, data) {  
@@ -27,11 +16,7 @@ exports.upload = function (req, res) {
             var imageFile = {
                 listingId: req.body.listingId,
                 imageData: data,
-                mimeType: file.mimetype, 
-                // path: file.path,
-                // fileName: file.originalname,
-                // encoding: file.encoding, 
-                // fileSize: file.size
+                mimeType: file.mimetype
             };
  
             db.createListingImage(imageFile, (err, result) => {
@@ -59,9 +44,6 @@ exports.upload = function (req, res) {
                     }
                 });
             });
-            
-            // console.dir(post);
-            // res.send('ok');
         }
     });
 };

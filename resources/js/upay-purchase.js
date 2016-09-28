@@ -147,8 +147,6 @@ app.controller('purchaseController', function($scope, $http, $routeParams) {
 
     $scope.getUserImageSource = function() {
 
-        console.dir($scope.listing);
-
         if ($scope.listing && $scope.listing.user && $scope.listing.user.userImageId)
         {
             return '/userImage/' + $scope.listing.user.userName;
@@ -318,8 +316,6 @@ app.controller('purchaseController', function($scope, $http, $routeParams) {
                 creditCardValidationCode: '',
                 creditCardType: '' 
             };
-
-            console.dir($scope.purchase);
         
         }).error(function(err) {
         
