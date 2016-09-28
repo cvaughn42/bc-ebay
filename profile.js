@@ -134,7 +134,7 @@ exports.updateProfile = function(req, res) {
         }
         else
         {
-            res.send(result);
+            res.send('ok');
         }
     });
 };

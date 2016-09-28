@@ -41,20 +41,18 @@
                                                 <p>{{ listing.description }}</p>
                                                 <!-- Charge Summary -->
                                                 <div class="well" style="display: inline-block; padding: 8px;">
-                                                    <table style="min-width: 240px;">
+                                                    <table style="min-width: 500px;">
                                                         <tbody>
                                                             <tr ng-repeat="item in billingDetails">
-                                                                <td style="width: 70%">
+                                                                <td style="min-width: 70%;">
                                                                     {{ item.description }}
                                                                     <sup ng-if="item.prompt">[<a ng-click="item.prompt.click()">{{ item.prompt.text}}</a>]</sup>
                                                                 </td>
-                                                                <td style="width: 2%" class="text-right">$</td>
-                                                                <td style="width: 27%" class="text-right">{{ item.amount.formatMoney() }}</td>
+                                                                <td style="min-width: 30%;" class="text-right">{{ item.amount | currency }}</td>
                                                             </tr>
                                                             <tr class="strong">
                                                                 <td>Total</td>
-                                                                <td class="text-right">$</td>
-                                                                <td class="text-right">{{ sumBillingDetails(billingDetails).formatMoney() }}</td>
+                                                                <td class="text-right">{{ sumBillingDetails(billingDetails) | currency }}</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -70,7 +68,7 @@
 
                                                 <seller-info ng-if="seller" info="seller"></seller-info>
 
-                                                <p ng-if="listing.endDate">Sale ends {{ listing.endDate.format('M/dd/yyyy at h:mm ap') }}</p>
+                                                <p ng-if="listing.endDate">Sale ends {{ listing.endDate | date:"M/dd/yyyy h:mm a" }}</p>
                                             </div>
 
                                         </div>

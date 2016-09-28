@@ -32,13 +32,13 @@
                         <div class="col-lg-5">
                             <p>{{ listing.description }}</p>
                             <p>
-                                Buy it Now Price: Only ${{ listing.buyItNowPrice.formatMoney() }}!
+                                Buy it Now Price: Only {{ listing.buyItNowPrice | currency }}!
                             </p>
                             <p>
                                 Minimum Bid: {{ listing.minBid | currency }}
                             </p>
                             <p>
-                                Sale Ends: {{ listing.endDate }}
+                                Sale Ends: {{ listing.endDate | date:"M:dd:yyyy h:mm a"}}
                             </p>
                             <p>
                                 Being sold by

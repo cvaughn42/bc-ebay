@@ -18,14 +18,14 @@
                     <div class="form-group row-fluid">
                         <label class="col-form-label col-lg-6">Start Date</label>
                         <div class="col-lg-6">
-                            <p class="form-control-static">{{ listing.startDate }}</p>
+                            <p class="form-control-static">{{ listing.startDate | date:"M/dd/yyyy h:mm a" }}</p>
                         </div>
                     </div>
 
                     <div class="form-group row-fluid">
                         <label class="col-form-label col-lg-6">End Date</label>
                         <div class="col-lg-6">
-                            <p class="form-control-static">{{ listing.endDate }}</p>
+                            <p class="form-control-static">{{ listing.endDate | date:"M/dd/yyyy h:mm a" }}</p>
                         </div>
                     </div>
 
@@ -53,8 +53,10 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary btn-block" ng-click="submitBid()">Post</button>
-                <a data-dismiss="modal">Cancel</a>
+                <div class="text-center"> 
+                    <button type="button" class="btn btn-primary" ng-click="submitBid()">Submit Bid</button>
+                    <br /><a data-dismiss="modal">[ cancel ]</a>
+                </div>
             </div>
         </div>
         <!-- /.modal-content -->
