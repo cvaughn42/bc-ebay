@@ -12,23 +12,27 @@
                                 <!-- Carousel items -->
                                 <div class="carousel-inner">
                                     <div class="item" ng-class="{active:!$index}" ng-repeat="imgId in listing.imageIds">
-                                        <div class="row text-center">
-                                            <!-- ITEM-->
-                                            <div class="span3">
-                                                <div class="thumbnail product-item">
-                                                    <img ng-src="/listingImage/{{imgId}}">
+                                        <a ng-click="displayGallery(listing.imageIds)">
+                                            <div class="row text-center">
+                                                <!-- ITEM-->
+                                                <div class="span3">
+                                                    <div class="thumbnail product-item">
+                                                        <img ng-src="/listingImage/{{imgId}}">
+                                                    </div>
                                                 </div>
+                                                <!-- ITEM-->
                                             </div>
-                                            <!-- ITEM-->
-                                        </div>
+                                        </a>
+                                        <h5 class='text-center'> {{$index+1}} of {{listing.imageIds.length}}
                                     </div>
+                                    <gallery data="imageIds"></gallery>
                                 </div>
                                 <!-- /INNER-->
-                                <!-- Carousel nav -->
-                                <a class="carousel-control left" href="#myCarousel" target="_self" data-slide="prev"><i class="glyphicon glyphicon-chevron-left"></i></a>
-                                <a class="carousel-control right" href="#myCarousel" target="_self" data-slide="next"><i class="glyphicon glyphicon-chevron-right"></i></a>
+                                    <!-- Carousel nav -->
+                                    <a class="carousel-control left" href="#myCarousel" target="_self" data-slide="prev"><i class="glyphicon glyphicon-chevron-left"></i></a>
+                                    <a class="carousel-control right" href="#myCarousel" target="_self" data-slide="next"><i class="glyphicon glyphicon-chevron-right"></i></a>
+                                </div>
                             </div>
-                        </div>
                         <div class="col-lg-5">
                             <p>{{ listing.description }}</p>
                             <p>

@@ -34,6 +34,15 @@ app.config(function ($routeProvider) {
     });
 });
 
+app.directive('gallery', function() {
+    return {
+        scope: {
+            imageIds: '=data'
+        },
+        templateUrl: '/templates/gallery.html'
+    }
+});
+
 app.directive('bidModal', function() {
     return {
         restrict: 'E',
@@ -212,6 +221,12 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
 
         $('#uploadModal').modal('show');
     };
+
+    $scope.displayGallery = function(imageIds) {
+        $('#galleryModal').modal('show');
+        $scope.imageIds = imageIds;
+    };
+
     //fixed search --- search
     $scope.$on('searchEvent', function (event, srchTerm) {
         $http.post('/search',{srchTerm: srchTerm, cache: false}).success(function(data) {
