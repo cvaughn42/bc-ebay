@@ -76,6 +76,8 @@
                                 <button ng-click="addKeyword()">Add Keyword</button>
                             </div>
 
+                            <a ng-if="currentUser.userName === myListing.user.userName" ng-click="uploadListingFiles(myListing.listingId)" class='btn btn-success btn-outline btn-block'>Upload Images</a>
+
                             <button type="button" id="updateListingButton" ng-click="updateListing()" class="btn btn-primary"
                                     ng-disabled="updateListingForm.title.$dirty && updateListingForm.title.$invalid">
                                 <i class="fa fa-check"></i>&nbsp;Save

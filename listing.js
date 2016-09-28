@@ -158,17 +158,9 @@ exports.newListing = function(req, res) {
             res.status(500).send(err);
         }else{
             console.log('Get new listing id: ' + listingId);
-            db.addListingKeywords(listingId, data.keywords, function (err, count){
-                if(err){
-                    res.status(500).send(err);
-                }else{
-                    console.log('Add keywords: ' + count);
-                    res.send(JSON.stringify(count));
-                }
-            });
+             res.send(JSON.stringify(listingId));
         }
-    });
-   
+    }); 
 };
 
 // app.post('/updateListing')

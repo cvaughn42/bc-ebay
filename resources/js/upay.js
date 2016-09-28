@@ -12,7 +12,7 @@ app.config(['$httpProvider', function ($httpProvider) {
 app.config(function ($routeProvider) {
     $routeProvider.when("/", {
         redirectTo: '/listings'
-    }).when("/newListing/:userName", {
+    }).when("/newListing", {
         templateUrl: "/templates/newListing.html",
         controller: 'newListingCtrl'
     }).when("/updateListing/:listingId", {
@@ -539,40 +539,21 @@ app.controller('newListingCtrl', function ($scope, $routeParams, $http, $locatio
 
     $scope.newListing = {};
 
-    $scope.newListing.keywords = [];
     $scope.newListing.startDate = date_to_string(new Date());
     console.log('Start date: ' + $scope.newListing.startDate);
     $scope.newListing.endDate = date_to_string(new Date( (new Date()).getTime() + (24 * 5 * 60 * 60 * 1000) ));
     console.log('End date: ' + $scope.newListing.endDate);
-    $scope.successfulAlert = true;
-
-    $scope.addKeyword = function() {
-        if ($scope.newKeyword) {
-            $scope.newListing.keywords.push($scope.newKeyword);
-        }
-        $scope.newKeyword = '';
-    };
-        
-     $scope.removeKeyword = function(value) {
-        var index = $scope.newListing.keywords.indexOf(value);
-        if ( index >= 0 ) {
-            $scope.newListing.keywords.splice(index, 1);
-        }
-    };
 
     $scope.addNewListing=function(){
-        console.log('keywords: ', JSON.stringify($scope.newListing.keywords));
         $scope.newListing.sold = false;
-        var userName = $routeParams.userName;
         $scope.newListing.user = {};
-        $scope.newListing.user.userName = userName;
+        $scope.newListing.user.userName = $scope.currentUser.userName;
         console.log('new listing: ', JSON.stringify($scope.newListing));
         if ($scope.newListing.title) {
-            $http.post('/newListing', {newListing: $scope.newListing}).success(function(count) {
-                $scope.successfulAlert = false;
+            $http.post('/newListing', {newListing: $scope.newListing}).success(function(listingId) {
+                 $location.path('/updateListing/' + listingId);
                 }).error(function (error) {
-                    alert('Unable to add new listing with keywords: ' + error);
-                    $scope.successfulAlert = true;
+                    alert('Unable to add new listing: ' + error);
                 });
         }
     };
