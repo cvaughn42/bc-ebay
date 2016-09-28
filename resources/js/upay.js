@@ -206,6 +206,7 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
 
     $scope.search = function() {
         $scope.$broadcast('searchEvent', $scope.srchTerm);
+        $scope.srchTerm = '';
     };
     $scope.filterOn = function(keyword){
         $scope.$broadcast('filterOnEvent', keyword);
@@ -478,7 +479,7 @@ app.controller('listingsCtrl', function ($scope, $http, $location){
                 console.dir(data);
                 $scope.listings = data;
                 $scope.keywords = getKeywords(data);
-                console.log(JSON.stringify(data));
+                // console.log(JSON.stringify(data));
                 //$location.path('/listings');
                 //location.reload(true);
                 

@@ -1,6 +1,6 @@
 <div class="row-fluid">
   <div class="col-lg-2">
-    
+
     <div class="panel panel-primary">
       <div class="panel-heading panel-title">
         Sort
@@ -13,7 +13,7 @@
         </div>
       </div>
     </div>
-    
+
     <div class="panel panel-primary">
 
       <div class="panel-heading panel-title">
@@ -43,22 +43,23 @@
     <!-- styling for list items -->
     <div ng-repeat="listing in listings" class="panel panel-default">
 
-      <div class="panel-heading panel-title">
-        <a ng-href="#/listing/{{listing.listingId}}">
-            {{listing.title}}
-          </a>
-      </div>
       <div class="panel-body">
 
         <div class="container-fluid">
           <div class="row-fluid">
 
             <div class="col-lg-2">
-              <img ng-if="listing.imageIds && listing.imageIds.length" ng-src="/listingImage/{{listing.imageIds[0]}}" />
+              <a ng-click="displayGallery(listing.imageIds)">
+                <img ng-if="listing.imageIds && listing.imageIds.length" ng-src="/listingImage/{{listing.imageIds[0]}}" />
+              </a>
+              <gallery data="imageIds"></gallery>
               <span ng-if="!listing.imageIds || !listing.imageIds.length">No image available</span>
             </div>
 
             <div class="col-lg-8">
+              <p><a ng-href="#/listing/{{listing.listingId}}">
+            {{listing.title}}
+          </a></p>
               <p>{{ listing.description }}</p>
               <p>Buy it now price: {{ listing.buyItNowPrice | currency }}</p>
               <p ng-if="listing.minBid">
@@ -80,15 +81,15 @@
               <a ng-if="currentUser.userName != listing.user.userName" class="btn btn-primary btn-block" ng-href="#/purchase/{{listing.listingId}}"><i class="fa fa-check"></i> &nbsp; Buy Now</a>
               <button ng-if="listing.minBid && currentUser.userName != listing.user.userName" class="btn btn-default btn-block" ng-click="makeBid(listing)">Bid</a></button>
               <a ng-if="currentUser.userName === listing.user.userName" href="#/updateListing/{{listing.listingId}}" class='btn btn-success btn-outline btn-block'>Update Listing</a>
-              </div>
             </div>
-            <!-- /row-fluid -->
           </div>
-          <!-- /container-fluid -->
+          <!-- /row-fluid -->
         </div>
-        <!-- /panel-body -->
+        <!-- /container-fluid -->
       </div>
-      <!-- /panel -->
+      <!-- /panel-body -->
+    </div>
+    <!-- /panel -->
   </div>
   <!-- /col-lg-8 -->
 
