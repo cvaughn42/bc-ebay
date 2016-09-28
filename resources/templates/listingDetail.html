@@ -58,7 +58,7 @@
                         </div>
                    
                        <div class="col-lg-2">
-                            <a href='#/purchase/{{listing.listingId}}' class="btn btn-primary btn-block">Buy It Now!</a>
+                            <a ng-if="currentUser.userName != listing.user.userName" href='#/purchase/{{listing.listingId}}' class="btn btn-primary btn-block">  &nbsp; Buy It Now!</a>
                             <a ng-if="currentUser.userName === listing.user.userName" ng-click="uploadListingFiles(listing.listingId)" class='btn btn-success btn-outline btn-block'>Upload Images</a>
                         </div>
                     </div>

@@ -21,13 +21,15 @@
       </div>
 
       <div class="panel-body">
-
+        <div ng-if=" activeKeyword != null"> Active keyword is : {{activeKeyword}}</div>
         <div ng-repeat="keyword in keywords" class="alert alert-info alert-dismissable keyword">
-          <!-- remove filter -->
+          <!-- remove filter -->    
+          
           <button type="button" class="close" data-dismiss="alert" aria-hidden="true" ng-click="removeFilter(keyword)">&times;</button>
           <!-- add filter -->
           <!-- alert('filter the list on this keyword'); return false; -->
           <a ng-click="filterOn(keyword)" target='_self' class="alert-link" name="filter-On-Term" id="filter-On-Term" ng-model="filterOnTerm">{{ keyword }}</a>.
+          
         </div>
 
       </div>
@@ -64,11 +66,19 @@
                 <span ng-if="!listing.maxBid">Minimum Bid: {{ listing.minBid | currency }}</span>
               </p>
               <p>Ends {{ listing.endDate | date:"M:dd:yyyy h:mm a" }}</p>
+              <p>
+                          Being sold by
+                          <a ng-click="displaySeller(listing.user.userName)">
+                      {{ listing.user.firstName }} {{ listing.user.lastName }}
+                      <img ng-if="listing.user.userImageId" ng-src="/userImage/{{ listing.user.userName }}" width="40px;" alt="Seller Avatar" class="img-circle" />
+                  </a>
+              </p>
+               <seller-info ng-if="seller" info="seller"></seller-info>
             </div>
 
             <div class="col-lg-2">
-              <a class="btn btn-primary btn-block" ng-href="#/purchase/{{listing.listingId}}">Buy Now</a>
-              <button ng-if="listing.minBid" class="btn btn-default btn-block" ng-click="makeBid(listing)">Bid</a></button>
+              <a ng-if="currentUser.userName != listing.user.userName" class="btn btn-primary btn-block" ng-href="#/purchase/{{listing.listingId}}"><i class="fa fa-check"></i> &nbsp; Buy Now</a>
+              <button ng-if="listing.minBid && currentUser.userName != listing.user.userName" class="btn btn-default btn-block" ng-click="makeBid(listing)">Bid</a></button>
               <a ng-if="currentUser.userName === listing.user.userName" href="#/updateListing/{{listing.listingId}}" class='btn btn-success btn-outline btn-block'>Update Listing</a>
               </div>
             </div>
@@ -85,11 +95,11 @@
   <div class="col-lg-2">
     &nbsp;
     <!-- Gutter for ads -->
-    <!--<div style="position:relative;">
+    <div style="position:relative;">
     <a href="https://www.ssa.gov/myaccount"><img src="https://www.ssa.gov/img/en/2015/home/hero-myaccount2.jpg" alt="https://www.ssa.gov/myaccount"/></a>
     
     <a><img src ="http://lowerysmiles.com/wp-content/uploads/2014/06/married-couple.jpg" alt="heard you got married!" onclick="alert('We heard you are getting married!');"/></a>
-    </div>-->
+    </div>
   </div>
 
 </div>

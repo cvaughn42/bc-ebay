@@ -374,6 +374,22 @@ function sort(obj, TorP, sign){
 
 app.controller('listingsCtrl', function ($scope, $http, $location){
 
+    $scope.displaySeller = function(sellerId) {
+        
+        $('#sellerInfoModal').modal('show');
+        
+        $http.get('/getSellerInfo/' + sellerId, {cache: false}).success(function(data) {
+            if (data.sinceDate && !(data.sinceDate instanceof Date))
+            {
+                data.sinceDate = new Date(data.sinceDate);
+            }
+            $scope.seller = data;
+        }).error(function(err) {
+            alert("Unable to retrieve seller information for seller " + sellerId + ": " + err);
+        });
+    };
+
+
     $scope.sortedLists = [
         {key:"Relevance", value:"Relevance"}, 
         {key:"Alphabetical Ascending", value:"Alphabetical Ascending"}, 
@@ -414,6 +430,7 @@ app.controller('listingsCtrl', function ($scope, $http, $location){
         // console.dir($scope.listings);
         var keywords = getKeywords(data);
         $scope.removeFilter = function (keyword){
+
             console.log('in!');
             console.log('keyword is : ' + keyword);
 
@@ -429,6 +446,8 @@ app.controller('listingsCtrl', function ($scope, $http, $location){
             }
             keywords = getKeywords($scope.listings);
             $scope.keywords = keywords;
+            $scope.activeKeyword = null;
+            
         }
         $scope.keywords = keywords;
 
@@ -440,7 +459,10 @@ app.controller('listingsCtrl', function ($scope, $http, $location){
 
         $http.post('/listing',{filterOnTerm: filterOnTerm, cache:false}).success(function (listingData){
             $scope.listings = listingData;
-            
+            console.dir('keyword : ' + filterOnTerm);
+            console.dir($scope.keywords);
+            $scope.activeKeyword = filterOnTerm;
+
         }).error(function (error){
             console.log("error is " + error);
 
@@ -448,7 +470,11 @@ app.controller('listingsCtrl', function ($scope, $http, $location){
     });
     $scope.$on('searchEvent', function (event, srchTerm) {
             $http.post('/search',{srchTerm: srchTerm, cache: false}).success(function(data) {
-                
+                if(srchTerm == ""){
+                    $scope.activeKeyword = null;
+                }else{
+                    $scope.activeKeyword = srchTerm;
+                }
                 console.dir(data);
                 $scope.listings = data;
                 $scope.keywords = getKeywords(data);
