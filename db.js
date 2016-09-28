@@ -204,7 +204,7 @@ DbInterface.prototype.createBid = function(bid, callback) {
 
         var stmt = self.db.prepare(DbInterface.CREATE_BID_SQL);
 
-        stmt.run(bid.amount, bid.user.userName, bid.bidDate, bid.listingId, function(err) {
+        stmt.run(bid.amount, bid.userName, bid.bidDate, bid.listingId, function(err) {
             if (err)
             {
                 callback("Unable to place bid: " + err);

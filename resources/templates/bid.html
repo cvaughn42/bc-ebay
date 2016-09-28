@@ -11,35 +11,35 @@
                     <div class="form-group row-fluid">
                         <label class="col-form-label col-lg-6">Listing</label>
                         <div class="col-lg-6">
-                            <p class="form-control-static">{{ listing.title }}</p>
+                            <p class="form-control-static">{{ bidListing.title }}</p>
                         </div>
                     </div>
 
                     <div class="form-group row-fluid">
                         <label class="col-form-label col-lg-6">Start Date</label>
                         <div class="col-lg-6">
-                            <p class="form-control-static">{{ listing.startDate | date:"M/dd/yyyy h:mm a" }}</p>
+                            <p class="form-control-static">{{ bidListing.startDate | date:"M/dd/yyyy h:mm a" }}</p>
                         </div>
                     </div>
 
                     <div class="form-group row-fluid">
                         <label class="col-form-label col-lg-6">End Date</label>
                         <div class="col-lg-6">
-                            <p class="form-control-static">{{ listing.endDate | date:"M/dd/yyyy h:mm a" }}</p>
+                            <p class="form-control-static">{{ bidListing.endDate | date:"M/dd/yyyy h:mm a" }}</p>
                         </div>
                     </div>
 
                     <div class="form-group row-fluid">
                         <label class="col-form-label col-lg-6">Minimum Bid</label>
                         <div class="col-lg-6">
-                            <p class="form-control-static">{{ listing.minBid | currency }}</p>
+                            <p class="form-control-static">{{ bidListing.minBid | currency }}</p>
                         </div>
                     </div>
 
                     <div class="form-group row-fluid">
                         <label class="col-form-label col-lg-6">Current Maximum Bid</label>
                         <div class="col-lg-6">
-                            <p ng-if="listing.maxBid"  class="form-control-static">{{ listing.maxBid | currency }}</p>
+                            <p ng-if="listing.maxBid"  class="form-control-static">{{ bidListing.maxBid | currency }}</p>
                             <p ng-if="!listing.maxBid" class="form-control-static">No Bids - Be the First!</p>
                         </div>
                     </div>

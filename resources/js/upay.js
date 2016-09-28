@@ -46,10 +46,9 @@ app.directive('gallery', function() {
 app.directive('bidModal', function() {
     return {
         restrict: 'E',
-        scope: {
-            listing: '=listing'
-        },
-        templateUrl: '/templates/bid.html'
+        scope: true,
+        templateUrl: '/templates/bid.html',
+        transclude: true
     };
 });
 
@@ -192,11 +191,10 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
     };
 
     $scope.submitBid = function() {
-
         $http.post('/makeBid', {
-            listingId: $scope.bidAmount.listingId, 
+            listingId: $scope.bidListing.listingId, 
             userName: $scope.currentUser.userName,
-            amount: $scope.bidAmount,
+            amount: this.bidAmount,
             bidDate: new Date()
         }).success(function() {
             alert("Your bid was placed");
@@ -393,6 +391,7 @@ app.controller('listingsCtrl', function ($scope, $http, $location){
         }).error(function(err) {
             alert("Unable to retrieve seller information for seller " + sellerId + ": " + err);
         });
+        
     };
 
 
@@ -407,8 +406,8 @@ app.controller('listingsCtrl', function ($scope, $http, $location){
     //$scope.sortedList = "Relevance";
 
     $scope.sortListing = function(value){
-        console.log("in");
-        console.log(value);
+        // console.log("in");
+        // console.log(value);
         if(value == "Relevance"){
             //removed reload
             $location.path('/');
@@ -428,7 +427,7 @@ app.controller('listingsCtrl', function ($scope, $http, $location){
         }else{
             //do nothing
         }
-        console.log('done');
+        // console.log('done');
     }
      $http.get('/listings', {cache: false}).success(function(data) {
         
@@ -437,17 +436,17 @@ app.controller('listingsCtrl', function ($scope, $http, $location){
         var keywords = getKeywords(data);
         $scope.removeFilter = function (keyword){
 
-            console.log('in!');
-            console.log('keyword is : ' + keyword);
+            // console.log('in!');
+            // console.log('keyword is : ' + keyword);
 
             var buildKeywords = null;
             
             for(var i = $scope.listings.length-1 ; i >= 0 ; i--){
-                console.log('keyword: '+ keyword +' value : ' + $scope.listings[i].keywords + ' does contain : ' + ($scope.listings[i].keywords.indexOf(keyword) != -1));
+                // console.log('keyword: '+ keyword +' value : ' + $scope.listings[i].keywords + ' does contain : ' + ($scope.listings[i].keywords.indexOf(keyword) != -1));
                 if($scope.listings[i].keywords.indexOf(keyword) != -1){
-                    console.log('removing = ' + $scope.listings[i]);
+                    // console.log('removing = ' + $scope.listings[i]);
                     $scope.listings.splice(i, 1);
-                    console.log('index ' + i + ' length of array ' + $scope.listings.length);
+                    // console.log('index ' + i + ' length of array ' + $scope.listings.length);
                 }
             }
             keywords = getKeywords($scope.listings);
@@ -465,8 +464,8 @@ app.controller('listingsCtrl', function ($scope, $http, $location){
 
         $http.post('/listing',{filterOnTerm: filterOnTerm, cache:false}).success(function (listingData){
             $scope.listings = listingData;
-            console.dir('keyword : ' + filterOnTerm);
-            console.dir($scope.keywords);
+            // console.dir('keyword : ' + filterOnTerm);
+            // console.dir($scope.keywords);
             $scope.activeKeyword = filterOnTerm;
 
         }).error(function (error){
@@ -481,7 +480,7 @@ app.controller('listingsCtrl', function ($scope, $http, $location){
                 }else{
                     $scope.activeKeyword = srchTerm;
                 }
-                console.dir(data);
+                // console.dir(data);
                 $scope.listings = data;
                 $scope.keywords = getKeywords(data);
                 // console.log(JSON.stringify(data));

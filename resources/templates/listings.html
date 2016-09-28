@@ -79,7 +79,7 @@
 
             <div class="col-lg-2">
               <a ng-if="currentUser.userName != listing.user.userName" class="btn btn-primary btn-block" ng-href="#/purchase/{{listing.listingId}}"><i class="fa fa-check"></i> &nbsp; Buy Now</a>
-              <button ng-if="listing.minBid && currentUser.userName != listing.user.userName" class="btn btn-default btn-block" ng-click="makeBid(listing)">Bid</a></button>
+              <button ng-if="listing.minBid && currentUser.userName != listing.user.userName" class="btn btn-default btn-block" ng-click="makeBid(listing)">Bid</button>
               <a ng-if="currentUser.userName === listing.user.userName" href="#/updateListing/{{listing.listingId}}" class='btn btn-success btn-outline btn-block'>Update Listing</a>
             </div>
           </div>
