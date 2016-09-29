@@ -94,39 +94,53 @@
 
                         <div class="col-lg-2 col-sm-6">
 
-                            <div class="form-group">
-                                <div ng-repeat="keyword in myListing.keywords">
-                                    <div ng-if="keyword">
-                                        {{keyword}}
-                                        <button class="remove" ng-click="removeKeyword(keyword)">-</button>
-                                    </div>
-                                </div>
-                                <input type="text" ng-model="newKeyword" name="newKeyword" placeholder="Enter a keyword">
-                                <button ng-click="addKeyword()">Add Keyword</button>
+                            <div>
+
+                                <button type="button" id="updateListingButton" ng-click="updateListing()" class="btn btn-primary btn-block" ng-disabled="updateListingForm.title.$dirty && updateListingForm.title.$invalid">
+                                    <i class="fa fa-check"></i>&nbsp;Save
+                                </button>
+
+                                <a ng-click="uploadListingFiles(myListing.listingId)" class='btn btn-success btn-outline btn-block'>Upload Images</a>
+
                             </div>
 
-                            <button type="button" id="updateListingButton" ng-click="updateListing()" class="btn btn-primary btn-block" 
-                                    ng-disabled="updateListingForm.title.$dirty && updateListingForm.title.$invalid">
-                                <i class="fa fa-check"></i>&nbsp;Save
-                            </button>
+                            <div class="panel panel-primary">
 
-                            <a ng-click="uploadListingFiles(myListing.listingId)" class='btn btn-success btn-outline btn-block'>Upload Images</a>
+                                <div class="panel-heading panel-title">
+                                    <div class="input-group" style="width: 100%;">
+                                        <input type="text" class="form-control" placeholder="Keyword" name="newKeyword" id="newKeyword" 
+                                                ng-model="newKeyword">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-default" type="button" ng-click="addKeyword()"><i class="glyphicon glyphicon-plus"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="panel-body">
+
+
+
+                                    <div ng-repeat="keyword in myListing.keywords" class="alert alert-info alert-dismissable keyword">
+                                        <!-- remove keyword -->
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true" ng-click="removeKeyword(keyword)" title='Remove keyword "{{keyword}}"'>&times;</button>                                        {{ keyword }}
+                                    </div>
+
+                                </div>
+                            </div>
 
                         </div>
 
-                    </div>
-
                 </form>
 
+                </div>
+                <!-- /panel-body -->
+
             </div>
-            <!-- /panel-body -->
+            <!-- /Panel -->
+
 
         </div>
-        <!-- /Panel -->
-
+        <!-- /col-lg-12 -->
 
     </div>
-    <!-- /col-lg-12 -->
-
-</div>
-<!-- /row-fluid -->
+    <!-- /row-fluid -->
