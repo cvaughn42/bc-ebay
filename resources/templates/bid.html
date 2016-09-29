@@ -39,8 +39,8 @@
                     <div class="form-group row-fluid">
                         <label class="col-form-label col-lg-6">Current Maximum Bid</label>
                         <div class="col-lg-6">
-                            <p ng-if="listing.maxBid"  class="form-control-static">{{ bidListing.maxBid | currency }}</p>
-                            <p ng-if="!listing.maxBid" class="form-control-static">No Bids - Be the First!</p>
+                            <p ng-if="bidListing.maxBid"  class="form-control-static">{{ bidListing.maxBid | currency }}</p>
+                            <p ng-if="!bidListing.maxBid" class="form-control-static">No Bids - Be the First!</p>
                         </div>
                     </div>
 
@@ -54,7 +54,7 @@
             </div>
             <div class="modal-footer">
                 <div class="text-center"> 
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="submitBid()">Submit Bid</button>
+                    <button type="button" class="btn btn-primary" ng-click="submitBid()">Submit Bid</button>
                     <br /><a data-dismiss="modal">[ cancel ]</a>
                 </div>
             </div>
