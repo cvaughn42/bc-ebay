@@ -28,9 +28,11 @@
                                     <gallery data="imageIds"></gallery>
                                 </div>
                                 <!-- /INNER-->
-                                    <!-- Carousel nav -->
-                                    <a class="carousel-control left" href="#myCarousel" target="_self" data-slide="prev"><i class="glyphicon glyphicon-chevron-left"></i></a>
-                                    <a class="carousel-control right" href="#myCarousel" target="_self" data-slide="next"><i class="glyphicon glyphicon-chevron-right"></i></a>
+                                    <div ng-if='listing.imageIds.length > 1'>
+                                        <!-- Carousel nav -->
+                                        <a class="carousel-control left" href="#myCarousel" target="_self" data-slide="prev"><i class="glyphicon glyphicon-chevron-left"></i></a>
+                                        <a class="carousel-control right" href="#myCarousel" target="_self" data-slide="next"><i class="glyphicon glyphicon-chevron-right"></i></a>
+                                    </div>
                                 </div>
                             </div>
                         <div class="col-lg-5">
