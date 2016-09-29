@@ -79,3 +79,22 @@ img.cc-image
 {
     margin-bottom: 1em;
 }
+
+.panel-ad
+{
+    border: black solid 1px;
+}
+
+.panel-ad .panel-title
+{
+    border-bottom: black solid 1px;
+    font-size: 8pt;
+    padding: 2px 8px;
+    background-color: #eee;
+}
+
+.panel-ad .panel-title button
+{
+    border-style: none;
+    background-color: #eee;
+}

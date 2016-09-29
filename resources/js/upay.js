@@ -34,6 +34,18 @@ app.config(function ($routeProvider) {
     });
 });
 
+app.directive('adPanel', function($http, $templateCache, $compile) {
+    return {
+        restrict: 'E',
+        link: function(scope, iElement, iAttrs, $htt) {
+            var id = iAttrs.data;
+            $http.get('/templates/ad-' + id + '.html', {cache: $templateCache}).success(function(html) {
+                iElement.replaceWith($compile(html)(scope));
+            });
+        }
+    };
+});
+
 app.directive('gallery', function() {
     return {
         scope: {
@@ -379,6 +391,8 @@ app.controller('listingsCtrl', function ($scope, $http, $location){
         // location.path('/#/listings');
         $location.path('/');
     }
+
+    $scope.adId = Math.ceil(Math.random() * 2);
 
     $scope.displaySeller = function(sellerId) {
         
