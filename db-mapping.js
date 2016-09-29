@@ -92,7 +92,7 @@ module.exports = {
         title: '$title',
         description: '$description',
         buyItNowPrice: '$buyItNowPrice',
-        minBid: '$minBid',
+        minBid: '$minBid?',
         startDate: {
             key: '$startDate',
             transform: function(val) {

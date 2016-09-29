@@ -280,6 +280,9 @@ DbInterface.prototype.updateListing = function(listing, callback) {
 
     var params = objectMapper(listing, mappings.listingToDatabaseMapping);
 
+    delete params.$sold;
+    delete params.$userName;
+
     this.db.run(DbInterface.UPDATE_LISTING_SQL, params, function(err) {
         if (err)
         {

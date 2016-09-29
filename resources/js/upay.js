@@ -603,7 +603,7 @@ app.controller('updateistingCtrl', function ($scope, $routeParams, $http, $locat
         console.log('keywords: ', JSON.stringify($scope.myListing.keywords));
         console.log('update listing: ', JSON.stringify($scope.myListing));
         if ($scope.myListing.title) {
-            $http.post('/updateListing', {updateListing: $scope.myListing}).success(function(count) {
+            $http.post('/updateListing', $scope.myListing).success(function(count) {
                 $scope.successfulAlert = false;
                 }).error(function (error) {
                     alert('Unable to update listing with keywords: ' + error);

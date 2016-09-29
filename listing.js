@@ -162,18 +162,7 @@ exports.newListing = function(req, res) {
 // app.post('/updateListing')
 exports.updateListing = function(req, res) {
 
-    var data = req.body.updateListing;
-
-    var listing = {};
-    listing.listingId = data.listingId;
-    listing.title = data.title;
-    listing.description = data.description;
-    listing.buyItNowPrice = data.buyItNowPrice;
-    listing.minBid = data.minBid;
-    listing.startDate = data.startDate;
-    listing.endDate = data.endDate;
-
-    db.updateListing(listing, function (err, result){
+   db.updateListing(req.body, function (err, result) {
         if(err){
             res.status(500).send(err);
         }else{
@@ -181,7 +170,6 @@ exports.updateListing = function(req, res) {
                 res.send(result);
             }
         });
-   
 };
 
 // app.post('/listings')
