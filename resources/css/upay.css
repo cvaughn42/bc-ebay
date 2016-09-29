@@ -63,6 +63,12 @@ img.cc-image
     padding-bottom: 1em;
 }
 
+#map 
+{
+    height: 400px;
+    width: 100%;
+}
+
 .dim
 {
     opacity: .5;
