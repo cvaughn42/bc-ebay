@@ -98,3 +98,8 @@ img.cc-image
     border-style: none;
     background-color: #eee;
 }
+
+.panel-ad img 
+{
+    border-style: none;
+}

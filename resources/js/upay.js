@@ -162,6 +162,10 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
         alert('Unable to load currentUser: ' + error);
     });
     
+    $scope.showNoAds = function() {
+        alert("Want upay ad-free?  It'll cost you!");
+    };
+
     /**
      * Build user name from user object
      */
