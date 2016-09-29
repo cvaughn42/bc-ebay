@@ -75,6 +75,8 @@ app.get('listing/removeFilter/:keyword', checkAuth, listing.filterRemove);
 app.post('/buyIt', checkAuth, listing.purchaseListing);
 app.post('/makeBid', checkAuth, listing.makeBid);
 app.get('/bids/:listingId', checkAuth, listing.findValidBids);
+app.post('/addListingKeywords', checkAuth, listing.addListingKeywords);
+app.post('/removeKeyword', checkAuth, listing.removeListingKeyword);
 
 // Profile
 app.get('/profile/:userName', checkAuth, profile.profile);

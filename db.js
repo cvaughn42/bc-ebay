@@ -49,6 +49,7 @@ DbInterface.MARK_LISTING_SOLD_SQL = "UPDATE listing SET sold = 1 WHERE listing_i
                     
 /* LISTING KEYWORD TABLE SQL */
 DbInterface.CREATE_LISTING_KEYWORD_SQL = `INSERT INTO listing_keyword (listing_id, keyword) VALUES (?, ?)`;
+DbInterface.DELETE_LISTING_KEYWORD_SQL = `DELETE FROM listing_keyword WHERE listing_id = ? AND keyword = ?`;
 
 /* PURCHASE TABLE SQL */
 DbInterface.CREATE_PURCHASE_SQL = `INSERT INTO purchase 
@@ -454,6 +455,20 @@ DbInterface.prototype.findActiveListingsByKeyword = function(keywords, callback)
             
 
             callback(null, listings);
+        }
+    });
+};
+
+DbInterface.prototype.removeListingKeyword = function(listingId, keyword, callback) {
+
+    this.db.run(DbInterface.DELETE_LISTING_KEYWORD_SQL, listingId, keyword, function(err) {
+        if (err)
+        {
+            callback("Unable to delete keyword '" + keyword + "' for listing '" + listingId + "': " + err);
+        }
+        else
+        {
+            callback(null);
         }
     });
 };

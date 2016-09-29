@@ -172,6 +172,37 @@ exports.updateListing = function(req, res) {
         });
 };
 
+// app.post('/addListingKeywords')
+exports.addListingKeywords = function(req, res) {
+
+    var listingId = req.body.listingId;
+    console.log('listingId: ' + listingId);
+    var keywords = req.body.keywords;
+    console.log('keywords: ', keywords);
+
+   db.addListingKeywords(listingId, keywords, function (err, count) {
+        if(err){
+            res.status(500).send(err);
+        }else{
+        
+                res.send(JSON.stringify(count));
+            }
+        });
+};
+
+exports.removeListingKeyword = function(req, res) {
+
+    db.removeListingKeyword(req.body.listingId, req.body.keyword, function(err) {
+        if (err) {
+            res.status(500).end();
+        }
+        else
+        {
+            res.send('ok');
+        }
+    });
+};
+
 // app.post('/listings')
 exports.filterOn = function (req, res){    
     var stringVersion =  req.body.filterOnTerm;
