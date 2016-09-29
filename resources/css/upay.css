@@ -63,6 +63,18 @@ img.cc-image
     padding-bottom: 1em;
 }
 
+.video-title
+{
+    font-size: 150%;
+    color: Navy;
+    text-shadow: #ddd;
+}
+
+.video-details
+{
+    color: Navy;
+}
+
 #map 
 {
     height: 400px;
