@@ -607,8 +607,27 @@ app.controller('updateistingCtrl', function ($scope, $routeParams, $http, $locat
 
     $scope.addKeyword = function() {
         if ($scope.newKeyword) {
-            $scope.myListing.keywords.push($scope.newKeyword);
+            var found = false;
+            for (var i = 0; i < $scope.myListing.keywords.length; i++) {
+                if ( $scope.myListing.keywords[i] === $scope.newKeyword) {
+                    found = true;
+                    break;
+                }
+            }
+            console.log('found: ', found);
+            var data = { listingId: $scope.myListing.listingId, keywords: [$scope.newKeyword]};
+            console.log('data: ', data);
+            if (!found) {
+                $scope.myListing.keywords.push($scope.newKeyword);
+                $http.post('/addListingKeywords', data).success(function(count) {
+                    
+                }).error(function (error) {
+                    alert('Unable to add listing keyword: ' + error);
+                });
+            }
+           
         }
+        
         $scope.newKeyword = '';
     };
         
@@ -616,6 +635,13 @@ app.controller('updateistingCtrl', function ($scope, $routeParams, $http, $locat
         var index = $scope.myListing.keywords.indexOf(value);
         if ( index >= 0 ) {
             $scope.myListing.keywords.splice(index, 1);
+            var data = { listingId: $scope.myListing.listingId, keyword: value};
+            console.log('data: ', data);
+            $http.post('/removeKeyword', data).success(function(count) {
+                    
+                }).error(function (error) {
+                    alert('Unable to remove listing keyword: ' + error);
+                });
         }
     };
 
