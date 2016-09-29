@@ -204,7 +204,6 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
 
     $scope.makeBid = function(listing) {
         $scope.bidListing = listing;
-        this.bidAmount = null;
         $('#bidModal').modal('show');
         $('#bidModal #bidAmount').autoNumeric('init');
     };
@@ -226,6 +225,7 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
                 }
                 alert("Your bid was placed");
                 $('#bidModal').modal('hide');
+                this.bidAmount.value = null;
             }).error(function(err) {
                 alert("There was a problem posting your bid: " + err);
             });
