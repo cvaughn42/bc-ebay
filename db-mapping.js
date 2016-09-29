@@ -109,10 +109,14 @@ module.exports = {
 
                 return  val.getFullYear() + '-' + 
                         (val.getMonth() < 9 ? '0' : '') +
-                        (val.getMonth() + 1) + '-' + 
+                        (val.getMonth() + 1) + '-' +
+                        (val.getDate() < 10 ? '0' : '') + 
                         val.getDate() + ' ' +
+                        (val.getHours() < 10 ? '0' : '') + 
                         val.getHours() + ':' +
+                        (val.getMinutes() < 10 ? '0' : '') + 
                         val.getMinutes() + ':' +
+                        (val.getSeconds() < 10 ? '0' : '') + 
                         val.getSeconds();  
             }
         },
@@ -132,10 +136,14 @@ module.exports = {
 
                 return  val.getFullYear() + '-' + 
                         (val.getMonth() < 9 ? '0' : '') +
-                        (val.getMonth() + 1) + '-' + 
+                        (val.getMonth() + 1) + '-' +
+                        (val.getDate() < 10 ? '0' : '') + 
                         val.getDate() + ' ' +
+                        (val.getHours() < 10 ? '0' : '') + 
                         val.getHours() + ':' +
+                        (val.getMinutes() < 10 ? '0' : '') + 
                         val.getMinutes() + ':' +
+                        (val.getSeconds() < 10 ? '0' : '') + 
                         val.getSeconds();  
             }
         },
