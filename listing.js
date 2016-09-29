@@ -172,6 +172,19 @@ exports.updateListing = function(req, res) {
         });
 };
 
+exports.removeListingKeyword = function(req, res) {
+
+    db.removeListingKeyword(req.body.listingId, req.body.keyword, function(err) {
+        if (err) {
+            res.status(500).end();
+        }
+        else
+        {
+            res.send('ok');
+        }
+    });
+};
+
 // app.post('/listings')
 exports.filterOn = function (req, res){    
     var stringVersion =  req.body.filterOnTerm;
