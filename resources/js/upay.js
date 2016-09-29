@@ -209,16 +209,27 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
     };
 
     $scope.submitBid = function() {
-        $http.post('/makeBid', {
-            listingId: $scope.bidListing.listingId, 
-            userName: $scope.currentUser.userName,
-            amount: this.bidAmount,
-            bidDate: new Date()
-        }).success(function() {
-            alert("Your bid was placed");
-        }).error(function(err) {
-            alert("There was a problem posting your bid: " + err);
-        });
+        if (this.bidAmount < $scope.bidListing.minBid) {
+            alert("Your bid must be greater than the current min bid");
+        } else if (this.bidAmount <= $scope.bidListing.maxBid) {
+            alert("Your bid must be greater than the current max bid");
+        } else {
+            $http.post('/makeBid', {
+                listingId: $scope.bidListing.listingId, 
+                userName: $scope.currentUser.userName,
+                amount: this.bidAmount,
+                bidDate: new Date()
+            }).success(function() {
+                if (this.bidAmount.value > $scope.bidListing.maxBid) {
+                    $scope.bidListing.maxBid = this.bidAmount.value;
+                }
+                alert("Your bid was placed");
+                $('#bidModal').modal('hide');
+                this.bidAmount.value = null;
+            }).error(function(err) {
+                alert("There was a problem posting your bid: " + err);
+            });
+        }
     };
 
     $scope.search = function() {

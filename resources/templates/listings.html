@@ -33,7 +33,7 @@
           <button type="button" class="close" data-dismiss="alert" aria-hidden="true" ng-click="removeFilter(keyword)" title='Remove listings with keyword "{{keyword}}"'>&times;</button>
           <!-- add filter -->
           <!-- alert('filter the list on this keyword'); return false; -->
-          <a ng-click="filterOn(keyword)" target='_self' class="alert-link" name="filter-On-Term" id="filter-On-Term" ng-model="filterOnTerm">{{ keyword }}</a>.
+          <a ng-click="filterOn(keyword)" target='_self' class="alert-link" name="filter-On-Term" id="filter-On-Term" ng-model="filterOnTerm">{{ keyword }}</a>
           
         </div>
 
@@ -68,10 +68,10 @@
               <p>{{ listing.description }}</p>
               <p>Buy it now price: {{ listing.buyItNowPrice | currency }}</p>
               <p ng-if="listing.minBid">
-                <span ng-if="listing.maxBid">Current Max Bid: {{listng.maxBid | currency}}</span>
+                <span ng-if="listing.maxBid">Current Max Bid: {{listing.maxBid | currency}}</span>
                 <span ng-if="!listing.maxBid">Minimum Bid: {{ listing.minBid | currency }}</span>
               </p>
-              <p>Ends {{ listing.endDate | date:"M:dd:yyyy h:mm a" }}</p>
+              <p>Ends {{ listing.endDate | date:"M/dd/yyyy h:mm a" }}</p>
               <p>
                           Being sold by
                           <a ng-click="displaySeller(listing.user.userName)">

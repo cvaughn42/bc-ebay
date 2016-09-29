@@ -42,7 +42,10 @@
                                 Minimum Bid: {{ listing.minBid | currency }}
                             </p>
                             <p>
-                                Sale Ends: {{ listing.endDate | date:"M:dd:yyyy h:mm a"}}
+                                Current Max Bid: {{listing.maxBid | currency}}
+                            </p>
+                            <p>
+                                Sale Ends: {{ listing.endDate | date:"M/dd/yyyy h:mm a"}}
                             </p>
                             <p>
                                 Being sold by
