@@ -18,6 +18,8 @@ app.config(function ($routeProvider) {
     }).when("/updateListing/:listingId", {
         templateUrl: "/templates/updateListing.html",
         controller: 'updateistingCtrl'
+    }).when('/help', {
+        templateUrl: '/templates/help.html'
     }).when("/listings", {
         templateUrl: "/templates/listings.html",
         controller: 'listingsCtrl'
