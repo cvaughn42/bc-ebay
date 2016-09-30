@@ -224,9 +224,9 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
 
                 if (val && typeof(val) === 'string')
                 {
-                    val = new Number(val.replace(/[^0-9\.]+/g,""));
+                    val = parseFloat(val.replace(/[^0-9\.]+/g,""));
                 }
-                
+
                 if (val > $scope.bidListing.maxBid) 
                 {
                     $scope.bidListing.maxBid = val;
