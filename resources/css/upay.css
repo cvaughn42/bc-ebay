@@ -45,6 +45,12 @@ form.dropzone {
     right: -2px;
 }
 
+body.storefront
+{
+    background-image: url('/images/storefront.jpg');
+    background-size: cover;
+}
+
 img.cc-image 
 {
     border-width: 0px;
