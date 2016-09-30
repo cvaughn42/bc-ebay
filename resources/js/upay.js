@@ -156,7 +156,7 @@ app.filter('tel', function () {
     };
 });
 
-app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams, $http, $route, $q, $location) {
+app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams, $http, $route, $q, $location, $timeout) {
     $http.get('/currentUser', {cache: false}).success(function (data) {
         $scope.currentUser = data;
         // console.dir(data);
@@ -236,12 +236,20 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
                     $scope.bidListing.maxBid = val;
                 }
                 alert("Your bid was placed");
+                $scope.reset();
                 $('#bidModal').modal('hide');
                 this.bidAmount.value = null;
             }).error(function(err) {
                 alert("There was a problem posting your bid: " + err);
             });
         }
+    };
+
+    $scope.reset = function() {
+        $timeout(function () {
+            // 1 second delay, might not need this long, but it works.
+            $route.reload();
+        }, 500);
     };
 
     $scope.search = function() {
