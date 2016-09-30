@@ -9,11 +9,11 @@
             <div class="modal-body">
                 <div class="container-fluid">
                     <div class="row-fluid">
-                        <div class="col-lg-4">
-                            <img ng-if="seller.imageId" ng-src="/userImage/{{seller.sellerId}}" class="img-circle" />
+                        <div class="col-lg-6">
+                            <img ng-if="seller.imageId" ng-src="/userImage/{{seller.sellerId}}" />
                             <span ng-if="!seller.imageId">No image available</span>
                         </div>
-                        <div class="col-lg-8">
+                        <div class="col-lg-6">
                             <div class="form-set">
                                 <label>Name</label>
                                 <p class="form-control-static">{{ seller.name }}</p>

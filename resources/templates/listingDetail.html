@@ -65,9 +65,9 @@
                    
                        <div class="col-lg-2">
                             <a ng-if="currentUser.userName != listing.user.userName" href='#/purchase/{{listing.listingId}}' class="btn btn-primary btn-block"> <i class="fa fa-check"></i> &nbsp; Buy It Now!</a>
-                            <a ng-if="currentUser.userName === listing.user.userName" ng-click="uploadListingFiles(listing.listingId)" class='btn btn-success btn-outline btn-block'>Upload Images</a>
-                            <button ng-if="listing.minBid && currentUser.userName != listing.user.userName" class="btn btn-default btn-block" ng-click="makeBid(listing)">Bid</a></button>
+                            <button ng-if="listing.minBid && currentUser.userName != listing.user.userName" class="btn btn-default btn-block btn-outline" ng-click="makeBid(listing)">Bid</button>
                             <a ng-if="currentUser.userName === listing.user.userName" href="#/updateListing/{{listing.listingId}}" class='btn btn-success btn-outline btn-block'>Update Listing</a>
+                            <a ng-if="currentUser.userName === listing.user.userName" ng-click="uploadListingFiles(listing.listingId)" class='btn btn-success btn-outline btn-block'>Upload Images</a>
                         </div>
                     </div>
 

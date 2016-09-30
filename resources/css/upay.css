@@ -53,6 +53,11 @@ img.cc-image
     padding: 4px 12px;
 }
 
+form.dropzone
+{
+    min-width: 400px;
+}
+
 .listing-title
 {
     font-size: 150%;
