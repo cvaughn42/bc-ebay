@@ -205,6 +205,11 @@ DbInterface.prototype.createBid = function(bid, callback) {
 
         var stmt = self.db.prepare(DbInterface.CREATE_BID_SQL);
 
+        if (bid.amount && typeof(bid.amount) === 'string')
+        {
+            bid.amount = Number(bid.amount.replace(/[^0-9\.]+/g,""));
+        }
+
         stmt.run(bid.amount, bid.userName, bid.bidDate, bid.listingId, function(err) {
             if (err)
             {

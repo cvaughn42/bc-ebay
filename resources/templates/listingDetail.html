@@ -1,7 +1,7 @@
 <div class="row-fluid">
     <div class="col-lg-12">
         <div class="panel panel-default">
-            <div class="panel-heading">{{listing.title}}</div>
+            
             <div class="panel-body">
 
                 <div class="container-fluid">
@@ -36,15 +36,16 @@
                                 </div>
                             </div>
                         <div class="col-lg-5">
+                            <p class="listing-title">{{listing.title}}</p>
                             <p>{{ listing.description }}</p>
                             <p>
-                                Buy it Now Price: Only {{ listing.buyItNowPrice | currency }}!
+                                Buy it Now Price: Only <span class="listing-price">{{ listing.buyItNowPrice | currency }}</span>!
                             </p>
                             <p>
-                                Minimum Bid: {{ listing.minBid | currency }}
+                                Minimum Bid: <span class="listing-minbid">{{ listing.minBid | currency }}</span>
                             </p>
                             <p>
-                                Current Max Bid: {{listing.maxBid | currency}}
+                                Current Max Bid: <span class="listing-maxbid">{{listing.maxBid | currency}}</span>
                             </p>
                             <p>
                                 Sale Ends: {{ listing.endDate | date:"M/dd/yyyy h:mm a"}}

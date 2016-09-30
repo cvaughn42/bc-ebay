@@ -53,6 +53,23 @@ img.cc-image
     padding: 4px 12px;
 }
 
+.listing-title
+{
+    font-size: 150%;
+    font-weight: bold;
+}
+
+.listing-price
+{
+    font-weight: bold;
+}
+
+.listing-maxbid,
+.listing-minbid
+{
+    font-weight: bold;
+}
+
 .tab-content
 {
     border-right: silver 1px solid;

@@ -220,8 +220,16 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
                 amount: this.bidAmount,
                 bidDate: new Date()
             }).success(function() {
-                if (this.bidAmount.value > $scope.bidListing.maxBid) {
-                    $scope.bidListing.maxBid = this.bidAmount.value;
+                var val = this.bidAmount.value;
+
+                if (val && typeof(val) === 'string')
+                {
+                    val = new Number(val.replace(/[^0-9\.]+/g,""));
+                }
+                
+                if (val > $scope.bidListing.maxBid) 
+                {
+                    $scope.bidListing.maxBid = val;
                 }
                 alert("Your bid was placed");
                 $('#bidModal').modal('hide');
@@ -463,7 +471,7 @@ app.controller('listingsCtrl', function ($scope, $http, $location){
         // console.log('done');
     }
      $http.get('/listings', {cache: false}).success(function(data) {
-        
+
         $scope.listings = data;
         // console.dir($scope.listings);
         var keywords = getKeywords(data);
