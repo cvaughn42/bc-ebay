@@ -209,9 +209,13 @@ app.controller('bc-upay-controller', function ($scope, $rootScope, $routeParams,
     };
 
     $scope.submitBid = function() {
-        if (this.bidAmount < $scope.bidListing.minBid) {
+        var bid = this.bidAmount;
+        if (bid && typeof(bid) === 'string') {
+            bid = parseFloat(bid.replace(/[^0-9\.]+/g,""));
+        }
+        if (bid < $scope.bidListing.minBid) {
             alert("Your bid must be greater than the current min bid");
-        } else if (this.bidAmount <= $scope.bidListing.maxBid) {
+        } else if (bid <= $scope.bidListing.maxBid) {
             alert("Your bid must be greater than the current max bid");
         } else {
             $http.post('/makeBid', {
